@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梳风弄弦音 - 全女百业</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", "SimSun", sans-serif;
+        }
+
+        /* 国风主色调：浅米色背景 + 原木色系文字 */
+        body {
+            background-color: #f9f7f3; /* 浅米色背景 */
+            color: #5a4b38; /* 原木色主文字 */
+            line-height: 1.6;
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 上模块 - 标题区 */
+        .header-section {
+            text-align: center;
+            padding: 60px 0;
+            border-bottom: 1px solid #e0d8c8; /* 浅木色边框 */
+            margin-bottom: 40px;
+        }
+
+        .title-a {
+            font-size: 3rem;
+            color: #5a4b38; /* 深原木色 */
+            font-weight: 400;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+        }
+
+        .title-b {
+            font-size: 1.5rem;
+            color: #8a7d6b; /* 浅原木色 */
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        /* 中模块 - 组队区 */
+        .team-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); /* 轻量阴影 */
+            transition: box-shadow 0.3s ease; /* hover阴影过渡 */
+        }
+
+        /* 组队区hover阴影效果 */
+        .team-section:hover {
+            box-shadow: 0 4px 16px rgba(128, 107, 83, 0.1); /* 原木色阴影 */
+        }
+
+        .team-title {
+            font-size: 1.8rem;
+            color: #6b5b47; /* 原木色标题 */
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8e0d0; /* 浅木色下划线 */
+        }
+
+        /* 组队区块容器 */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+
+        /* 组队区块样式 */
+        .team-block {
+            width: 100%;
+            max-width: 280px;
+            height: 180px;
+            background-color: #f8f5ef; /* 浅木色背景 */
+            border-radius: 6px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e0d8c8; /* 浅木色边框 */
+        }
+
+        /* 区块hover效果 */
+        .team-block:hover {
+            background-color: #f0ebe0; /* 加深木色背景 */
+            border-color: #c9b89f; /* 原木色边框 */
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(128, 107, 83, 0.15); /* 原木色阴影 */
+        }
+
+        /* 纯文字图标样式 - 核心：仅文字，无图片/图标库 */
+        .block-icon {
+            font-size: 3.5rem;  /* 放大文字，突出图标感 */
+            color: #8a7d6b;     /* 浅原木色 */
+            margin-bottom: 10px;
+            font-weight: 700;   /* 加粗，增强视觉冲击力 */
+            font-family: "SimHei", "Microsoft YaHei", sans-serif; /* 更适配单字展示的字体 */
+        }
+
+
+        /* 区块标题和文本 */
+        .block-title {
+            font-size: 1.2rem;
+            color: #5a4b38; /* 深原木色标题 */
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .block-text {
+            font-size: 0.9rem;
+            color: #8a7d6b; /* 浅原木色文本 */
+            text-align: center;
+        }
+
+        /* 新建队伍按钮特殊样式 */
+        .create-team {
+            background-color: #9a8868; /* 原木色按钮 */
+            color: white;
+            border: none;
+        }
+
+        .create-team:hover {
+            background-color: #867352; /* 加深原木色 */
+            color: white;
+        }
+
+        .create-team .block-title,
+        .create-team .block-text {
+            color: white;
+        }
+
+        .create-team .block-icon {
+            color: white; /* 新建队伍的文字图标为白色 */
+        }
+
+        /* 下模块 - 图片展示区 */
+        .image-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .image-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            transition: box-shadow 0.3s ease;
+        }
+
+        .image-card:hover {
+            box-shadow: 0 4px 16px rgba(128, 107, 83, 0.1);
+        }
+
+        .image-upload {
+            width: 100%;
+            height: 250px;
+            background-color: #f8f5ef; /* 浅木色上传区 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .image-upload input {
+            display: none;
+        }
+
+        .upload-placeholder {
+            text-align: center;
+            color: #8a7d6b; /* 浅原木色占位符 */
+        }
+
+        /* 图片上传区保留功能图标（如需改为纯文字也可调整） */
+        .upload-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            color: #c9b89f; /* 原木色图标 */
+        }
+
+        .image-caption {
+            padding: 20px;
+        }
+
+        .caption-title {
+            font-size: 1.2rem;
+            color: #5a4b38; /* 深原木色标题 */
+            margin-bottom: 10px;
+        }
+
+        .caption-edit {
+            width: 100%;
+            padding: 8px 10px;
+            border: 1px solid #e0d8c8; /* 浅木色边框 */
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #5a4b38; /* 原木色文字 */
+            outline: none;
+            resize: none;
+            min-height: 60px;
+            background-color: #fefbf7; /* 极浅木色背景 */
+            transition: border-color 0.3s ease;
+        }
+
+        .caption-edit:focus {
+            border-color: #9a8868; /* 原木色焦点边框 */
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .title-a {
+                font-size: 2rem;
+                letter-spacing: 4px;
+            }
+
+            .title-b {
+                font-size: 1.2rem;
+            }
+
+            .team-section {
+                padding: 20px 10px;
+            }
+
+            .team-title {
+                font-size: 1.5rem;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+
+            .team-block {
+                height: 160px;
+                padding: 15px;
+            }
+
+            .block-icon {
+                font-size: 2.8rem; /* 手机端调整文字图标大小 */
+            }
+
+    
+            .image-upload {
+                height: 200px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title-a {
+                font-size: 1.8rem;
+            }
+            .image-section {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    <!-- 仅保留图片上传区的功能图标库，如不需要可删除 -->
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <!-- 上模块：标题区 -->
+        <section class="header-section">
+            <h1 class="title-a">梳风弄弦音</h1>
+            <h2 class="title-b">全女百业</h2>
+        </section>
+
+        <!-- 中模块：组队区 - 纯文字图标，无任何图片/图标库 -->
+        <section class="team-section">
+            <h2 class="team-title">双十激情组队</h2>
+            <div class="team-grid">
+                <!-- 萧门：跳转到xiaomen.html（核心修改） -->
+                <div class="team-block" onclick="window.location.href='xiaomen.html'">
+                    <div class="block-icon">萧</div>
+                    <div class="block-title">萧门</div>
+                    <div class="block-text">社长带队，指挥带劲</div>
+                </div>
+
+                <!-- 千瑶（原琴阁）：跳转到qianyao.html（核心修改） -->
+                <div class="team-block" onclick="window.location.href='qianyao.html'">
+                    <div class="block-icon">千</div>
+                    <div class="block-title">千瑶</div>
+                    <div class="block-text">萌新友好，氛围轻松</div>
+                </div>
+
+                <!-- 比格（原鼓坊）：跳转到bige.html（核心修改） -->
+                <div class="team-block" onclick="window.location.href='bige.html'">
+                    <div class="block-icon">比</div>
+                    <div class="block-title">比格</div>
+                    <div class="block-text">固定时段，稳定发车</div>
+                </div>
+
+                <!-- 留子（原筝社）：跳转到liuzi.html（核心修改） -->
+                <div class="team-block" onclick="window.location.href='liuzi.html'">
+                    <div class="block-icon">留</div>
+                    <div class="block-title">留子</div>
+                    <div class="block-text">高手云集，技术交流</div>
+                </div>
+
+                <!-- 新建队伍：跳转到new-team.html + 加号放大（核心修改） -->
+                <div class="team-block create-team" onclick="window.location.href='new-team.html'">
+                    <div class="block-icon">+</div>
+                    <div class="block-title">我要新建队伍</div>
+                    <div class="block-text">自定义组队，招募队友</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 下模块：图片展示区 -->
+        <section class="image-section">
+            <div class="image-card">
+                <label class="image-upload">
+                    <input type="file" accept="image/*" onchange="previewImage(this, 'preview1')">
+                    <div id="preview1" class="upload-placeholder">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>点击上传图片</p>
+                    </div>
+                </label>
+                <div class="image-caption">
+                    <h3 class="caption-title">图片标题1</h3>
+                    <textarea class="caption-edit" placeholder="请编辑图片的小标题..."></textarea>
+                </div>
+            </div>
+
+            <div class="image-card">
+                <label class="image-upload">
+                    <input type="file" accept="image/*" onchange="previewImage(this, 'preview2')">
+                    <div id="preview2" class="upload-placeholder">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>点击上传图片</p>
+                    </div>
+                </label>
+                <div class="image-caption">
+                    <h3 class="caption-title">图片标题2</h3>
+                    <textarea class="caption-edit" placeholder="请编辑图片的小标题..."></textarea>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 图片预览功能
+        function previewImage(input, previewId) {
+            const preview = document.getElementById(previewId);
+            const file = input.files[0];
+            
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    preview.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">`;
+                }
+                reader.readAsDataURL(file);
+            }
+        }
+    </script>
+</body>
+</html>
