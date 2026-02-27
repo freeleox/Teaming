@@ -262,9 +262,28 @@
             .btn {
                 display: inline-block;
             }
-
         }
     </style>
+    
+    <!-- Supabase客户端初始化 -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2.39.7/dist/umd/supabase.js"></script>
+    <script>
+        // 替换为您的实际Supabase项目URL和Anon Key
+        const SUPABASE_URL = 'https://jtxbzkfnpbrjmlqinogj.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_0K0RV2KcU7DkuSxF9t73dA_a8pIZnB3';
+        
+        // 创建Supabase客户端
+        const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        
+        // 测试连接
+        supabase.from('team_members').select('*').limit(1)
+            .then(response => {
+                console.log('Supabase连接成功:', response);
+            })
+            .catch(error => {
+                console.error('Supabase连接失败:', error);
+            });
+    </script>
 </head>
 
 <body>
@@ -330,7 +349,7 @@
         <!-- 队长（固定） -->
         <div class="item">
             <div class="prefix">队长</div>
-            <div class="fixed-text">万千慈</div>
+            <div class="fixed-text">比格</div>
         </div>
 
         <!-- 队员 1-7、纯奶位 1-2 结构不变 -->
@@ -394,51 +413,49 @@
         // 存储已填写的位置信息
         const filledPositions = {};
         const alertBox = document.getElementById('alertBox');
-        const TEAM_KEY = 'qianyao'; // 队伍标识
+        const TEAM_KEY = 'bige'; // 比门队伍标识
         const RAID_SETTINGS_KEY = `${TEAM_KEY}_raid_settings`; // 打本设置存储键
 
         // 生成时间选择器选项（0~24:00，半小时为单位）
         function generateTimeOptions() {
-        const timeSelector = document.getElementById('timeSelector');
-        
-        // 首先添加"百业派对后"选项并设置为默认选中
-        const afterPartyOption = document.createElement('option');
-        afterPartyOption.value = '百业派对后';
-        afterPartyOption.textContent = '百业派对后';
-        afterPartyOption.selected = true;
-        timeSelector.appendChild(afterPartyOption);
-        
-        // 添加分隔线选项（可选）
-        const separatorOption = document.createElement('option');
-        separatorOption.disabled = true;
-        separatorOption.textContent = '──────────';
-        timeSelector.appendChild(separatorOption);
-        
-        let hours = 0;
-        let minutes = 0;
-
-        // 生成00:00到24:00的选项，步长30分钟
-        while (hours <= 24) {
-            const hourStr = hours.toString().padStart(2, '0');
-            const minStr = minutes.toString().padStart(2, '0');
-            const timeStr = `${hourStr}:${minStr}`;
+            const timeSelector = document.getElementById('timeSelector');
             
-            const option = document.createElement('option');
-            option.value = timeStr;
-            option.textContent = timeStr;
+            // 首先添加"百业派对后"选项并设置为默认选中
+            const afterPartyOption = document.createElement('option');
+            afterPartyOption.value = '百业派对后';
+            afterPartyOption.textContent = '百业派对后';
+            afterPartyOption.selected = true;
+            timeSelector.appendChild(afterPartyOption);
             
-            // 移除之前的默认选中逻辑，因为"百业派对后"已经是默认选项
-            timeSelector.appendChild(option);
+            // 添加分隔线选项（可选）
+            const separatorOption = document.createElement('option');
+            separatorOption.disabled = true;
+            separatorOption.textContent = '──────────';
+            timeSelector.appendChild(separatorOption);
+            
+            let hours = 0;
+            let minutes = 0;
 
-            minutes += 30;
-            if (minutes >= 60) {
-                minutes = 0;
-                hours += 1;
+            // 生成00:00到24:00的选项，步长30分钟
+            while (hours <= 24) {
+                const hourStr = hours.toString().padStart(2, '0');
+                const minStr = minutes.toString().padStart(2, '0');
+                const timeStr = `${hourStr}:${minStr}`;
+                
+                const option = document.createElement('option');
+                option.value = timeStr;
+                option.textContent = timeStr;
+                timeSelector.appendChild(option);
+
+                minutes += 30;
+                if (minutes >= 60) {
+                    minutes = 0;
+                    hours += 1;
+                }
             }
         }
-    }
 
-        // 2. 加载保存的打本信息
+        // 加载保存的打本信息
         function loadRaidInfo() {
             const savedInfo = localStorage.getItem(RAID_SETTINGS_KEY);
             if (savedInfo) {
@@ -455,38 +472,109 @@
             }
         }
 
-        // 3. 保存打本设置
-        function saveRaidSettings() {
+        // 保存打本设置
+        async function saveRaidSettings() {
+            const saveBtn = document.getElementById('headerSaveBtn');
             const raidSettings = {
                 day: document.getElementById('daySelector').value,
                 time: document.getElementById('timeSelector').value,
-                copy: document.getElementById('copySelector').value,
+                copy_type: document.getElementById('copySelector').value,
                 remark: document.getElementById('remarkInput').value
             };
-            localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify(raidSettings));
             
-            // 获取保存按钮
-            const saveBtn = document.getElementById('headerSaveBtn');
+            // 1. 立即保存到本地
+            localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify({
+                day: raidSettings.day,
+                time: raidSettings.time,
+                copy: raidSettings.copy_type,
+                remark: raidSettings.remark
+            }));
             
-            // 保存按钮原始颜色
-            const originalColor = saveBtn.style.color;
-            const originalText = saveBtn.textContent;
-            const originalBackground = saveBtn.style.backgroundColor;
-            
-            // 视觉反馈效果
-            saveBtn.textContent = "已保存";
-            saveBtn.style.color = "#4CAF50"; // 绿色
-            saveBtn.style.backgroundColor = "#e8f5e9"; // 浅绿色背景
-            
-            // 3秒后恢复原状
-            setTimeout(() => {
-                saveBtn.textContent = originalText;
-                saveBtn.style.color = originalColor;
-                saveBtn.style.backgroundColor = originalBackground;
-            }, 3000);
-            
-            // 显示保存成功提示
-            alert('打本设置已保存！');
+            try {
+                // 2. 先检查是否存在记录
+                const { data: existingRecord, error: checkError } = await supabase
+                    .from('raid_settings')
+                    .select('id')
+                    .eq('team_key', TEAM_KEY)
+                    .maybeSingle();
+                
+                let result;
+                
+                if (checkError) {
+                    console.warn('检查记录时出错:', checkError);
+                }
+                
+                // 3. 根据是否存在记录选择操作
+                if (existingRecord) {
+                    // 更新现有记录
+                    const { data, error } = await supabase
+                        .from('raid_settings')
+                        .update({
+                            day: raidSettings.day,
+                            time: raidSettings.time,
+                            copy_type: raidSettings.copy_type,
+                            remark: raidSettings.remark,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('team_key', TEAM_KEY)
+                        .select();
+                    
+                    if (error) throw error;
+                    result = data;
+                    console.log('更新成功:', data);
+                } else {
+                    // 插入新记录
+                    const { data, error } = await supabase
+                        .from('raid_settings')
+                        .insert({
+                            team_key: TEAM_KEY,
+                            day: raidSettings.day,
+                            time: raidSettings.time,
+                            copy_type: raidSettings.copy_type,
+                            remark: raidSettings.remark,
+                            updated_at: new Date().toISOString()
+                        })
+                        .select();
+                    
+                    if (error) throw error;
+                    result = data;
+                    console.log('插入成功:', data);
+                }
+                
+                // 4. 显示成功反馈
+                const originalText = saveBtn.textContent;
+                const originalColor = saveBtn.style.color || '#000000';
+                const originalBackground = saveBtn.style.backgroundColor;
+                
+                saveBtn.textContent = "已保存";
+                saveBtn.style.color = "#4CAF50";
+                saveBtn.style.backgroundColor = "#e8f5e9";
+                
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                    saveBtn.style.color = originalColor;
+                    saveBtn.style.backgroundColor = originalBackground;
+                }, 3000);
+                
+                alert('设置已保存到云端！');
+                return result;
+                
+            } catch (err) {
+                console.error('保存失败:', err);
+                
+                // 显示错误状态
+                saveBtn.textContent = "保存失败";
+                saveBtn.style.color = "#f44336";
+                saveBtn.style.backgroundColor = "#ffebee";
+                
+                setTimeout(() => {
+                    saveBtn.textContent = "保存设置";
+                    saveBtn.style.color = "";
+                    saveBtn.style.backgroundColor = "";
+                }, 3000);
+                
+                alert('云端保存失败，但设置已保存到本地');
+            }
         }
 
         // 显示提示框
@@ -497,8 +585,8 @@
             }, 3000);
         }
 
-        // 保存功能
-        function handleSave(event) {
+        // 保存队员功能
+        async function handleSave(event) {
             const btn = event.target;
             const item = btn.closest('.item');
             const input = item.querySelector('.input-box');
@@ -517,6 +605,31 @@
                 return;
             }
 
+            try {
+                // 保存到Supabase云端数据库
+                const { data, error } = await supabase
+                    .from('team_members')
+                    .upsert({
+                        team_key: TEAM_KEY,
+                        position_id: positionId,
+                        member_name: name
+                    })
+                    .select();
+
+                if (error) {
+                    console.error('保存到云端失败:', error);
+                    localStorage.setItem(`${TEAM_KEY}_${positionId}`, name);
+                    alert('网络连接失败，已保存到本地');
+                } else {
+                    console.log('保存到云端成功:', data);
+                    localStorage.setItem(`${TEAM_KEY}_${positionId}`, name);
+                }
+            } catch (err) {
+                console.error('保存异常:', err);
+                localStorage.setItem(`${TEAM_KEY}_${positionId}`, name);
+                alert('网络异常，已保存到本地');
+            }
+
             filledPositions[positionId] = name;
 
             const fixedText = document.createElement('div');
@@ -526,30 +639,139 @@
 
             btn.style.display = 'none';
             delBtn.style.display = 'inline-block';
-
-            localStorage.setItem(`${TEAM_KEY}_${positionId}`, name);
         }
 
-        // 删除功能（恢复可编辑）
-        function handleDelete(event) {
+        // 删除队员功能
+        async function handleDelete(event) {
             const btn = event.target;
             const item = btn.closest('.item');
             const fixedText = item.querySelector('.fixed-text');
             const saveBtn = item.querySelector('.save-btn');
             const positionId = item.dataset.id;
 
+            try {
+                // 从云端删除
+                const { error } = await supabase
+                    .from('team_members')
+                    .delete()
+                    .eq('team_key', TEAM_KEY)
+                    .eq('position_id', positionId);
+
+                if (error) {
+                    console.error('从云端删除失败:', error);
+                } else {
+                    console.log('从云端删除成功');
+                }
+            } catch (err) {
+                console.error('删除异常:', err);
+            }
+
+            // 无论云端是否成功，都删除本地数据
             delete filledPositions[positionId];
+            localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
 
             const input = document.createElement('input');
             input.type = 'text';
             input.className = 'input-box';
-            input.placeholder = '请输入队员名字';
+            input.placeholder = '请队员自行填写后保存';
             fixedText.replaceWith(input);
 
             btn.style.display = 'none';
             saveBtn.style.display = 'inline-block';
+        }
 
-            localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
+        // 清空所有队员填写的内容
+        async function clearAllInputs() {
+            if (!confirm('确定要清空所有队员填写的内容吗？此操作会从云端永久删除数据，不可撤销。')) {
+                return;
+            }
+            
+            try {
+                // 显示加载状态
+                const clearBtn = document.getElementById('clearAllBtn');
+                const originalText = clearBtn.textContent;
+                clearBtn.textContent = '清空中...';
+                clearBtn.disabled = true;
+                
+                // 第一步：从云端删除所有相关数据
+                console.log('开始从云端删除数据...');
+                
+                // 1. 删除 team_members 表中该队伍的所有记录
+                const { error: membersError } = await supabase
+                    .from('team_members')
+                    .delete()
+                    .eq('team_key', TEAM_KEY);
+                
+                if (membersError) {
+                    console.error('删除云端队员数据失败:', membersError);
+                    alert('删除云端队员数据失败: ' + membersError.message);
+                    clearBtn.textContent = originalText;
+                    clearBtn.disabled = false;
+                    return;
+                }
+                
+                console.log('云端队员数据删除成功');
+                
+                // 第二步：清除本地数据和界面
+                const items = document.querySelectorAll('.item');
+                let clearedCount = 0;
+                
+                items.forEach(item => {
+                    const positionId = item.dataset.id;
+                    
+                    // 仅处理队员和奶位（有data-id的项目）
+                    if (positionId && (positionId.startsWith('member') || positionId.startsWith('milk'))) {
+                        // 删除本地存储
+                        localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
+                        
+                        // 清除内存记录
+                        delete filledPositions[positionId];
+                        
+                        // 找到输入框并清除
+                        const inputBox = item.querySelector('.input-box');
+                        if (inputBox) {
+                            inputBox.value = '';
+                        }
+                        
+                        // 如果已经保存，需要重置为可编辑状态
+                        const fixedText = item.querySelector('.fixed-text');
+                        if (fixedText) {
+                            // 创建新的输入框
+                            const newInput = document.createElement('input');
+                            newInput.type = 'text';
+                            newInput.className = 'input-box';
+                            newInput.placeholder = '请队员自行填写后保存';
+                            
+                            // 替换fixed-text
+                            fixedText.replaceWith(newInput);
+                            
+                            // 显示保存按钮，隐藏删除按钮
+                            const saveBtn = item.querySelector('.save-btn');
+                            const delBtn = item.querySelector('.del-btn');
+                            if (saveBtn) saveBtn.style.display = 'inline-block';
+                            if (delBtn) delBtn.style.display = 'none';
+                            
+                            clearedCount++;
+                        }
+                    }
+                });
+                
+                // 恢复按钮状态
+                clearBtn.textContent = originalText;
+                clearBtn.disabled = false;
+                
+                // 显示成功提示
+                alert(`已成功清空！\n- 云端数据已删除\n- ${clearedCount}个队员位置已重置\n- 所有用户将看到清空后的状态`);
+                
+            } catch (err) {
+                console.error('清空过程中发生异常:', err);
+                alert('清空过程中发生错误: ' + err.message);
+                
+                // 恢复按钮状态
+                const clearBtn = document.getElementById('clearAllBtn');
+                clearBtn.textContent = '一键清空';
+                clearBtn.disabled = false;
+            }
         }
 
         // 初始化事件监听
@@ -563,14 +785,102 @@
 
             // 绑定保存按钮事件
             document.getElementById('headerSaveBtn').addEventListener('click', saveRaidSettings);
-
-             // 新增：綁定一鍵清空按鈕事件
+            
+            // 绑定一键清空按钮事件
             document.getElementById('clearAllBtn').addEventListener('click', clearAllInputs);
         }
 
         // 页面加载时恢复已保存的数据
-        function restoreSavedData() {
-            // 恢复队员/奶位数据
+        async function restoreSavedData() {
+            try {
+                // 从云端加载打本设置
+                const { data: settings, error: settingsError } = await supabase
+                    .from('raid_settings')
+                    .select('*')
+                    .eq('team_key', TEAM_KEY)
+                    .single();
+
+                if (settingsError && settingsError.code !== 'PGRST116') {
+                    console.error('从云端加载设置失败:', settingsError);
+                    // 云端失败时从本地加载
+                    loadRaidInfoFromLocal();
+                } else if (settings) {
+                    console.log('从云端加载打本设置成功:', settings);
+                    document.getElementById('daySelector').value = settings.day || '周一';
+                    document.getElementById('timeSelector').value = settings.time || '21:00';
+                    document.getElementById('copySelector').value = settings.copy_type || '双十';
+                    document.getElementById('remarkInput').value = settings.remark || '';
+                    // 保存到本地缓存
+                    localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify({
+                        day: settings.day || '周一',
+                        time: settings.time || '21:00',
+                        copy: settings.copy_type || '双十',
+                        remark: settings.remark || ''
+                    }));
+                } else {
+                    // 云端没有数据，从本地加载
+                    loadRaidInfoFromLocal();
+                }
+
+                // 从云端加载队员信息
+                const { data: members, error: membersError } = await supabase
+                    .from('team_members')
+                    .select('*')
+                    .eq('team_key', TEAM_KEY)
+                    .order('created_at', { ascending: true });
+
+                if (membersError) {
+                    console.error('从云端加载队员失败:', membersError);
+                    // 云端失败时从本地加载
+                    loadMembersFromLocal();
+                } else if (members && members.length > 0) {
+                    console.log('从云端加载队员成功:', members);
+                    members.forEach(member => {
+                        const item = document.querySelector(`[data-id="${member.position_id}"]`);
+                        if (item) {
+                            filledPositions[member.position_id] = member.member_name;
+                            const input = item.querySelector('.input-box');
+                            const saveBtn = item.querySelector('.save-btn');
+                            const delBtn = item.querySelector('.del-btn');
+
+                            if (input) {
+                                const fixedText = document.createElement('div');
+                                fixedText.className = 'fixed-text';
+                                fixedText.textContent = member.member_name;
+                                input.replaceWith(fixedText);
+                                
+                                if (saveBtn) saveBtn.style.display = 'none';
+                                if (delBtn) delBtn.style.display = 'inline-block';
+                            }
+                            // 保存到本地缓存
+                            localStorage.setItem(`${TEAM_KEY}_${member.position_id}`, member.member_name);
+                        }
+                    });
+                } else {
+                    // 云端没有数据，从本地加载
+                    loadMembersFromLocal();
+                }
+            } catch (err) {
+                console.error('加载数据异常:', err);
+                // 网络异常时从本地加载
+                loadRaidInfoFromLocal();
+                loadMembersFromLocal();
+            }
+        }
+
+        // 本地数据加载函数
+        function loadRaidInfoFromLocal() {
+            const savedInfo = localStorage.getItem(RAID_SETTINGS_KEY);
+            if (savedInfo) {
+                const info = JSON.parse(savedInfo);
+                document.getElementById('daySelector').value = info.day || '周一';
+                document.getElementById('timeSelector').value = info.time || '21:00';
+                document.getElementById('copySelector').value = info.copy || '双十';
+                document.getElementById('remarkInput').value = info.remark || '';
+            }
+        }
+
+        function loadMembersFromLocal() {
             document.querySelectorAll('.item').forEach(item => {
                 const positionId = item.dataset.id;
                 const savedName = localStorage.getItem(`${TEAM_KEY}_${positionId}`);
@@ -581,79 +891,145 @@
                     const saveBtn = item.querySelector('.save-btn');
                     const delBtn = item.querySelector('.del-btn');
 
-                    const fixedText = document.createElement('div');
-                    fixedText.className = 'fixed-text';
-                    fixedText.textContent = savedName;
-                    input.replaceWith(fixedText);
-
-                    saveBtn.style.display = 'none';
-                    delBtn.style.display = 'inline-block';
+                    if (input) {
+                        const fixedText = document.createElement('div');
+                        fixedText.className = 'fixed-text';
+                        fixedText.textContent = savedName;
+                        input.replaceWith(fixedText);
+                        
+                        if (saveBtn) saveBtn.style.display = 'none';
+                        if (delBtn) delBtn.style.display = 'inline-block';
+                    }
                 }
             });
-
-            // 恢复打本信息
-            loadRaidInfo();
         }
 
-        // 清空所有input-box值的功能
-        function clearAllInputs() {
+        // 实时订阅功能
+        function setupRealtimeSubscription() {
+            const channel = supabase
+                .channel('team-changes')
+                .on('postgres_changes', 
+                    { 
+                        event: '*',
+                        schema: 'public', 
+                        table: 'team_members',
+                        filter: `team_key=eq.${TEAM_KEY}`
+                    }, 
+                    (payload) => {
+                        console.log('队员数据有变化:', payload);
+                        // 重新加载队员数据
+                        loadMembersFromCloud();
+                    }
+                )
+                .on('postgres_changes',
+                    {
+                        event: '*',
+                        schema: 'public',
+                        table: 'raid_settings',
+                        filter: `team_key=eq.${TEAM_KEY}`
+                    },
+                    (payload) => {
+                        console.log('打本设置有变化:', payload);
+                        // 重新加载打本设置
+                        loadRaidSettingsFromCloud();
+                    }
+                )
+                .subscribe((status) => {
+                    console.log('实时订阅状态:', status);
+                });
 
-        // 確認是否要清空
-        if (!confirm('确定要清空所有队员吗？此操作不可撤销。')) {
-            return;
+            return channel;
         }
-    
-        // 獲取所有隊員和奶位項目
-        const items = document.querySelectorAll('.item');
-    
-        // 清除每個項目的數據
-        items.forEach(item => {
-            const positionId = item.dataset.id;
-            
-        // 僅處理隊員和奶位（有data-id的項目）
-        if (positionId && (positionId.startsWith('member') || positionId.startsWith('milk'))) {
-            // 清除本地存儲
-            localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
-            
-            // 清除filledPositions對象中的記錄
-            delete filledPositions[positionId];
-            
-            // 找到輸入框並清除
-            const inputBox = item.querySelector('.input-box');
-            if (inputBox) {
-                inputBox.value = '';
+
+        // 从云端加载队员数据
+        async function loadMembersFromCloud() {
+            try {
+                const { data: members, error } = await supabase
+                    .from('team_members')
+                    .select('*')
+                    .eq('team_key', TEAM_KEY)
+                    .order('created_at', { ascending: true });
+
+                if (!error && members) {
+                    members.forEach(member => {
+                        const item = document.querySelector(`[data-id="${member.position_id}"]`);
+                        if (item) {
+                            const input = item.querySelector('.input-box');
+                            const fixedText = item.querySelector('.fixed-text');
+                            const saveBtn = item.querySelector('.save-btn');
+                            const delBtn = item.querySelector('.del-btn');
+                            
+                            // 如果当前显示的是输入框，且云端有数据，则更新为固定文本
+                            if (input && member.member_name) {
+                                const newFixedText = document.createElement('div');
+                                newFixedText.className = 'fixed-text';
+                                newFixedText.textContent = member.member_name;
+                                input.replaceWith(newFixedText);
+                                
+                                if (saveBtn) saveBtn.style.display = 'none';
+                                if (delBtn) delBtn.style.display = 'inline-block';
+                            }
+                            // 如果当前显示的是固定文本，更新内容
+                            else if (fixedText && member.member_name) {
+                                fixedText.textContent = member.member_name;
+                            }
+                            
+                            // 更新本地存储
+                            localStorage.setItem(`${TEAM_KEY}_${member.position_id}`, member.member_name);
+                            filledPositions[member.position_id] = member.member_name;
+                        }
+                    });
+                }
+            } catch (err) {
+                console.error('实时更新队员数据失败:', err);
             }
-            
-            // 如果已經保存，需要重置為可編輯狀態
-            const fixedText = item.querySelector('.fixed-text');
-            if (fixedText) {
-                // 創建新的輸入框
-                const newInput = document.createElement('input');
-                newInput.type = 'text';
-                newInput.className = 'input-box';
-                newInput.placeholder = '请队员自行填写后保存';
-                
-                // 替換fixed-text
-                fixedText.replaceWith(newInput);
-                
-                // 顯示保存按鈕，隱藏刪除按鈕
-                const saveBtn = item.querySelector('.save-btn');
-                const delBtn = item.querySelector('.del-btn');
-                if (saveBtn) saveBtn.style.display = 'inline-block';
-                if (delBtn) delBtn.style.display = 'none';
+        }
+
+        // 从云端加载打本设置
+        async function loadRaidSettingsFromCloud() {
+            try {
+                const { data: settings, error } = await supabase
+                    .from('raid_settings')
+                    .select('*')
+                    .eq('team_key', TEAM_KEY)
+                    .single();
+
+                if (!error && settings) {
+                    document.getElementById('daySelector').value = settings.day || '周一';
+                    document.getElementById('timeSelector').value = settings.time || '21:00';
+                    document.getElementById('copySelector').value = settings.copy_type || '双十';
+                    document.getElementById('remarkInput').value = settings.remark || '';
+                    
+                    // 更新本地存储
+                    localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify({
+                        day: settings.day || '周一',
+                        time: settings.time || '21:00',
+                        copy: settings.copy_type || '双十',
+                        remark: settings.remark || ''
+                    }));
+                }
+            } catch (err) {
+                console.error('实时更新打本设置失败:', err);
             }
         }
-    });
-    
-    // 顯示提示
-    alert('所有队员已被清空，请重新填写！');
-}
 
         // 页面加载完成后初始化
-        window.addEventListener('DOMContentLoaded', () => {
+        window.addEventListener('DOMContentLoaded', async () => {
             generateTimeOptions();
             initEventListeners();
-            restoreSavedData();
+            
+            // 首先尝试从云端加载数据
+            await restoreSavedData();
+            
+            // 设置实时订阅
+            setupRealtimeSubscription();
+            
+            // 显示连接状态
+            const connectionStatus = document.createElement('div');
+            connectionStatus.id = 'connection-status';
+            connectionStatus.style.cssText = 'position: fixed; bottom: 10px; right: 10px; padding: 5px 10px; background: #4CAF50; color: white; border-radius: 4px; font-size: 12px;';
+            connectionStatus.textContent = '✓ 已连接到云端';
+            document.body.appendChild(connectionStatus);
         });
     </script>
 </body>

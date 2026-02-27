@@ -1,0 +1,929 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>创建新队伍 - 梳风弄弦音</title>
+    <style>
+        /* 阿里妈妈东方大楷字体声明 */
+        @font-face {
+            font-family: 'AlimamaDongFangDaKai';
+            src: url('fonts/AlimamaDongFangDaKai-Regular.otf') format('opentype'),
+                 url('fonts/AlimamaDongFangDaKai-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;
+        }
+
+        body {
+            background-color: #f9f7f3;
+            color: #5a4b38;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 标题区 */
+        .page-header {
+            text-align: center;
+            padding: 50px 0 30px;
+            border-bottom: 1px solid #e0d8c8;
+            margin-bottom: 40px;
+        }
+
+        .page-title {
+            font-size: 2.2rem;
+            color: #5a4b38;
+            font-weight: 400;
+            letter-spacing: 6px;
+        }
+
+        .team-name {
+            margin-top: 8px;
+            font-size: 1rem;
+            color: #8a7d6b;
+        }
+
+        /* 队伍信息设置区域 */
+        .team-info-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+            border: 1px solid #e0d8c8;
+        }
+
+        .section-title {
+            font-size: 1.4rem;
+            color: #5a4b38;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #9a8868;
+        }
+
+        .team-input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 1rem;
+            color: #8a7d6b;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .team-input {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #e0d8c8;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fefbf7;
+            outline: none;
+            color: #5a4b38;
+            transition: border-color 0.3s;
+        }
+
+        .team-input:focus {
+            border-color: #9a8868;
+        }
+
+        .input-hint {
+            font-size: 0.85rem;
+            color: #b09c80;
+            margin-top: 5px;
+            font-style: italic;
+        }
+
+        /* 队长填写区域标题 */
+        .raid-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #9a8868;
+        }
+
+        .raid-title {
+            font-size: 1.2rem;
+            color: #5a4b38;
+            font-weight: 500;
+        }
+
+        .header-save-btn {
+            padding: 8px 20px;
+            background-color: #9a8868;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.95rem;
+            transition: background-color 0.3s;
+            margin-left: 15px;
+        }
+
+        .header-save-btn:hover {
+            background-color: #867352;
+        }
+
+        /* 打本信息栏样式 */
+        .raid-info {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding: 16px 20px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e0d8c8;
+            flex-wrap: wrap;
+        }
+
+        .info-item {
+            flex: 1;
+            min-width: 180px;
+        }
+
+        .info-label {
+            display: block;
+            font-size: 0.9rem;
+            color: #8a7d6b;
+            margin-bottom: 6px;
+        }
+
+        .day-select, .time-select, .copy-select, .remark-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #e0d8c8;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fefbf7;
+            outline: none;
+            color: #5a4b38;
+        }
+
+        .day-select:focus, .time-select:focus, .copy-select:focus, .remark-input:focus {
+            border-color: #9a8868;
+        }
+
+        /* 队员填写区域 */
+        .member-fill-section {
+            margin-top: 40px;
+        }
+
+        /* 列表项 */
+        .item {
+            display: flex;
+            align-items: center;
+            margin-bottom: 16px;
+            padding: 14px 18px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #e0d8c8;
+        }
+
+        .prefix {
+            width: 100px;
+            font-size: 1rem;
+            color: #5a4b38;
+            font-weight: 500;
+        }
+
+        .fixed-text {
+            font-size: 1rem;
+            color: #5a4b38;
+        }
+
+        .input-box {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #e0d8c8;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #fefbf7;
+            outline: none;
+        }
+
+        .input-box:focus {
+            border-color: #9a8868;
+        }
+
+        /* 按钮 */
+        .btn {
+            margin-left: 8px;
+            padding: 6px 12px;
+            border-radius: 6px;
+            border: none;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: #9a8868;
+            color: #fff;
+        }
+
+        .del-btn {
+            background: #c9b89f;
+            color: #fff;
+        }
+
+        /* 提示框样式 */
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 12px 24px;
+            background: #d64141;
+            color: white;
+            border-radius: 6px;
+            z-index: 9999;
+            display: none;
+            animation: fadeInOut 3s ease;
+        }
+
+        @keyframes fadeInOut {
+            0% { opacity: 0; top: 10px; }
+            10% { opacity: 1; top: 20px; }
+            80% { opacity: 1; top: 20px; }
+            100% { opacity: 0; top: 10px; }
+        }
+
+        /* 手机端适配 */
+        @media (max-width: 768px) {
+            .raid-info {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+                padding: 12px 15px;
+                margin-bottom: 15px;
+                display: grid;
+            }
+            
+            .info-item {
+                min-width: unset;
+                width: 100%;
+            }
+            
+            .info-item:nth-child(1),
+            .info-item:nth-child(2) {
+                grid-column: span 1;
+            }
+            
+            .info-item:nth-child(3),
+            .info-item:nth-child(4) {
+                grid-column: span 2;
+            }
+            
+            .info-label {
+                font-size: 0.85rem;
+                margin-bottom: 4px;
+            }
+            
+            .day-select,
+            .time-select,
+            .copy-select,
+            .remark-input {
+                padding: 7px 10px;
+                font-size: 0.95rem;
+                height: 38px;
+            }
+            
+            .remark-input {
+                height: 38px;
+            }
+            
+            .raid-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .header-save-btn {
+                margin-left: 0;
+                margin-top: 10px;
+                width: auto;
+                min-width: 120px;
+                align-self: flex-end;
+            }
+            
+            .item {
+                flex-wrap: wrap;
+            }
+            .prefix {
+                width: 80px;
+                margin-bottom: 8px;
+            }
+            .input-box {
+                width: 100%;
+                margin-bottom: 8px;
+            }
+            .btn {
+                margin-left: 0;
+                margin-right: 8px;
+                margin-top: 8px;
+            }
+            
+            .save-btn, .del-btn {
+                margin-left: 8px;
+                margin-right: 8px;
+                margin-top: 8px;
+            }
+            
+            .item {
+                position: relative;
+            }
+            
+            .btn {
+                display: inline-block;
+            }
+
+            .team-info-section {
+                padding: 15px;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .raid-info {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 10px 12px;
+            }
+            
+            .info-item:nth-child(1),
+            .info-item:nth-child(2),
+            .info-item:nth-child(3),
+            .info-item:nth-child(4) {
+                grid-column: span 1;
+            }
+            
+            .info-label {
+                font-size: 0.8rem;
+            }
+            
+            .day-select,
+            .time-select,
+            .copy-select,
+            .remark-input {
+                padding: 6px 8px;
+                font-size: 0.9rem;
+                height: 36px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="page-header">
+            <h1 class="page-title">创建新队伍</h1>
+            <div class="team-name">请填写队伍信息</div>
+        </div>
+
+        <!-- 队伍信息设置区域 -->
+        <div class="team-info-section">
+            <h2 class="section-title">队伍基本信息</h2>
+            
+            <div class="team-input-group">
+                <label class="input-label">队伍名称</label>
+                <input type="text" class="team-input" id="teamNameInput" placeholder="请输入队伍名称（如：萧门、千瑶等）" maxlength="20">
+                <div class="input-hint">最多20个字符，建议使用简短易记的名称</div>
+            </div>
+            
+            <div class="team-input-group">
+                <label class="input-label">队长姓名</label>
+                <input type="text" class="team-input" id="leaderNameInput" placeholder="请输入队长姓名" maxlength="10">
+                <div class="input-hint">队长的姓名，将在页面中显示</div>
+            </div>
+        </div>
+
+        <!-- 提示框 -->
+        <div class="alert" id="alertBox">该位置已经被填写！请在下方重新填写。</div>
+
+        <!-- 打本信息栏（队长行上方） -->
+        <div class="raid-header">
+            <div class="raid-title">本栏仅队长填写，保存生效</div>
+            <button class="header-save-btn" id="headerSaveBtn">保存设置</button>
+        </div>
+        
+        <div class="raid-info" id="raidInfo">
+            <!-- 星期选择器 -->
+            <div class="info-item">
+                <label class="info-label">选择星期</label>
+                <select class="day-select" id="daySelector">
+                    <option value="周一">周一</option>
+                    <option value="周二">周二</option>
+                    <option value="周三">周三</option>
+                    <option value="周四">周四</option>
+                    <option value="周五">周五</option>
+                    <option value="周六">周六</option>
+                    <option value="周日">周日</option>
+                </select>
+            </div>
+
+            <!-- 打本时间选择器 -->
+            <div class="info-item">
+                <label class="info-label">打本时间</label>
+                <select class="time-select" id="timeSelector">
+                    <!-- 由JavaScript动态生成 -->
+                </select>
+            </div>
+
+            <!-- 副本选择下拉菜单 -->
+            <div class="info-item">
+                <label class="info-label">副本选择</label>
+                <select class="copy-select" id="copySelector">
+                    <option value="双十">双十</option>
+                    <option value="开荒">开荒</option>
+                </select>
+            </div>
+
+            <!-- 备注输入框 -->
+            <div class="info-item">
+                <label class="info-label">队长有什么想说的吗：</label>
+                <input type="text" class="remark-input" id="remarkInput" placeholder="请输入">
+            </div>
+        </div>
+
+        <div class="raid-header" style="margin-top: 30px;">
+            <div class="raid-title">队员填写，保存生效</div>
+            <button class="header-save-btn" id="clearAllBtn">一键清空</button>
+        </div>
+
+        <!-- 队长（可编辑） -->
+        <div class="item" id="leaderItem">
+            <div class="prefix">队长</div>
+            <input type="text" class="input-box" id="leaderInput" placeholder="请队长填写自己的名字" value="">
+            <button class="btn save-btn" id="leaderSaveBtn">保存</button>
+            <button class="btn del-btn" id="leaderDelBtn" style="display: none;">删除</button>
+        </div>
+
+        <!-- 队员 1-7、纯奶位 1-2 -->
+        <div class="item" data-id="member1">
+            <div class="prefix">队员</div>
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <button class="btn save-btn">保存</button>
+            <button class="btn del-btn" style="display: none;">删除</button>
+        </div>
+        <div class="item" data-id="member2">
+            <div class="prefix">队员</div>
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <button class="btn save-btn">保存</button>
+            <button class="btn del-btn" style="display: none;">删除</button>
+        </div>
+        <div class="item" data-id="member3">
+            <div class="prefix">队员</div>
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <button class="btn save-btn">保存</button>
+            <button class="btn del-btn" style="display: none;">删除</button>
+        </div>
+        <div class="item" data-id="member4">
+            <div class="prefix">队员</div>
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <button class="btn save-btn">保存</button>
+            <button class="btn del-btn" style="display: none;">删除</button>
+        </div>
+        <div class="item" data-id="member5">
+            <div class="prefix">队员</div>
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <button class="btn save-btn">保存</button>
+            <button class="btn del-btn" style="display: none;">删除</button>
+        </div>
+        <div class="item" data-id="member6">
+            <div class="prefix">队员</div>
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <button class="btn save-btn">保存</button>
+            <button class="btn del-btn" style="display: none;">删除</button>
+        </div>
+        <div class="item" data-id="member7">
+            <div class="prefix">队员</div>
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <button class="btn save-btn">保存</button>
+            <button class="btn del-btn" style="display: none;">删除</button>
+        </div>
+        <div class="item" data-id="milk1">
+            <div class="prefix">纯奶位</div>
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <button class="btn save-btn">保存</button>
+            <button class="btn del-btn" style="display: none;">删除</button>
+        </div>
+        <div class="item" data-id="milk2">
+            <div class="prefix">纯奶位</div>
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <button class="btn save-btn">保存</button>
+            <button class="btn del-btn" style="display: none;">删除</button>
+        </div>
+    </div>
+
+    <script>
+        // 存储已填写的位置信息
+        const filledPositions = {};
+        const alertBox = document.getElementById('alertBox');
+        const TEAM_KEY = 'newteam'; // 新建队伍标识
+        const RAID_SETTINGS_KEY = `${TEAM_KEY}_raid_settings`; // 打本设置存储键
+        const TEAM_INFO_KEY = `${TEAM_KEY}_team_info`; // 队伍信息存储键
+
+        // 生成时间选择器选项（0~24:00，半小时为单位）
+        function generateTimeOptions() {
+            const timeSelector = document.getElementById('timeSelector');
+            
+            // 首先添加"百业派对后"选项并设置为默认选中
+            const afterPartyOption = document.createElement('option');
+            afterPartyOption.value = '百业派对后';
+            afterPartyOption.textContent = '百业派对后';
+            afterPartyOption.selected = true;
+            timeSelector.appendChild(afterPartyOption);
+            
+            // 添加分隔线选项（可选）
+            const separatorOption = document.createElement('option');
+            separatorOption.disabled = true;
+            separatorOption.textContent = '──────────';
+            timeSelector.appendChild(separatorOption);
+            
+            let hours = 0;
+            let minutes = 0;
+
+            // 生成00:00到24:00的选项，步长30分钟
+            while (hours <= 24) {
+                const hourStr = hours.toString().padStart(2, '0');
+                const minStr = minutes.toString().padStart(2, '0');
+                const timeStr = `${hourStr}:${minStr}`;
+                
+                const option = document.createElement('option');
+                option.value = timeStr;
+                option.textContent = timeStr;
+                
+                timeSelector.appendChild(option);
+
+                minutes += 30;
+                if (minutes >= 60) {
+                    minutes = 0;
+                    hours += 1;
+                }
+            }
+        }
+
+        // 加载保存的打本信息
+        function loadRaidInfo() {
+            const savedInfo = localStorage.getItem(RAID_SETTINGS_KEY);
+            if (savedInfo) {
+                const info = JSON.parse(savedInfo);
+                if (info.day) document.getElementById('daySelector').value = info.day;
+                if (info.time) document.getElementById('timeSelector').value = info.time;
+                if (info.copy) document.getElementById('copySelector').value = info.copy;
+                if (info.remark) document.getElementById('remarkInput').value = info.remark;
+            } else {
+                // 默认设置：周一 21:00 双十
+                document.getElementById('daySelector').value = '周一';
+                document.getElementById('timeSelector').value = '21:00';
+                document.getElementById('copySelector').value = '双十';
+            }
+        }
+
+        // 加载保存的队伍信息
+        function loadTeamInfo() {
+            const savedTeamInfo = localStorage.getItem(TEAM_INFO_KEY);
+            if (savedTeamInfo) {
+                const info = JSON.parse(savedTeamInfo);
+                if (info.teamName) {
+                    document.getElementById('teamNameInput').value = info.teamName;
+                    // 更新页面标题显示
+                    const teamNameDisplay = document.querySelector('.team-name');
+                    if (teamNameDisplay) {
+                        teamNameDisplay.textContent = `队伍：${info.teamName}`;
+                    }
+                }
+                if (info.leaderName) {
+                    document.getElementById('leaderNameInput').value = info.leaderName;
+                }
+            }
+        }
+
+        // 保存队伍信息
+        function saveTeamInfo() {
+            const teamName = document.getElementById('teamNameInput').value.trim();
+            const leaderName = document.getElementById('leaderNameInput').value.trim();
+            
+            if (!teamName) {
+                alert('请输入队伍名称！');
+                return;
+            }
+            
+            if (!leaderName) {
+                alert('请输入队长姓名！');
+                return;
+            }
+            
+            const teamInfo = {
+                teamName: teamName,
+                leaderName: leaderName
+            };
+            
+            localStorage.setItem(TEAM_INFO_KEY, JSON.stringify(teamInfo));
+            
+            // 更新页面标题显示
+            const teamNameDisplay = document.querySelector('.team-name');
+            if (teamNameDisplay) {
+                teamNameDisplay.textContent = `队伍：${teamName}`;
+            }
+            
+            // 更新队长输入框的值
+            document.getElementById('leaderInput').value = leaderName;
+            
+            alert('队伍信息已保存！');
+        }
+
+        // 保存打本设置
+        function saveRaidSettings() {
+            // 先保存队伍信息
+            const teamName = document.getElementById('teamNameInput').value.trim();
+            const leaderName = document.getElementById('leaderNameInput').value.trim();
+            
+            if (!teamName || !leaderName) {
+                alert('请先填写队伍名称和队长姓名！');
+                return;
+            }
+            
+            // 保存队伍信息
+            const teamInfo = {
+                teamName: teamName,
+                leaderName: leaderName
+            };
+            localStorage.setItem(TEAM_INFO_KEY, JSON.stringify(teamInfo));
+            
+            // 更新页面标题显示
+            const teamNameDisplay = document.querySelector('.team-name');
+            if (teamNameDisplay) {
+                teamNameDisplay.textContent = `队伍：${teamName}`;
+            }
+            
+            // 保存打本设置
+            const raidSettings = {
+                day: document.getElementById('daySelector').value,
+                time: document.getElementById('timeSelector').value,
+                copy: document.getElementById('copySelector').value,
+                remark: document.getElementById('remarkInput').value
+            };
+            localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify(raidSettings));
+            
+            // 视觉反馈效果
+            const saveBtn = document.getElementById('headerSaveBtn');
+            const originalText = saveBtn.textContent;
+            const originalBackground = saveBtn.style.backgroundColor;
+            
+            saveBtn.textContent = "已保存";
+            saveBtn.style.backgroundColor = "#e8f5e9";
+            
+            setTimeout(() => {
+                saveBtn.textContent = originalText;
+                saveBtn.style.backgroundColor = originalBackground;
+            }, 3000);
+            
+            alert('所有设置已保存！');
+        }
+
+        // 显示提示框
+        function showAlert() {
+            alertBox.style.display = 'block';
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, 3000);
+        }
+
+        // 保存队员功能
+        function handleSave(event) {
+            const btn = event.target;
+            const item = btn.closest('.item');
+            const input = item.querySelector('.input-box');
+            const delBtn = item.querySelector('.del-btn');
+            const positionId = item.dataset.id;
+
+            const name = input.value.trim();
+            if (!name) {
+                alert('请输入名字后再保存！');
+                return;
+            }
+
+            if (filledPositions[positionId]) {
+                showAlert();
+                input.value = '';
+                return;
+            }
+
+            filledPositions[positionId] = name;
+
+            const fixedText = document.createElement('div');
+            fixedText.className = 'fixed-text';
+            fixedText.textContent = name;
+            input.replaceWith(fixedText);
+
+            btn.style.display = 'none';
+            delBtn.style.display = 'inline-block';
+
+            localStorage.setItem(`${TEAM_KEY}_${positionId}`, name);
+        }
+
+        // 删除队员功能
+        function handleDelete(event) {
+            const btn = event.target;
+            const item = btn.closest('.item');
+            const fixedText = item.querySelector('.fixed-text');
+            const saveBtn = item.querySelector('.save-btn');
+            const positionId = item.dataset.id;
+
+            delete filledPositions[positionId];
+
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.className = 'input-box';
+            input.placeholder = '请队员自行填写后保存';
+            fixedText.replaceWith(input);
+
+            btn.style.display = 'none';
+            saveBtn.style.display = 'inline-block';
+
+            localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
+        }
+
+        // 清空所有队员填写的内容
+        function clearAllInputs() {
+            if (!confirm('确定要清空所有队员填写的内容吗？此操作不可撤销。')) {
+                return;
+            }
+            
+            const items = document.querySelectorAll('.item');
+            
+            items.forEach(item => {
+                const positionId = item.dataset.id;
+                
+                // 仅处理队员和奶位（有data-id的项且不是队长）
+                if (positionId && (positionId.startsWith('member') || positionId.startsWith('milk'))) {
+                    localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
+                    
+                    delete filledPositions[positionId];
+                    
+                    const inputBox = item.querySelector('.input-box');
+                    if (inputBox) {
+                        inputBox.value = '';
+                    }
+                    
+                    const fixedText = item.querySelector('.fixed-text');
+                    if (fixedText) {
+                        const newInput = document.createElement('input');
+                        newInput.type = 'text';
+                        newInput.className = 'input-box';
+                        newInput.placeholder = '请队员自行填写后保存';
+                        
+                        fixedText.replaceWith(newInput);
+                        
+                        const saveBtn = item.querySelector('.save-btn');
+                        const delBtn = item.querySelector('.del-btn');
+                        if (saveBtn) saveBtn.style.display = 'inline-block';
+                        if (delBtn) delBtn.style.display = 'none';
+                    }
+                }
+            });
+            
+            alert('所有队员填写的内容已清空！');
+        }
+
+        // 初始化事件监听
+        function initEventListeners() {
+            document.querySelectorAll('.save-btn').forEach(btn => {
+                btn.addEventListener('click', handleSave);
+            });
+            
+            document.querySelectorAll('.del-btn').forEach(btn => {
+                btn.addEventListener('click', handleDelete);
+            });
+
+            // 绑定保存按钮事件
+            document.getElementById('headerSaveBtn').addEventListener('click', saveRaidSettings);
+            
+            // 绑定一键清空按钮事件
+            document.getElementById('clearAllBtn').addEventListener('click', clearAllInputs);
+            
+            // 绑定队长保存按钮事件
+            document.getElementById('leaderSaveBtn').addEventListener('click', function() {
+                const leaderInput = document.getElementById('leaderInput');
+                const leaderName = leaderInput.value.trim();
+                
+                if (!leaderName) {
+                    alert('请输入队长姓名！');
+                    return;
+                }
+                
+                // 更新队伍信息中的队长姓名
+                const teamInfoStr = localStorage.getItem(TEAM_INFO_KEY);
+                if (teamInfoStr) {
+                    const teamInfo = JSON.parse(teamInfoStr);
+                    teamInfo.leaderName = leaderName;
+                    localStorage.setItem(TEAM_INFO_KEY, JSON.stringify(teamInfo));
+                }
+                
+                // 转换为固定文本
+                const fixedText = document.createElement('div');
+                fixedText.className = 'fixed-text';
+                fixedText.textContent = leaderName;
+                leaderInput.replaceWith(fixedText);
+                
+                document.getElementById('leaderSaveBtn').style.display = 'none';
+                document.getElementById('leaderDelBtn').style.display = 'inline-block';
+                
+                // 也更新队伍基本信息中的队长姓名
+                document.getElementById('leaderNameInput').value = leaderName;
+            });
+            
+            // 绑定队长删除按钮事件
+            document.getElementById('leaderDelBtn').addEventListener('click', function() {
+                const leaderItem = document.getElementById('leaderItem');
+                const fixedText = leaderItem.querySelector('.fixed-text');
+                
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'input-box';
+                input.id = 'leaderInput';
+                input.placeholder = '请队长填写自己的名字';
+                fixedText.replaceWith(input);
+                
+                document.getElementById('leaderSaveBtn').style.display = 'inline-block';
+                document.getElementById('leaderDelBtn').style.display = 'none';
+            });
+        }
+
+        // 页面加载时恢复已保存的数据
+        function restoreSavedData() {
+            // 恢复队伍信息
+            loadTeamInfo();
+            
+            // 恢复打本信息
+            loadRaidInfo();
+            
+            // 恢复队长信息
+            const savedTeamInfo = localStorage.getItem(TEAM_INFO_KEY);
+            if (savedTeamInfo) {
+                const info = JSON.parse(savedTeamInfo);
+                if (info.leaderName) {
+                    const leaderInput = document.getElementById('leaderInput');
+                    const leaderSaveBtn = document.getElementById('leaderSaveBtn');
+                    const leaderDelBtn = document.getElementById('leaderDelBtn');
+                    
+                    const fixedText = document.createElement('div');
+                    fixedText.className = 'fixed-text';
+                    fixedText.textContent = info.leaderName;
+                    leaderInput.replaceWith(fixedText);
+                    
+                    leaderSaveBtn.style.display = 'none';
+                    leaderDelBtn.style.display = 'inline-block';
+                }
+            }
+            
+            // 恢复队员/奶位数据
+            document.querySelectorAll('.item').forEach(item => {
+                const positionId = item.dataset.id;
+                if (!positionId) return; // 跳过队长项
+                
+                const savedName = localStorage.getItem(`${TEAM_KEY}_${positionId}`);
+                
+                if (savedName) {
+                    filledPositions[positionId] = savedName;
+                    const input = item.querySelector('.input-box');
+                    const saveBtn = item.querySelector('.save-btn');
+                    const delBtn = item.querySelector('.del-btn');
+
+                    const fixedText = document.createElement('div');
+                    fixedText.className = 'fixed-text';
+                    fixedText.textContent = savedName;
+                    input.replaceWith(fixedText);
+
+                    saveBtn.style.display = 'none';
+                    delBtn.style.display = 'inline-block';
+                }
+            });
+        }
+
+        // 页面加载完成后初始化
+        window.addEventListener('DOMContentLoaded', () => {
+            generateTimeOptions();
+            initEventListeners();
+            restoreSavedData();
+        });
+    </script>
+</body>
+</html>
