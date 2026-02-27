@@ -5,11 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>报名双十 - 梳风弄弦音</title>
     <style>
+        /* 阿里妈妈东方大楷字体声明 */
+        @font-face {
+        font-family: 'AlimamaDongFangDaKai';
+        src: url('fonts/AlimamaDongFangDaKai-Regular.otf') format('opentype'),
+            url('fonts/AlimamaDongFangDaKai-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+        }
+
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "PingFang SC", "Microsoft YaHei", "SimSun", sans-serif;
+            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;     /* 修改为阿里妈妈 */
         }
 
         body {
@@ -50,8 +60,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            padding-bottom: 10px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
             border-bottom: 2px solid #9a8868;
         }
 
@@ -70,6 +80,7 @@
             cursor: pointer;
             font-size: 0.95rem;
             transition: background-color 0.3s;
+            margin-left: 15px; /* 增加左侧间距 */
         }
 
         .header-save-btn:hover {
@@ -203,6 +214,10 @@
             }
             
             .header-save-btn {
+                margin-left: 0;
+                margin-top: 10px; /* 增加上方间距 */
+                width: auto; /* 不要全宽度 */
+                min-width: 120px; /* 设置最小宽度 */
                 align-self: flex-end;
             }
             
@@ -229,7 +244,25 @@
             .btn {
                 margin-left: 0;
                 margin-right: 8px;
+                margin-top: 8px;   /* 添加上方外边距，与输入框保持距离 */
             }
+            
+            /* 新增：确保保存按钮和删除按钮在同一位置 */
+            .save-btn, .del-btn {
+                margin-left: 8px;
+                margin-right: 8px;
+                margin-top: 8px;
+            }
+            
+            /* 可选：为按钮容器添加flex布局，使按钮排列更整齐 */
+            .item {
+                position: relative;
+            }
+            
+            .btn {
+                display: inline-block;
+            }
+
         }
     </style>
 </head>
@@ -246,7 +279,7 @@
 
         <!-- 打本信息栏（队长行上方） -->
         <div class="raid-header">
-            <div class="raid-title">仅队长填写</div>
+            <div class="raid-title">本栏仅队长填写，保存生效</div>
             <button class="header-save-btn" id="headerSaveBtn">保存设置</button>
         </div>
         
@@ -284,9 +317,14 @@
 
             <!-- 备注输入框 -->
             <div class="info-item">
-                <label class="info-label">备注</label>
-                <input type="text" class="remark-input" id="remarkInput" placeholder="请输入备注信息">
+                <label class="info-label">队长有什么想说的吗：</label>
+                <input type="text" class="remark-input" id="remarkInput" placeholder="请输入">
             </div>
+        </div>
+
+        <div class="raid-header" style="margin-top: 30px;">
+            <div class="raid-title">队员填写，保存生效</div>
+            <button class="header-save-btn" id="clearAllBtn">一键清空</button>
         </div>
 
         <!-- 队长（固定） -->
@@ -298,55 +336,55 @@
         <!-- 队员 1-7、纯奶位 1-2 结构不变 -->
         <div class="item" data-id="member1">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请输入队员名字">
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member2">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请输入队员名字">
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member3">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请输入队员名字">
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member4">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请输入队员名字">
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member5">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请输入队员名字">
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member6">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请输入队员名字">
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member7">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请输入队员名字">
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="milk1">
             <div class="prefix">纯奶位</div>
-            <input type="text" class="input-box" placeholder="请输入队员名字">
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="milk2">
             <div class="prefix">纯奶位</div>
-            <input type="text" class="input-box" placeholder="请输入队员名字">
+            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
@@ -513,6 +551,9 @@
 
             // 绑定保存按钮事件
             document.getElementById('headerSaveBtn').addEventListener('click', saveRaidSettings);
+
+             // 新增：綁定一鍵清空按鈕事件
+            document.getElementById('clearAllBtn').addEventListener('click', clearAllInputs);
         }
 
         // 页面加载时恢复已保存的数据
@@ -541,6 +582,60 @@
             // 恢复打本信息
             loadRaidInfo();
         }
+
+        // 清空所有input-box值的功能
+        function clearAllInputs() {
+
+        // 確認是否要清空
+        if (!confirm('确定要清空所有队员吗？此操作不可撤销。')) {
+            return;
+        }
+    
+        // 獲取所有隊員和奶位項目
+        const items = document.querySelectorAll('.item');
+    
+        // 清除每個項目的數據
+        items.forEach(item => {
+            const positionId = item.dataset.id;
+            
+        // 僅處理隊員和奶位（有data-id的項目）
+        if (positionId && (positionId.startsWith('member') || positionId.startsWith('milk'))) {
+            // 清除本地存儲
+            localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
+            
+            // 清除filledPositions對象中的記錄
+            delete filledPositions[positionId];
+            
+            // 找到輸入框並清除
+            const inputBox = item.querySelector('.input-box');
+            if (inputBox) {
+                inputBox.value = '';
+            }
+            
+            // 如果已經保存，需要重置為可編輯狀態
+            const fixedText = item.querySelector('.fixed-text');
+            if (fixedText) {
+                // 創建新的輸入框
+                const newInput = document.createElement('input');
+                newInput.type = 'text';
+                newInput.className = 'input-box';
+                newInput.placeholder = '请队员自行填写后保存';
+                
+                // 替換fixed-text
+                fixedText.replaceWith(newInput);
+                
+                // 顯示保存按鈕，隱藏刪除按鈕
+                const saveBtn = item.querySelector('.save-btn');
+                const delBtn = item.querySelector('.del-btn');
+                if (saveBtn) saveBtn.style.display = 'inline-block';
+                if (delBtn) delBtn.style.display = 'none';
+            }
+        }
+    });
+    
+    // 顯示提示
+    alert('所有队员已被清空，请重新填写！');
+}
 
         // 页面加载完成后初始化
         window.addEventListener('DOMContentLoaded', () => {
