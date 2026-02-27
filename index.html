@@ -5,12 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>梳风弄弦音 - 全女百业</title>
     <style>
+        /* 阿里妈妈东方大楷字体声明 */
+        @font-face {
+        font-family: 'AlimamaDongFangDaKai';
+        src: url('fonts/AlimamaDongFangDaKai-Regular.otf') format('opentype'),
+            url('fonts/AlimamaDongFangDaKai-Regular.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+        font-display: swap;
+        }
+
         /* 全局样式重置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "PingFang SC", "Microsoft YaHei", "SimSun", sans-serif;
+            font-family: 'AlimamaDongFangDaKai', "PingFang SC", "Microsoft YaHei", "SimSun", sans-serif;
         }
 
         /* 国风主色调：浅米色背景 + 原木色系文字 */
@@ -72,6 +82,7 @@
             margin-bottom: 30px;
             padding-bottom: 15px;
             border-bottom: 2px solid #e8e0d0; /* 浅木色下划线 */
+            font-weight: 400;
         }
 
         /* 组队区块容器 */
@@ -112,8 +123,8 @@
             font-size: 3.5rem;  /* 放大文字，突出图标感 */
             color: #8a7d6b;     /* 浅原木色 */
             margin-bottom: 10px;
-            font-weight: 700;   /* 加粗，增强视觉冲击力 */
-            font-family: "SimHei", "Microsoft YaHei", sans-serif; /* 更适配单字展示的字体 */
+            font-weight: 500;   /* 加粗，增强视觉冲击力 */
+            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;     /* 修改为阿里妈妈 */
         }
 
 
@@ -122,7 +133,7 @@
             font-size: 1.2rem;
             color: #5a4b38; /* 深原木色标题 */
             margin-bottom: 8px;
-            font-weight: 500;
+            font-weight: 400;
         }
 
         .block-text {
@@ -212,7 +223,7 @@
             font-size: 2.5rem;
             font-weight: 400;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            font-family: "SimHei", "Microsoft YaHei", sans-serif;
+            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;     /* 修改为阿里妈妈 */
         }
 
         /* 卡片内容区域 */
@@ -288,10 +299,12 @@
             .title-a {
                 font-size: 2rem;
                 letter-spacing: 4px;
+                font-family: 'AlimamaDongFangDaKai', sans-serif;
             }
 
             .title-b {
                 font-size: 1.2rem;
+                font-family: 'AlimamaDongFangDaKai', sans-serif;
             }
 
             .team-section {
