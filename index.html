@@ -123,10 +123,9 @@
             font-size: 3.5rem;  /* 放大文字，突出图标感 */
             color: #8a7d6b;     /* 浅原木色 */
             margin-bottom: 10px;
-            font-weight: 500;   /* 加粗，增强视觉冲击力 */
+            font-weight: 400;   /* 修改为正常粗细 */
             font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;     /* 修改为阿里妈妈 */
         }
-
 
         /* 区块标题和文本 */
         .block-title {
@@ -173,6 +172,7 @@
             justify-content: center;
         }
 
+        /* 修改：为卡片添加鼠标指针样式，表示可点击 */
         .image-card {
             background-color: #fff;
             border-radius: 8px;
@@ -183,6 +183,7 @@
             max-width: 500px;
             min-width: 300px;
             flex: 1;
+            cursor: pointer; /* 新增：鼠标指针样式 */
         }
 
         .image-card:hover {
@@ -200,7 +201,6 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
-
         }
 
         .card-image {
@@ -251,11 +251,13 @@
             padding: 8px 10px;
             border: 1px solid #e0d8c8; /* 浅木色边框 */
             border-radius: 4px;
-            font-size: 0.9rem;
+            font-size: 1.2rem; /* 增大字体，与中模块标题一致 */
             color: #5a4b38; /* 原木色文字 */
+            font-weight: 400; /* 与中模块字体粗细一致 */
             outline: none;
             background-color: #fefbf7; /* 极浅木色背景 */
-            transition: border-color 0.3s ease;
+            transition: all 0.3s ease;
+            font-family: 'AlimamaDongFangDaKai', "PingFang SC", "Microsoft YaHei", "SimSun", sans-serif; /* 统一字体 */
         }
 
         .caption-input:focus {
@@ -263,9 +265,25 @@
         }
 
         .caption-input:disabled {
-            background-color: #f5f2ec;
-            color: #8a7d6b;
-            cursor: not-allowed;
+            background-color: transparent;
+            color: #5a4b38; /* 保持原文字颜色 */
+            -webkit-text-fill-color: #5a4b38; /* Safari兼容 */
+            opacity: 1; /* 避免Safari中的灰色文本 */
+            cursor: default;
+        }
+
+        /* 文本框编辑状态样式 */
+        .caption-input.editing {
+            border: 1px solid #9a8868; /* 编辑状态下显示边框 */
+            background-color: #fff;
+        }
+
+        /* 文本框保存后状态样式 */
+        .caption-input.saved {
+            border: none; /* 保存后无边框 */
+            background-color: transparent; /* 透明背景 */
+            padding: 8px 0; /* 调整内边距 */
+            cursor: default; /* 默认光标 */
         }
 
         .save-btn, .edit-btn {
@@ -275,7 +293,7 @@
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            font-size: 0.8rem;
+            font-size: 0.9rem;
             transition: background-color 0.3s ease;
         }
 
@@ -340,6 +358,25 @@
             .card-image-container {
                 height: 250px;
             }
+            
+            /* 移动端文本框适配 */
+            .caption-container {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .caption-input {
+                width: 100%;
+                font-size: 1rem; /* 手机端增大字体 */
+                padding: 10px 12px; /* 增加内边距，便于触摸操作 */
+            }
+            
+            .save-btn, .edit-btn {
+                width: 100%;
+                padding: 10px 0;
+                font-size: 1rem;
+                margin-top: 8px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -379,30 +416,35 @@
         <section class="team-section">
             <h2 class="team-title">双十激情组队</h2>
             <div class="team-grid">
+                <!-- 萧门：跳转到xiaomen.html -->
                 <div class="team-block" onclick="window.location.href='xiaomen.html'">
                     <div class="block-icon">萧</div>
                     <div class="block-title">萧门</div>
                     <div class="block-text">社长高战带队，指挥带劲</div>
                 </div>
 
+                <!-- 千瑶：跳转到qianyao.html -->
                 <div class="team-block" onclick="window.location.href='qianyao.html'">
                     <div class="block-icon">千</div>
                     <div class="block-title">千瑶</div>
                     <div class="block-text">静音车厢队，社恐福音</div>
                 </div>
 
+                <!-- 比格：跳转到bige.html -->
                 <div class="team-block" onclick="window.location.href='bige.html'">
                     <div class="block-icon">比</div>
                     <div class="block-title">比门</div>
                     <div class="block-text">高战妻妻，有话痨纯比</div>
                 </div>
 
+                <!-- 留子：跳转到liuzi.html -->
                 <div class="team-block" onclick="window.location.href='liuzi.html'">
                     <div class="block-icon">留</div>
                     <div class="block-title">留门</div>
                     <div class="block-text">想你的风还是吹到了英国</div>
                 </div>
 
+                <!-- 新建队伍：跳转到new-team.html + 加号放大 -->
                 <div class="team-block create-team" onclick="window.location.href='new-team.html'">
                     <div class="block-icon">+</div>
                     <div class="block-title">我要新建队伍</div>
@@ -410,38 +452,37 @@
             </div>
         </section>
 
-
         <!-- 下模块：图片展示区 - 已修改为横向卡片 -->
         <section class="image-section">
-            <!-- 卡片1：当期公告更新 -->
-            <div class="image-card">
+            <!-- 卡片1：当期公告更新 - 添加ID用于JavaScript定位 -->
+            <div class="image-card" id="announcementCard">
                 <div class="card-image-container">
                     <div class="image-text-overlay">当期公告更新</div>
                 </div>
                 <div class="card-content">
                     <div class="card-title">
                         <span>公告栏</span>
-                        <button id="editBtn1" class="edit-btn" onclick="enableEdit(1)">编辑</button>
+                        <button id="editBtn1" class="edit-btn" onclick="enableEdit(1)" style="display: none;">编辑</button>
                     </div>
                     <div class="caption-container">
                         <input type="text" id="captionInput1" class="caption-input" placeholder="请输入公告标题..." value="每周活动安排更新">
-                        <button id="saveBtn1" class="save-btn" onclick="saveCaption(1)" style="display: none;">保存</button>
+                        <button id="saveBtn1" class="save-btn" onclick="saveCaption(1)">保存</button>
                     </div>
                 </div>
             </div>
 
-            <!-- 卡片2：毕业计算工具 -->
-            <div class="image-card">
+            <!-- 卡片2：毕业计算工具 - 添加ID用于JavaScript定位 -->
+            <div class="image-card" id="calculatorCard">
                 <div class="card-image-container">
                     <div class="image-text-overlay">毕业计算工具</div>
                 </div>
                 <div class="card-content">
                     <div class="card-title">
                         <span>计算器</span>
-                        <button id="editBtn2" class="edit-btn" onclick="enableEdit(2)">编辑</button>
+                        <button id="editBtn2" class="edit-btn" onclick="enableEdit(2)" style="display: none;">编辑</button>
                     </div>
                     <div class="caption-container">
-                        <input type="text" id="captionInput2" class="caption-input" placeholder="请输入工具描述..." value="装备毕业进度计算器" disabled>
+                        <input type="text" id="captionInput2" class="caption-input" placeholder="请输入工具描述..." value="装备毕业进度计算器">
                         <button id="saveBtn2" class="save-btn" onclick="saveCaption(2)">保存</button>
                     </div>
                 </div>
@@ -452,50 +493,128 @@
     <script>
         // 卡片标题编辑功能
         function enableEdit(cardNumber) {
+            event.stopPropagation(); // 防止触发卡片跳转
+            
             const input = document.getElementById(`captionInput${cardNumber}`);
             const saveBtn = document.getElementById(`saveBtn${cardNumber}`);
             const editBtn = document.getElementById(`editBtn${cardNumber}`);
             
-            // 启用输入框
+            // 启用输入框，显示边框
             input.disabled = false;
+            input.classList.remove('saved'); // 移除保存状态类
+            input.classList.add('editing'); // 添加编辑状态类
             input.focus();
             
             // 显示保存按钮，隐藏编辑按钮
             saveBtn.style.display = 'block';
             editBtn.style.display = 'none';
+            
+            console.log(`卡片${cardNumber}进入编辑模式`);
         }
         
         function saveCaption(cardNumber) {
+            event.stopPropagation(); // 防止触发卡片跳转
+    
             const input = document.getElementById(`captionInput${cardNumber}`);
             const saveBtn = document.getElementById(`saveBtn${cardNumber}`);
             const editBtn = document.getElementById(`editBtn${cardNumber}`);
             
             // 禁用输入框
             input.disabled = true;
+            input.classList.remove('editing'); // 移除编辑状态类
+            input.classList.add('saved'); // 添加保存后状态类
             
             // 显示编辑按钮，隐藏保存按钮
             saveBtn.style.display = 'none';
             editBtn.style.display = 'block';
             
-            // 这里可以添加保存到服务器的逻辑
+            // 保存内容和状态到本地存储
+            localStorage.setItem(`caption${cardNumber}`, input.value);
+            localStorage.setItem(`isSaved${cardNumber}`, 'true'); // 记录已保存状态
+            
             console.log(`卡片${cardNumber}的标题已保存: ${input.value}`);
         }
         
         // 初始化页面
         document.addEventListener('DOMContentLoaded', function() {
-            // 设置初始状态
+            // 从本地存储恢复数据和状态
+            const savedCaption1 = localStorage.getItem('caption1');
+            const savedCaption2 = localStorage.getItem('caption2');
+            
+            // 检查是否已经保存过（即是否已经点击过保存按钮）
+            const isSaved1 = localStorage.getItem('isSaved1') === 'true';
+            const isSaved2 = localStorage.getItem('isSaved2') === 'true';
+            
+            // 卡片1初始状态
             const input1 = document.getElementById('captionInput1');
-            const input2 = document.getElementById('captionInput2');
             const saveBtn1 = document.getElementById('saveBtn1');
             const editBtn1 = document.getElementById('editBtn1');
             
-            // 卡片1默认可编辑
-            input1.disabled = false;
-            saveBtn1.style.display = 'block';
-            editBtn1.style.display = 'none';
+            if (savedCaption1) {
+                input1.value = savedCaption1;
+            }
             
-            // 卡片2默认不可编辑
-            input2.disabled = true;
+            if (isSaved1) {
+                // 如果已经保存过，设置为不可编辑状态
+                input1.disabled = true;
+                input1.classList.remove('editing');
+                input1.classList.add('saved');
+                saveBtn1.style.display = 'none';
+                editBtn1.style.display = 'block'; // 显示编辑按钮
+            } else {
+                // 如果从未保存过，保持可编辑状态
+                input1.disabled = false;
+                input1.classList.add('editing');
+                input1.classList.remove('saved');
+                saveBtn1.style.display = 'block';
+                editBtn1.style.display = 'none'; // 隐藏编辑按钮
+            }
+            
+            // 卡片2初始状态
+            const input2 = document.getElementById('captionInput2');
+            const saveBtn2 = document.getElementById('saveBtn2');
+            const editBtn2 = document.getElementById('editBtn2');
+            
+            if (savedCaption2) {
+                input2.value = savedCaption2;
+            }
+            
+            if (isSaved2) {
+                // 如果已经保存过，设置为不可编辑状态
+                input2.disabled = true;
+                input2.classList.remove('editing');
+                input2.classList.add('saved');
+                saveBtn2.style.display = 'none';
+                editBtn2.style.display = 'block'; // 显示编辑按钮
+            } else {
+                // 如果从未保存过，保持可编辑状态
+                input2.disabled = false;
+                input2.classList.add('editing');
+                input2.classList.remove('saved');
+                saveBtn2.style.display = 'block';
+                editBtn2.style.display = 'none'; // 隐藏编辑按钮
+            }
+            
+            // 卡片点击跳转功能
+            // 卡片1：当期公告更新 - 点击后在新窗口中打开公告链接
+            document.getElementById('announcementCard').addEventListener('click', function(e) {
+                // 如果点击的是按钮或输入框，则不触发跳转
+                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    return;
+                }
+                // 在新窗口中打开链接
+                window.open('https://www.yysls.cn/news/update/20260227/40412_1288482.html', '_blank');
+            });
+            
+            // 卡片2：毕业计算工具 - 点击后在新窗口中打开计算器链接
+            document.getElementById('calculatorCard').addEventListener('click', function(e) {
+                // 如果点击的是按钮或输入框，则不触发跳转
+                if (e.target.tagName === 'BUTTON' || e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+                    return;
+                }
+                // 在新窗口中打开链接
+                window.open('http://spongem.com/yysls/', '_blank');
+            });
         });
     </script>
 </body>
