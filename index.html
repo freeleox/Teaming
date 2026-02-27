@@ -152,12 +152,14 @@
             color: white; /* 新建队伍的文字图标为白色 */
         }
 
-        /* 下模块 - 图片展示区 */
+        /* 下模块 - 图片展示区（已修改为横向卡片） */
         .image-section {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            background-color: #fff;
+            display: flex;
             gap: 30px;
             margin-bottom: 60px;
+            flex-wrap: wrap;
+            justify-content: center;
         }
 
         .image-card {
@@ -165,66 +167,120 @@
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-            transition: box-shadow 0.3s ease;
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            width: 100%;
+            max-width: 500px;
+            min-width: 300px;
+            flex: 1;
         }
 
         .image-card:hover {
             box-shadow: 0 4px 16px rgba(128, 107, 83, 0.1);
+            transform: translateY(-5px);
         }
 
-        .image-upload {
+        /* 卡片图片区域 */
+        .card-image-container {
             width: 100%;
-            height: 250px;
-            background-color: #f8f5ef; /* 浅木色上传区 */
+            height: 300px;
+            background-color: #f8f5ef; /* 浅木色背景 */
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: pointer;
             position: relative;
+            overflow: hidden;
+
         }
 
-        .image-upload input {
-            display: none;
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        .upload-placeholder {
-            text-align: center;
-            color: #8a7d6b; /* 浅原木色占位符 */
+        .image-text-overlay {
+            position: absolute; /* 修正此行：將 center 改為 absolute */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            color: #8a7d6b;
+            font-size: 2.5rem;
+            font-weight: 400;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: "SimHei", "Microsoft YaHei", sans-serif;
         }
 
-        /* 图片上传区保留功能图标（如需改为纯文字也可调整） */
-        .upload-placeholder i {
-            font-size: 3rem;
-            margin-bottom: 10px;
-            color: #c9b89f; /* 原木色图标 */
-        }
-
-        .image-caption {
+        /* 卡片内容区域 */
+        .card-content {
             padding: 20px;
         }
 
-        .caption-title {
+        .card-title {
             font-size: 1.2rem;
             color: #5a4b38; /* 深原木色标题 */
-            margin-bottom: 10px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
-        .caption-edit {
-            width: 100%;
+        .caption-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .caption-input {
+            flex: 1;
             padding: 8px 10px;
             border: 1px solid #e0d8c8; /* 浅木色边框 */
             border-radius: 4px;
             font-size: 0.9rem;
             color: #5a4b38; /* 原木色文字 */
             outline: none;
-            resize: none;
-            min-height: 60px;
             background-color: #fefbf7; /* 极浅木色背景 */
             transition: border-color 0.3s ease;
         }
 
-        .caption-edit:focus {
+        .caption-input:focus {
             border-color: #9a8868; /* 原木色焦点边框 */
+        }
+
+        .caption-input:disabled {
+            background-color: #f5f2ec;
+            color: #8a7d6b;
+            cursor: not-allowed;
+        }
+
+        .save-btn, .edit-btn {
+            padding: 6px 12px;
+            background-color: #9a8868; /* 原木色按钮 */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .save-btn:hover {
+            background-color: #867352; /* 加深原木色 */
+        }
+
+        .edit-btn {
+            background-color: transparent;
+            color: #0066cc; /* 蓝色文字 */
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .edit-btn:hover {
+            color: #0052a3;
         }
 
         /* 响应式适配 */
@@ -259,9 +315,17 @@
                 font-size: 2.8rem; /* 手机端调整文字图标大小 */
             }
 
-    
-            .image-upload {
-                height: 200px;
+            .image-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .image-card {
+                max-width: 100%;
+            }
+            
+            .card-image-container {
+                height: 250px;
             }
         }
 
@@ -269,13 +333,26 @@
             .title-a {
                 font-size: 1.8rem;
             }
-            .image-section {
-                grid-template-columns: 1fr;
+            
+            .card-image-container {
+                height: 200px;
+            }
+            
+            .image-text-overlay {
+                font-size: 2rem;
+            }
+            
+            .card-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .caption-container {
+                width: 100%;
             }
         }
     </style>
-    <!-- 仅保留图片上传区的功能图标库，如不需要可删除 -->
-    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <div class="container">
@@ -289,89 +366,124 @@
         <section class="team-section">
             <h2 class="team-title">双十激情组队</h2>
             <div class="team-grid">
-                <!-- 萧门：跳转到xiaomen.html（核心修改） -->
                 <div class="team-block" onclick="window.location.href='xiaomen.html'">
                     <div class="block-icon">萧</div>
                     <div class="block-title">萧门</div>
-                    <div class="block-text">社长带队，指挥带劲</div>
+                    <div class="block-text">社长高战带队，指挥带劲</div>
                 </div>
 
-                <!-- 千瑶（原琴阁）：跳转到qianyao.html（核心修改） -->
                 <div class="team-block" onclick="window.location.href='qianyao.html'">
                     <div class="block-icon">千</div>
                     <div class="block-title">千瑶</div>
-                    <div class="block-text">萌新友好，氛围轻松</div>
+                    <div class="block-text">静音车厢队，社恐福音</div>
                 </div>
 
-                <!-- 比格（原鼓坊）：跳转到bige.html（核心修改） -->
                 <div class="team-block" onclick="window.location.href='bige.html'">
                     <div class="block-icon">比</div>
-                    <div class="block-title">比格</div>
-                    <div class="block-text">固定时段，稳定发车</div>
+                    <div class="block-title">比门</div>
+                    <div class="block-text">高战妻妻，有话痨纯比</div>
                 </div>
 
-                <!-- 留子（原筝社）：跳转到liuzi.html（核心修改） -->
                 <div class="team-block" onclick="window.location.href='liuzi.html'">
                     <div class="block-icon">留</div>
-                    <div class="block-title">留子</div>
-                    <div class="block-text">高手云集，技术交流</div>
+                    <div class="block-title">留门</div>
+                    <div class="block-text">想你的风还是吹到了英国</div>
                 </div>
 
-                <!-- 新建队伍：跳转到new-team.html + 加号放大（核心修改） -->
                 <div class="team-block create-team" onclick="window.location.href='new-team.html'">
                     <div class="block-icon">+</div>
                     <div class="block-title">我要新建队伍</div>
-                    <div class="block-text">自定义组队，招募队友</div>
                 </div>
             </div>
         </section>
 
-        <!-- 下模块：图片展示区 -->
+
+        <!-- 下模块：图片展示区 - 已修改为横向卡片 -->
         <section class="image-section">
+            <!-- 卡片1：当期公告更新 -->
             <div class="image-card">
-                <label class="image-upload">
-                    <input type="file" accept="image/*" onchange="previewImage(this, 'preview1')">
-                    <div id="preview1" class="upload-placeholder">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>点击上传图片</p>
+                <div class="card-image-container">
+                    <div class="image-text-overlay">当期公告更新</div>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">
+                        <span>公告栏</span>
+                        <button id="editBtn1" class="edit-btn" onclick="enableEdit(1)">编辑</button>
                     </div>
-                </label>
-                <div class="image-caption">
-                    <h3 class="caption-title">图片标题1</h3>
-                    <textarea class="caption-edit" placeholder="请编辑图片的小标题..."></textarea>
+                    <div class="caption-container">
+                        <input type="text" id="captionInput1" class="caption-input" placeholder="请输入公告标题..." value="每周活动安排更新">
+                        <button id="saveBtn1" class="save-btn" onclick="saveCaption(1)" style="display: none;">保存</button>
+                    </div>
                 </div>
             </div>
 
+            <!-- 卡片2：毕业计算工具 -->
             <div class="image-card">
-                <label class="image-upload">
-                    <input type="file" accept="image/*" onchange="previewImage(this, 'preview2')">
-                    <div id="preview2" class="upload-placeholder">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>点击上传图片</p>
+                <div class="card-image-container">
+                    <div class="image-text-overlay">毕业计算工具</div>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">
+                        <span>计算器</span>
+                        <button id="editBtn2" class="edit-btn" onclick="enableEdit(2)">编辑</button>
                     </div>
-                </label>
-                <div class="image-caption">
-                    <h3 class="caption-title">图片标题2</h3>
-                    <textarea class="caption-edit" placeholder="请编辑图片的小标题..."></textarea>
+                    <div class="caption-container">
+                        <input type="text" id="captionInput2" class="caption-input" placeholder="请输入工具描述..." value="装备毕业进度计算器" disabled>
+                        <button id="saveBtn2" class="save-btn" onclick="saveCaption(2)">保存</button>
+                    </div>
                 </div>
             </div>
         </section>
     </div>
 
     <script>
-        // 图片预览功能
-        function previewImage(input, previewId) {
-            const preview = document.getElementById(previewId);
-            const file = input.files[0];
+        // 卡片标题编辑功能
+        function enableEdit(cardNumber) {
+            const input = document.getElementById(`captionInput${cardNumber}`);
+            const saveBtn = document.getElementById(`saveBtn${cardNumber}`);
+            const editBtn = document.getElementById(`editBtn${cardNumber}`);
             
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.innerHTML = `<img src="${e.target.result}" style="width:100%;height:100%;object-fit:cover;border-radius:4px;">`;
-                }
-                reader.readAsDataURL(file);
-            }
+            // 启用输入框
+            input.disabled = false;
+            input.focus();
+            
+            // 显示保存按钮，隐藏编辑按钮
+            saveBtn.style.display = 'block';
+            editBtn.style.display = 'none';
         }
+        
+        function saveCaption(cardNumber) {
+            const input = document.getElementById(`captionInput${cardNumber}`);
+            const saveBtn = document.getElementById(`saveBtn${cardNumber}`);
+            const editBtn = document.getElementById(`editBtn${cardNumber}`);
+            
+            // 禁用输入框
+            input.disabled = true;
+            
+            // 显示编辑按钮，隐藏保存按钮
+            saveBtn.style.display = 'none';
+            editBtn.style.display = 'block';
+            
+            // 这里可以添加保存到服务器的逻辑
+            console.log(`卡片${cardNumber}的标题已保存: ${input.value}`);
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置初始状态
+            const input1 = document.getElementById('captionInput1');
+            const input2 = document.getElementById('captionInput2');
+            const saveBtn1 = document.getElementById('saveBtn1');
+            const editBtn1 = document.getElementById('editBtn1');
+            
+            // 卡片1默认可编辑
+            input1.disabled = false;
+            saveBtn1.style.display = 'block';
+            editBtn1.style.display = 'none';
+            
+            // 卡片2默认不可编辑
+            input2.disabled = true;
+        });
     </script>
 </body>
 </html>

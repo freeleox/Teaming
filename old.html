@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>梳风弄弦音 - 全女百业</title>
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "PingFang SC", "Microsoft YaHei", "SimSun", sans-serif;
+        }
+
+        /* 国风主色调：浅米色背景 + 原木色系文字 */
+        body {
+            background-color: #f9f7f3; /* 浅米色背景 */
+            color: #5a4b38; /* 原木色主文字 */
+            line-height: 1.6;
+        }
+
+        /* 容器 */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* 上模块 - 标题区 */
+        .header-section {
+            text-align: center;
+            padding: 60px 0;
+            border-bottom: 1px solid #e0d8c8; /* 浅木色边框 */
+            margin-bottom: 40px;
+        }
+
+        .title-a {
+            font-size: 3rem;
+            color: #5a4b38; /* 深原木色 */
+            font-weight: 400;
+            letter-spacing: 8px;
+            margin-bottom: 10px;
+        }
+
+        .title-b {
+            font-size: 1.5rem;
+            color: #8a7d6b; /* 浅原木色 */
+            letter-spacing: 2px;
+            font-weight: 300;
+        }
+
+        /* 中模块 - 组队区 */
+        .team-section {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 40px 20px;
+            margin-bottom: 40px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); /* 轻量阴影 */
+            transition: box-shadow 0.3s ease; /* hover阴影过渡 */
+        }
+
+        /* 组队区hover阴影效果 */
+        .team-section:hover {
+            box-shadow: 0 4px 16px rgba(128, 107, 83, 0.1); /* 原木色阴影 */
+        }
+
+        .team-title {
+            font-size: 1.8rem;
+            color: #6b5b47; /* 原木色标题 */
+            text-align: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #e8e0d0; /* 浅木色下划线 */
+        }
+
+        /* 组队区块容器 */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            justify-items: center;
+        }
+
+        /* 组队区块样式 */
+        .team-block {
+            width: 100%;
+            max-width: 280px;
+            height: 180px;
+            background-color: #f8f5ef; /* 浅木色背景 */
+            border-radius: 6px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid #e0d8c8; /* 浅木色边框 */
+        }
+
+        /* 区块hover效果 */
+        .team-block:hover {
+            background-color: #f0ebe0; /* 加深木色背景 */
+            border-color: #c9b89f; /* 原木色边框 */
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(128, 107, 83, 0.15); /* 原木色阴影 */
+        }
+
+        /* 纯文字图标样式 - 核心：仅文字，无图片/图标库 */
+        .block-icon {
+            font-size: 3.5rem;  /* 放大文字，突出图标感 */
+            color: #8a7d6b;     /* 浅原木色 */
+            margin-bottom: 10px;
+            font-weight: 700;   /* 加粗，增强视觉冲击力 */
+            font-family: "SimHei", "Microsoft YaHei", sans-serif; /* 更适配单字展示的字体 */
+        }
+
+
+        /* 区块标题和文本 */
+        .block-title {
+            font-size: 1.2rem;
+            color: #5a4b38; /* 深原木色标题 */
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .block-text {
+            font-size: 0.9rem;
+            color: #8a7d6b; /* 浅原木色文本 */
+            text-align: center;
+        }
+
+        /* 新建队伍按钮特殊样式 */
+        .create-team {
+            background-color: #9a8868; /* 原木色按钮 */
+            color: white;
+            border: none;
+        }
+
+        .create-team:hover {
+            background-color: #867352; /* 加深原木色 */
+            color: white;
+        }
+
+        .create-team .block-title,
+        .create-team .block-text {
+            color: white;
+        }
+
+        .create-team .block-icon {
+            color: white; /* 新建队伍的文字图标为白色 */
+        }
+
+        /* 下模块 - 图片展示区（已修改为横向卡片） */
+        .image-section {
+            background-color: #fff;
+            display: flex;
+            gap: 30px;
+            margin-bottom: 60px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .image-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            transition: box-shadow 0.3s ease, transform 0.3s ease;
+            width: 100%;
+            max-width: 500px;
+            min-width: 300px;
+            flex: 1;
+        }
+
+        .image-card:hover {
+            box-shadow: 0 4px 16px rgba(128, 107, 83, 0.1);
+            transform: translateY(-5px);
+        }
+
+        /* 卡片图片区域 */
+        .card-image-container {
+            width: 100%;
+            height: 300px;
+            background-color: #f8f5ef; /* 浅木色背景 */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+
+        }
+
+        .card-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .image-text-overlay {
+            position: absolute; /* 修正此行：將 center 改為 absolute */
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            color: #8a7d6b;
+            font-size: 2.5rem;
+            font-weight: 400;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            font-family: "SimHei", "Microsoft YaHei", sans-serif;
+        }
+
+        /* 卡片内容区域 */
+        .card-content {
+            padding: 20px;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            color: #5a4b38; /* 深原木色标题 */
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .caption-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .caption-input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 1px solid #e0d8c8; /* 浅木色边框 */
+            border-radius: 4px;
+            font-size: 0.9rem;
+            color: #5a4b38; /* 原木色文字 */
+            outline: none;
+            background-color: #fefbf7; /* 极浅木色背景 */
+            transition: border-color 0.3s ease;
+        }
+
+        .caption-input:focus {
+            border-color: #9a8868; /* 原木色焦点边框 */
+        }
+
+        .caption-input:disabled {
+            background-color: #f5f2ec;
+            color: #8a7d6b;
+            cursor: not-allowed;
+        }
+
+        .save-btn, .edit-btn {
+            padding: 6px 12px;
+            background-color: #9a8868; /* 原木色按钮 */
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: background-color 0.3s ease;
+        }
+
+        .save-btn:hover {
+            background-color: #867352; /* 加深原木色 */
+        }
+
+        .edit-btn {
+            background-color: transparent;
+            color: #0066cc; /* 蓝色文字 */
+            text-decoration: underline;
+            padding: 0;
+        }
+
+        .edit-btn:hover {
+            color: #0052a3;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .title-a {
+                font-size: 2rem;
+                letter-spacing: 4px;
+            }
+
+            .title-b {
+                font-size: 1.2rem;
+            }
+
+            .team-section {
+                padding: 20px 10px;
+            }
+
+            .team-title {
+                font-size: 1.5rem;
+            }
+
+            .team-grid {
+                grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            }
+
+            .team-block {
+                height: 160px;
+                padding: 15px;
+            }
+
+            .block-icon {
+                font-size: 2.8rem; /* 手机端调整文字图标大小 */
+            }
+
+            .image-section {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .image-card {
+                max-width: 100%;
+            }
+            
+            .card-image-container {
+                height: 250px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .title-a {
+                font-size: 1.8rem;
+            }
+            
+            .card-image-container {
+                height: 200px;
+            }
+            
+            .image-text-overlay {
+                font-size: 2rem;
+            }
+            
+            .card-title {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+            
+            .caption-container {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 上模块：标题区 -->
+        <section class="header-section">
+            <h1 class="title-a">梳风弄弦音</h1>
+            <h2 class="title-b">全女百业</h2>
+        </section>
+
+        <!-- 中模块：组队区 - 纯文字图标，无任何图片/图标库 -->
+        <section class="team-section">
+            <h2 class="team-title">双十激情组队</h2>
+            <div class="team-grid">
+                <div class="team-block" onclick="window.location.href='xiaomen.html'">
+                    <div class="block-icon">萧</div>
+                    <div class="block-title">萧门</div>
+                    <div class="block-text">社长高战带队，指挥带劲</div>
+                </div>
+
+                <div class="team-block" onclick="window.location.href='qianyao.html'">
+                    <div class="block-icon">千</div>
+                    <div class="block-title">千瑶</div>
+                    <div class="block-text">静音车厢队，社恐福音</div>
+                </div>
+
+                <div class="team-block" onclick="window.location.href='bige.html'">
+                    <div class="block-icon">比</div>
+                    <div class="block-title">比门</div>
+                    <div class="block-text">高战妻妻，有话痨纯比</div>
+                </div>
+
+                <div class="team-block" onclick="window.location.href='liuzi.html'">
+                    <div class="block-icon">留</div>
+                    <div class="block-title">留门</div>
+                    <div class="block-text">想你的风还是吹到了英国</div>
+                </div>
+
+                <div class="team-block create-team" onclick="window.location.href='new-team.html'">
+                    <div class="block-icon">+</div>
+                    <div class="block-title">我要新建队伍</div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- 下模块：图片展示区 - 已修改为横向卡片 -->
+        <section class="image-section">
+            <!-- 卡片1：当期公告更新 -->
+            <div class="image-card">
+                <div class="card-image-container">
+                    <div class="image-text-overlay">当期公告更新</div>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">
+                        <span>公告栏</span>
+                        <button id="editBtn1" class="edit-btn" onclick="enableEdit(1)">编辑</button>
+                    </div>
+                    <div class="caption-container">
+                        <input type="text" id="captionInput1" class="caption-input" placeholder="请输入公告标题..." value="每周活动安排更新">
+                        <button id="saveBtn1" class="save-btn" onclick="saveCaption(1)" style="display: none;">保存</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 卡片2：毕业计算工具 -->
+            <div class="image-card">
+                <div class="card-image-container">
+                    <div class="image-text-overlay">毕业计算工具</div>
+                </div>
+                <div class="card-content">
+                    <div class="card-title">
+                        <span>计算器</span>
+                        <button id="editBtn2" class="edit-btn" onclick="enableEdit(2)">编辑</button>
+                    </div>
+                    <div class="caption-container">
+                        <input type="text" id="captionInput2" class="caption-input" placeholder="请输入工具描述..." value="装备毕业进度计算器" disabled>
+                        <button id="saveBtn2" class="save-btn" onclick="saveCaption(2)">保存</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // 卡片标题编辑功能
+        function enableEdit(cardNumber) {
+            const input = document.getElementById(`captionInput${cardNumber}`);
+            const saveBtn = document.getElementById(`saveBtn${cardNumber}`);
+            const editBtn = document.getElementById(`editBtn${cardNumber}`);
+            
+            // 启用输入框
+            input.disabled = false;
+            input.focus();
+            
+            // 显示保存按钮，隐藏编辑按钮
+            saveBtn.style.display = 'block';
+            editBtn.style.display = 'none';
+        }
+        
+        function saveCaption(cardNumber) {
+            const input = document.getElementById(`captionInput${cardNumber}`);
+            const saveBtn = document.getElementById(`saveBtn${cardNumber}`);
+            const editBtn = document.getElementById(`editBtn${cardNumber}`);
+            
+            // 禁用输入框
+            input.disabled = true;
+            
+            // 显示编辑按钮，隐藏保存按钮
+            saveBtn.style.display = 'none';
+            editBtn.style.display = 'block';
+            
+            // 这里可以添加保存到服务器的逻辑
+            console.log(`卡片${cardNumber}的标题已保存: ${input.value}`);
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置初始状态
+            const input1 = document.getElementById('captionInput1');
+            const input2 = document.getElementById('captionInput2');
+            const saveBtn1 = document.getElementById('saveBtn1');
+            const editBtn1 = document.getElementById('editBtn1');
+            
+            // 卡片1默认可编辑
+            input1.disabled = false;
+            saveBtn1.style.display = 'block';
+            editBtn1.style.display = 'none';
+            
+            // 卡片2默认不可编辑
+            input2.disabled = true;
+        });
+    </script>
+</body>
+</html>
