@@ -80,7 +80,6 @@
             cursor: pointer;
             font-size: 0.95rem;
             transition: background-color 0.3s;
-            margin-left: 15px; /* 增加左侧间距 */
         }
 
         .header-save-btn:hover {
@@ -214,10 +213,6 @@
             }
             
             .header-save-btn {
-                margin-left: 0;
-                margin-top: 10px; /* 增加上方间距 */
-                width: auto; /* 不要全宽度 */
-                min-width: 120px; /* 设置最小宽度 */
                 align-self: flex-end;
             }
             
@@ -271,7 +266,7 @@
     <div class="container">
         <div class="page-header">
             <h1 class="page-title">报名双十</h1>
-            <div class="team-name">队伍：萧门</div>
+            <div class="team-name">队伍：千瑶</div>
         </div>
 
         <!-- 提示框 -->
@@ -279,7 +274,7 @@
 
         <!-- 打本信息栏（队长行上方） -->
         <div class="raid-header">
-            <div class="raid-title">本栏仅队长填写，保存生效</div>
+            <div class="raid-title">本栏仅队长填写，填写后保存即可</div>
             <button class="header-save-btn" id="headerSaveBtn">保存设置</button>
         </div>
         
@@ -322,69 +317,64 @@
             </div>
         </div>
 
-        <div class="raid-header" style="margin-top: 30px;">
-            <div class="raid-title">队员填写，保存生效</div>
-            <button class="header-save-btn" id="clearAllBtn">一键清空</button>
-        </div>
-
         <!-- 队长（固定） -->
         <div class="item">
             <div class="prefix">队长</div>
-            <div class="fixed-text">萧司余</div>
+            <div class="fixed-text">千瑶</div>
         </div>
 
         <!-- 队员 1-7、纯奶位 1-2 结构不变 -->
         <div class="item" data-id="member1">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <input type="text" class="input-box" placeholder="请输入队员名字">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member2">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <input type="text" class="input-box" placeholder="请输入队员名字">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member3">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <input type="text" class="input-box" placeholder="请输入队员名字">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member4">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <input type="text" class="input-box" placeholder="请输入队员名字">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member5">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <input type="text" class="input-box" placeholder="请输入队员名字">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member6">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <input type="text" class="input-box" placeholder="请输入队员名字">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="member7">
             <div class="prefix">队员</div>
-            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <input type="text" class="input-box" placeholder="请输入队员名字">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="milk1">
             <div class="prefix">纯奶位</div>
-            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <input type="text" class="input-box" placeholder="请输入队员名字">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
         <div class="item" data-id="milk2">
             <div class="prefix">纯奶位</div>
-            <input type="text" class="input-box" placeholder="请队员自行填写后保存">
+            <input type="text" class="input-box" placeholder="请输入队员名字">
             <button class="btn save-btn">保存</button>
             <button class="btn del-btn" style="display: none;">删除</button>
         </div>
@@ -397,34 +387,46 @@
         const TEAM_KEY = 'qianyao'; // 队伍标识
         const RAID_SETTINGS_KEY = `${TEAM_KEY}_raid_settings`; // 打本设置存储键
 
-        // 1. 生成时间选择器选项（0~24:00，半小时为单位）
+        // 生成时间选择器选项（0~24:00，半小时为单位）
         function generateTimeOptions() {
-            const timeSelector = document.getElementById('timeSelector');
-            let hours = 0;
-            let minutes = 0;
+        const timeSelector = document.getElementById('timeSelector');
+        
+        // 首先添加"百业派对后"选项并设置为默认选中
+        const afterPartyOption = document.createElement('option');
+        afterPartyOption.value = '百业派对后';
+        afterPartyOption.textContent = '百业派对后';
+        afterPartyOption.selected = true;
+        timeSelector.appendChild(afterPartyOption);
+        
+        // 添加分隔线选项（可选）
+        const separatorOption = document.createElement('option');
+        separatorOption.disabled = true;
+        separatorOption.textContent = '──────────';
+        timeSelector.appendChild(separatorOption);
+        
+        let hours = 0;
+        let minutes = 0;
 
-            // 生成00:00到24:00的选项，步长30分钟
-            while (hours <= 24) {
-                const hourStr = hours.toString().padStart(2, '0');
-                const minStr = minutes.toString().padStart(2, '0');
-                const timeStr = `${hourStr}:${minStr}`;
-                
-                const option = document.createElement('option');
-                option.value = timeStr;
-                option.textContent = timeStr;
-                // 设置默认选中21:00
-                if (timeStr === '21:00') {
-                    option.selected = true;
-                }
-                timeSelector.appendChild(option);
+        // 生成00:00到24:00的选项，步长30分钟
+        while (hours <= 24) {
+            const hourStr = hours.toString().padStart(2, '0');
+            const minStr = minutes.toString().padStart(2, '0');
+            const timeStr = `${hourStr}:${minStr}`;
+            
+            const option = document.createElement('option');
+            option.value = timeStr;
+            option.textContent = timeStr;
+            
+            // 移除之前的默认选中逻辑，因为"百业派对后"已经是默认选项
+            timeSelector.appendChild(option);
 
-                minutes += 30;
-                if (minutes >= 60) {
-                    minutes = 0;
-                    hours += 1;
-                }
+            minutes += 30;
+            if (minutes >= 60) {
+                minutes = 0;
+                hours += 1;
             }
         }
+    }
 
         // 2. 加载保存的打本信息
         function loadRaidInfo() {
@@ -551,9 +553,6 @@
 
             // 绑定保存按钮事件
             document.getElementById('headerSaveBtn').addEventListener('click', saveRaidSettings);
-
-             // 新增：綁定一鍵清空按鈕事件
-            document.getElementById('clearAllBtn').addEventListener('click', clearAllInputs);
         }
 
         // 页面加载时恢复已保存的数据
@@ -582,60 +581,6 @@
             // 恢复打本信息
             loadRaidInfo();
         }
-
-        // 清空所有input-box值的功能
-        function clearAllInputs() {
-
-        // 確認是否要清空
-        if (!confirm('确定要清空所有队员吗？此操作不可撤销。')) {
-            return;
-        }
-    
-        // 獲取所有隊員和奶位項目
-        const items = document.querySelectorAll('.item');
-    
-        // 清除每個項目的數據
-        items.forEach(item => {
-            const positionId = item.dataset.id;
-            
-        // 僅處理隊員和奶位（有data-id的項目）
-        if (positionId && (positionId.startsWith('member') || positionId.startsWith('milk'))) {
-            // 清除本地存儲
-            localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
-            
-            // 清除filledPositions對象中的記錄
-            delete filledPositions[positionId];
-            
-            // 找到輸入框並清除
-            const inputBox = item.querySelector('.input-box');
-            if (inputBox) {
-                inputBox.value = '';
-            }
-            
-            // 如果已經保存，需要重置為可編輯狀態
-            const fixedText = item.querySelector('.fixed-text');
-            if (fixedText) {
-                // 創建新的輸入框
-                const newInput = document.createElement('input');
-                newInput.type = 'text';
-                newInput.className = 'input-box';
-                newInput.placeholder = '请队员自行填写后保存';
-                
-                // 替換fixed-text
-                fixedText.replaceWith(newInput);
-                
-                // 顯示保存按鈕，隱藏刪除按鈕
-                const saveBtn = item.querySelector('.save-btn');
-                const delBtn = item.querySelector('.del-btn');
-                if (saveBtn) saveBtn.style.display = 'inline-block';
-                if (delBtn) delBtn.style.display = 'none';
-            }
-        }
-    });
-    
-    // 顯示提示
-    alert('所有队员已被清空，请重新填写！');
-}
 
         // 页面加载完成后初始化
         window.addEventListener('DOMContentLoaded', () => {
