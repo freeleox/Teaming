@@ -904,6 +904,162 @@
             });
         }
 
+        // 方案一：先显示本地数据
+function showLocalDataFirst() {
+    console.log('快速加载：显示本地缓存数据');
+    
+    // 1. 从本地加载打本设置
+    const savedInfo = localStorage.getItem(RAID_SETTINGS_KEY);
+    if (savedInfo) {
+        const info = JSON.parse(savedInfo);
+        document.getElementById('daySelector').value = info.day || '周一';
+        document.getElementById('timeSelector').value = info.time || '21:00';
+        document.getElementById('copySelector').value = info.copy || '双十';
+        document.getElementById('remarkInput').value = info.remark || '';
+    }
+    
+    // 2. 从本地加载队员信息
+    document.querySelectorAll('.item').forEach(item => {
+        const positionId = item.dataset.id;
+        const savedName = localStorage.getItem(`${TEAM_KEY}_${positionId}`);
+        
+        if (savedName) {
+            filledPositions[positionId] = savedName;
+            const input = item.querySelector('.input-box');
+            const saveBtn = item.querySelector('.save-btn');
+            const delBtn = item.querySelector('.del-btn');
+
+            if (input) {
+                const fixedText = document.createElement('div');
+                fixedText.className = 'fixed-text';
+                fixedText.textContent = savedName;
+                input.replaceWith(fixedText);
+                
+                if (saveBtn) saveBtn.style.display = 'none';
+                if (delBtn) delBtn.style.display = 'inline-block';
+            }
+        }
+    });
+}
+
+// 异步加载云端数据
+async function loadCloudDataInBackground() {
+    console.log('后台加载：开始获取云端最新数据');
+    
+    try {
+        // 并行执行多个请求
+        const [settingsResult, membersResult] = await Promise.allSettled([
+            // 1. 加载打本设置
+            supabase
+                .from('raid_settings')
+                .select('*')
+                .eq('team_key', TEAM_KEY)
+                .maybeSingle(),
+            
+            // 2. 加载队员信息
+            supabase
+                .from('team_members')
+                .select('*')
+                .eq('team_key', TEAM_KEY)
+                .order('created_at', { ascending: true })
+        ]);
+        
+        let hasUpdates = false;
+        
+        // 处理打本设置
+        if (settingsResult.status === 'fulfilled' && settingsResult.value.data) {
+            const settings = settingsResult.value.data;
+            console.log('云端设置加载成功:', settings);
+            
+            // 比较本地和云端数据，如果有更新则覆盖
+            const localSettings = localStorage.getItem(RAID_SETTINGS_KEY);
+            if (!localSettings || JSON.stringify(settings) !== localSettings) {
+                document.getElementById('daySelector').value = settings.day || '周一';
+                document.getElementById('timeSelector').value = settings.time || '21:00';
+                document.getElementById('copySelector').value = settings.copy_type || '双十';
+                document.getElementById('remarkInput').value = settings.remark || '';
+                
+                localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify({
+                    day: settings.day || '周一',
+                    time: settings.time || '21:00',
+                    copy: settings.copy_type || '双十',
+                    remark: settings.remark || ''
+                }));
+                
+                hasUpdates = true;
+            }
+        }
+        
+        // 处理队员信息
+        if (membersResult.status === 'fulfilled' && membersResult.value.data) {
+            const members = membersResult.value.data;
+            console.log('云端队员加载成功:', members.length, '条记录');
+            
+            members.forEach(member => {
+                const localName = localStorage.getItem(`${TEAM_KEY}_${member.position_id}`);
+                
+                // 如果云端有数据而本地没有，或者数据不同
+                if (member.member_name && localName !== member.member_name) {
+                    const item = document.querySelector(`[data-id="${member.position_id}"]`);
+                    if (item) {
+                        const input = item.querySelector('.input-box');
+                        const fixedText = item.querySelector('.fixed-text');
+                        
+                        if (input && member.member_name) {
+                            const newFixedText = document.createElement('div');
+                            newFixedText.className = 'fixed-text';
+                            newFixedText.textContent = member.member_name;
+                            input.replaceWith(newFixedText);
+                            
+                            const saveBtn = item.querySelector('.save-btn');
+                            const delBtn = item.querySelector('.del-btn');
+                            if (saveBtn) saveBtn.style.display = 'none';
+                            if (delBtn) delBtn.style.display = 'inline-block';
+                        } else if (fixedText && member.member_name) {
+                            fixedText.textContent = member.member_name;
+                        }
+                        
+                        localStorage.setItem(`${TEAM_KEY}_${member.position_id}`, member.member_name);
+                        filledPositions[member.position_id] = member.member_name;
+                        hasUpdates = true;
+                    }
+                }
+            });
+        }
+        
+                // 更新连接状态
+                const statusDiv = document.getElementById('connection-status');
+                if (statusDiv) {
+                    statusDiv.innerHTML = '✅ 已连接到云端';
+                    statusDiv.style.background = '#4CAF50';
+                    
+                    if (hasUpdates) {
+                        // 显示更新提示
+                        const updateNotice = document.createElement('div');
+                        updateNotice.style.cssText = 'position: fixed; top: 20px; right: 20px; padding: 10px 15px; background: #2196F3; color: white; border-radius: 4px; font-size: 12px; z-index: 9999; animation: fadeInOut 5s ease;';
+                        updateNotice.textContent = '🔁 已同步云端最新数据';
+                        document.body.appendChild(updateNotice);
+                        
+                        setTimeout(() => {
+                            if (updateNotice.parentNode) {
+                                updateNotice.parentNode.removeChild(updateNotice);
+                            }
+                        }, 5000);
+                    }
+                }
+                
+            } catch (err) {
+                console.error('后台加载失败:', err);
+                
+                // 更新连接状态为警告
+                const statusDiv = document.getElementById('connection-status');
+                if (statusDiv) {
+                    statusDiv.innerHTML = '⚠️ 云端连接异常，使用本地数据';
+                    statusDiv.style.background = '#FF9800';
+                }
+            }
+        }
+
         // 实时订阅功能
         function setupRealtimeSubscription() {
             const channel = supabase
@@ -1013,23 +1169,26 @@
             }
         }
 
-        // 页面加载完成后初始化
-        window.addEventListener('DOMContentLoaded', async () => {
+            window.addEventListener('DOMContentLoaded', async () => {
+            // 1. 立即执行无需等待的操作
             generateTimeOptions();
             initEventListeners();
             
-            // 首先尝试从云端加载数据
-            await restoreSavedData();
-            
-            // 设置实时订阅
-            setupRealtimeSubscription();
-            
-            // 显示连接状态
+            // 2. 立即显示加载状态
             const connectionStatus = document.createElement('div');
             connectionStatus.id = 'connection-status';
-            connectionStatus.style.cssText = 'position: fixed; bottom: 10px; right: 10px; padding: 5px 10px; background: #4CAF50; color: white; border-radius: 4px; font-size: 12px;';
-            connectionStatus.textContent = '✓ 已连接到云端';
+            connectionStatus.style.cssText = 'position: fixed; bottom: 10px; right: 10px; padding: 5px 10px; background: #FF9800; color: white; border-radius: 4px; font-size: 12px; z-index: 9999;';
+            connectionStatus.textContent = '🔄 正在连接云端...';
             document.body.appendChild(connectionStatus);
+            
+            // 3. 并行加载：先显示本地数据，再异步加载云端数据
+            showLocalDataFirst();
+            
+            // 4. 异步加载云端数据（不阻塞界面）
+            loadCloudDataInBackground();
+            
+            // 5. 设置实时订阅
+            setupRealtimeSubscription();
         });
     </script>
 </body>
