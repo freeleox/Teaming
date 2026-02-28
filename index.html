@@ -74,14 +74,35 @@
             box-shadow: 0 4px 16px rgba(128, 107, 83, 0.1); /* 原木色阴影 */
         }
 
+            /* 替换现有的 .team-title 样式 */
         .team-title {
             font-size: 1.8rem;
-            color: #6b5b47; /* 原木色标题 */
+            color: #5a4b38;
             text-align: center;
             margin-bottom: 30px;
             padding-bottom: 15px;
-            border-bottom: 2px solid #e8e0d0; /* 浅木色下划线 */
+            position: relative;
             font-weight: 400;
+            letter-spacing: 2px;
+        }
+
+        /* 添加装饰性下划线 */
+        .team-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                transparent, 
+                #c9b89f, 
+                #9a8868, 
+                #c9b89f, 
+                transparent
+            );
+            border-radius: 2px;
         }
 
         /* 组队区块容器 */
