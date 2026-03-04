@@ -343,55 +343,101 @@
 
         // 页面初始化函数
         async function initializeApp() {
+            console.log('开始初始化应用...');
+            
             try {
-                console.log('开始初始化应用...');
+                // 1. 先显示快速加载状态
+                showConnectionStatus('🔄 快速加载中...', '#FF9800');
                 
-                // 1. 测试Supabase连接
-                await testSupabaseConnection();
+                // 2. 立即加载本地数据，确保页面快速可用
+                showLocalDataFirst();
                 
-                // 2. 初始化UI组件
+                // 3. 初始化UI组件
                 generateTimeOptions();
                 initEventListeners();
                 
-                // 3. 显示连接状态
+                // 4. 异步初始化Supabase和云端数据（不阻塞页面）
+                setTimeout(() => {
+                    initializeSupabaseAndCloudData();
+                }, 100);
+                
+                console.log('页面初始化完成');
+            } catch (error) {
+                console.error('初始化失败:', error);
+                showConnectionStatus('❌ 初始化失败', '#f44336');
+                
+                // 5秒后恢复为本地模式状态
+                setTimeout(() => {
+                    showConnectionStatus('⚠️ 使用本地数据模式', '#FF9800');
+                }, 5000);
+            }
+        }
+
+        // 异步初始化Supabase和云端数据
+        async function initializeSupabaseAndCloudData() {
+            try {
+                // 1. 显示连接状态
                 showConnectionStatus('🔄 正在连接云端...', '#FF9800');
                 
-                // 4. 并行加载数据：先显示本地，再同步云端
-                showLocalDataFirst();
-                await loadCloudDataInBackground();
+                // 2. 设置超时机制，避免无限等待
+                const timeoutPromise = new Promise((_, reject) => {
+                    setTimeout(() => reject(new Error('云端连接超时（10秒）')), 10000);
+                });
                 
-                // 5. 设置实时订阅
-                setupRealtimeSubscription();
-                
-                console.log('应用初始化完成');
+                // 3. 并行测试Supabase连接和加载云端数据
+                await Promise.race([
+                    (async () => {
+                        await testSupabaseConnection();
+                        await loadCloudDataInBackground();
+                        setupRealtimeSubscription();
+                    })(),
+                    timeoutPromise
+                ]);
                 
             } catch (error) {
-                console.error('应用初始化失败:', error);
-                showConnectionStatus('⚠️ 初始化失败，使用本地模式', '#f44336');
-                handleError(error, '应用初始化');
+                console.error('云端初始化失败:', error);
+                if (error.message.includes('超时')) {
+                    showConnectionStatus('⚠️ 云端连接超时，使用本地数据', '#FF9800');
+                } else {
+                    showConnectionStatus('⚠️ 云端连接异常，使用本地数据', '#FF9800');
+                }
             }
         }
 
         // 测试Supabase连接
         async function testSupabaseConnection() {
-            try {
-                const { data, error } = await supabaseClient
-                    .from('team_members')
-                    .select('*')
-                    .limit(1);
-                
-                if (error) {
-                    console.warn('Supabase连接测试失败:', error);
-                    throw new Error('数据库连接失败');
+            return new Promise(async (resolve, reject) => {
+                try {
+                    // 检查Supabase客户端是否已初始化
+                    if (!supabaseClient) {
+                        throw new Error('Supabase客户端未初始化');
+                    }
+                    
+                    // 设置连接超时（5秒）
+                    const timeout = setTimeout(() => {
+                        reject(new Error('Supabase连接超时（5秒）'));
+                    }, 5000);
+                    
+                    const { data, error } = await supabaseClient
+                        .from('team_members')
+                        .select('*')
+                        .limit(1);
+                    
+                    clearTimeout(timeout);
+                    
+                    if (error) {
+                        console.warn('Supabase连接测试失败:', error);
+                        reject(new Error('数据库连接失败'));
+                    } else {
+                        console.log('Supabase连接测试成功');
+                        resolve(true);
+                    }
+                    
+                } catch (error) {
+                    console.error('连接测试异常:', error);
+                    reject(error);
                 }
-                
-                console.log('Supabase连接测试成功');
-                return true;
-                
-            } catch (error) {
-                console.error('连接测试异常:', error);
-                throw error;
-            }
+            });
         }
 
         // 生成时间选择器选项
@@ -457,21 +503,15 @@
             if (!statusDiv) {
                 statusDiv = document.createElement('div');
                 statusDiv.id = 'connection-status';
-                statusDiv.className = 'connection-status';
+                statusDiv.style.cssText = 'position: fixed; bottom: 10px; right: 10px; padding: 8px 16px; border-radius: 4px; font-size: 14px; font-weight: 500; z-index: 9999; color: white; transition: all 0.3s ease;';
                 document.body.appendChild(statusDiv);
             }
             
             statusDiv.textContent = message;
             statusDiv.style.background = color;
             
-            // 根据状态添加类名
-            if (color === '#4CAF50') {
-                statusDiv.className = 'connection-status success';
-            } else if (color === '#f44336') {
-                statusDiv.className = 'connection-status error';
-            } else {
-                statusDiv.className = 'connection-status';
-            }
+            // 确保状态显示在最前面
+            statusDiv.style.zIndex = '9999';
         }
 
         // 快速显示本地数据
