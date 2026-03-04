@@ -7,19 +7,20 @@
     <style>
         /* 阿里妈妈东方大楷字体声明 */
         @font-face {
-        font-family: 'AlimamaDongFangDaKai';
-        src: url('fonts/AlimamaDongFangDaKai-Regular.otf') format('opentype'),
-            url('fonts/AlimamaDongFangDaKai-Regular.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
+            font-family: 'AlimamaDongFangDaKai';
+            src: url('fonts/AlimamaDongFangDaKai-Regular.otf') format('opentype'),
+                 url('fonts/AlimamaDongFangDaKai-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
         }
 
+        /* 重置样式和基础设置 */
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;     /* 修改为阿里妈妈 */
+            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;
         }
 
         body {
@@ -28,13 +29,14 @@
             line-height: 1.6;
         }
 
+        /* 布局容器 */
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 0 20px;
         }
 
-        /* 标题区 */
+        /* 页面头部样式 */
         .page-header {
             text-align: center;
             padding: 50px 0 30px;
@@ -55,7 +57,7 @@
             color: #8a7d6b;
         }
 
-        /* 队长填写区域标题 */
+        /* 打本信息头部样式 */
         .raid-header {
             display: flex;
             justify-content: space-between;
@@ -80,7 +82,7 @@
             cursor: pointer;
             font-size: 0.95rem;
             transition: background-color 0.3s;
-            margin-left: 15px; /* 增加左侧间距 */
+            margin-left: 15px;
         }
 
         .header-save-btn:hover {
@@ -111,6 +113,7 @@
             margin-bottom: 6px;
         }
 
+        /* 表单控件样式 */
         .day-select, .time-select, .copy-select, .remark-input {
             width: 100%;
             padding: 8px 12px;
@@ -126,7 +129,7 @@
             border-color: #9a8868;
         }
 
-        /* 列表项 */
+        /* 列表项样式 */
         .item {
             display: flex;
             align-items: center;
@@ -163,7 +166,7 @@
             border-color: #9a8868;
         }
 
-        /* 按钮 */
+        /* 按钮样式 */
         .btn {
             margin-left: 8px;
             padding: 6px 12px;
@@ -171,6 +174,7 @@
             border: none;
             font-size: 0.9rem;
             cursor: pointer;
+            transition: all 0.3s ease;
         }
 
         .save-btn {
@@ -178,9 +182,17 @@
             color: #fff;
         }
 
+        .save-btn:hover {
+            background: #867352;
+        }
+
         .del-btn {
             background: #c9b89f;
             color: #fff;
+        }
+
+        .del-btn:hover {
+            background: #b8a792;
         }
 
         /* 提示框样式 */
@@ -205,7 +217,41 @@
             100% { opacity: 0; top: 10px; }
         }
 
-        /* 响应式 */
+        /* 连接状态指示器 */
+        .connection-status {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            z-index: 9999;
+            background: #FF9800;
+            color: white;
+        }
+
+        .connection-status.success {
+            background: #4CAF50;
+        }
+
+        .connection-status.error {
+            background: #f44336;
+        }
+
+        /* 进度指示器 */
+        .progress-indicator {
+            position: fixed;
+            bottom: 40px;
+            right: 10px;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            background: #9a8868;
+            color: white;
+            z-index: 9999;
+        }
+
+        /* 响应式设计 */
         @media (max-width: 768px) {
             .raid-header {
                 flex-direction: column;
@@ -215,9 +261,9 @@
             
             .header-save-btn {
                 margin-left: 0;
-                margin-top: 10px; /* 增加上方间距 */
-                width: auto; /* 不要全宽度 */
-                min-width: 120px; /* 设置最小宽度 */
+                margin-top: 10px;
+                width: auto;
+                min-width: 120px;
                 align-self: flex-end;
             }
             
@@ -233,28 +279,29 @@
             .item {
                 flex-wrap: wrap;
             }
+            
             .prefix {
                 width: 80px;
                 margin-bottom: 8px;
             }
+            
             .input-box {
                 width: 100%;
                 margin-bottom: 8px;
             }
+            
             .btn {
                 margin-left: 0;
                 margin-right: 8px;
-                margin-top: 8px;   /* 添加上方外边距，与输入框保持距离 */
+                margin-top: 8px;
             }
             
-            /* 新增：确保保存按钮和删除按钮在同一位置 */
             .save-btn, .del-btn {
                 margin-left: 8px;
                 margin-right: 8px;
                 margin-top: 8px;
             }
             
-            /* 可选：为按钮容器添加flex布局，使按钮排列更整齐 */
             .item {
                 position: relative;
             }
@@ -262,7 +309,80 @@
             .btn {
                 display: inline-block;
             }
+        }
 
+        @media (max-width: 480px) {
+            .raid-info {
+                gap: 10px;
+                padding: 10px 12px;
+            }
+            
+            .info-label {
+                font-size: 0.8rem;
+            }
+            
+            .day-select, .time-select, .copy-select, .remark-input {
+                padding: 6px 8px;
+                font-size: 0.9rem;
+                height: 36px;
+            }
+            
+            .item {
+                padding: 12px 15px;
+            }
+            
+            .prefix {
+                width: 70px;
+                font-size: 0.9rem;
+            }
+            
+            .input-box {
+                padding: 6px 10px;
+                font-size: 0.9rem;
+            }
+            
+            .btn {
+                padding: 5px 10px;
+                font-size: 0.8rem;
+            }
+        }
+
+        /* 加载动画 */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 20px;
+            height: 20px;
+            margin: -10px 0 0 -10px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #9a8868;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 输入提示样式 */
+        .input-hint-real-time {
+            font-size: 0.8rem;
+            color: #f44336;
+            margin-top: 4px;
+        }
+
+        /* 保存反馈样式 */
+        .save-feedback {
+            background: #e8f5e9 !important;
+            color: #4CAF50 !important;
         }
     </style>
     <script src="https://unpkg.com/@supabase/supabase-js@2.39.7/dist/umd/supabase.js"></script>
@@ -415,122 +535,192 @@
         const TEAM_KEY = 'bige'; // 队伍标识
         const RAID_SETTINGS_KEY = `${TEAM_KEY}_raid_settings`; // 打本设置存储键
 
-        // 生成时间选择器选项（0~24:00，半小时为单位）
-        function generateTimeOptions() {
-        const timeSelector = document.getElementById('timeSelector');
-        
-        // 首先添加"百业派对后"选项并设置为默认选中
-        const afterPartyOption = document.createElement('option');
-        afterPartyOption.value = '百业派对后';
-        afterPartyOption.textContent = '百业派对后';
-        afterPartyOption.selected = true;
-        timeSelector.appendChild(afterPartyOption);
-        
-        // 添加分隔线选项（可选）
-        const separatorOption = document.createElement('option');
-        separatorOption.disabled = true;
-        separatorOption.textContent = '──────────';
-        timeSelector.appendChild(separatorOption);
-        
-        let hours = 0;
-        let minutes = 0;
+        // 配置常量
+        const CONFIG = {
+            maxMemberNameLength: 15,
+            alertDuration: 3000,
+            saveFeedbackDuration: 3000
+        };
 
-        // 生成00:00到24:00的选项，步长30分钟
-        while (hours <= 24) {
-            const hourStr = hours.toString().padStart(2, '0');
-            const minStr = minutes.toString().padStart(2, '0');
-            const timeStr = `${hourStr}:${minStr}`;
+        // 工具函数：显示提示信息
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            if (!alertBox) return;
             
-            const option = document.createElement('option');
-            option.value = timeStr;
-            option.textContent = timeStr;
-            
-            // 移除之前的默认选中逻辑，因为"百业派对后"已经是默认选项
-            timeSelector.appendChild(option);
-
-            minutes += 30;
-            if (minutes >= 60) {
-                minutes = 0;
-                hours += 1;
-            }
-        }
-    }
-
-        // 2. 加载保存的打本信息
-        function loadRaidInfo() {
-            const savedInfo = localStorage.getItem(RAID_SETTINGS_KEY);
-            if (savedInfo) {
-                const info = JSON.parse(savedInfo);
-                if (info.day) document.getElementById('daySelector').value = info.day;
-                if (info.time) document.getElementById('timeSelector').value = info.time;
-                if (info.copy) document.getElementById('copySelector').value = info.copy;
-                if (info.remark) document.getElementById('remarkInput').value = info.remark;
-            } else {
-                // 默认设置：周一 21:00 双十
-                document.getElementById('daySelector').value = '周一';
-                document.getElementById('timeSelector').value = '21:00';
-                document.getElementById('copySelector').value = '双十';
-            }
-        }
-
-        // 3. 保存打本设置
-        function saveRaidSettings() {
-            const raidSettings = {
-                day: document.getElementById('daySelector').value,
-                time: document.getElementById('timeSelector').value,
-                copy: document.getElementById('copySelector').value,
-                remark: document.getElementById('remarkInput').value
-            };
-            localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify(raidSettings));
-            
-            // 获取保存按钮
-            const saveBtn = document.getElementById('headerSaveBtn');
-            
-            // 保存按钮原始颜色
-            const originalColor = saveBtn.style.color;
-            const originalText = saveBtn.textContent;
-            const originalBackground = saveBtn.style.backgroundColor;
-            
-            // 视觉反馈效果
-            saveBtn.textContent = "已保存";
-            saveBtn.style.color = "#4CAF50"; // 绿色
-            saveBtn.style.backgroundColor = "#e8f5e9"; // 浅绿色背景
-            
-            // 3秒后恢复原状
-            setTimeout(() => {
-                saveBtn.textContent = originalText;
-                saveBtn.style.color = originalColor;
-                saveBtn.style.backgroundColor = originalBackground;
-            }, 3000);
-            
-            // 显示保存成功提示
-            alert('打本设置已保存！');
-        }
-
-        // 显示提示框
-        function showAlert() {
+            alertBox.textContent = message;
             alertBox.style.display = 'block';
+            alertBox.style.background = type === 'success' ? '#4CAF50' : 
+                                      type === 'warning' ? '#FF9800' : '#d64141';
+            
             setTimeout(() => {
                 alertBox.style.display = 'none';
-            }, 3000);
+            }, CONFIG.alertDuration);
         }
 
-        // 保存功能
+        // 工具函数：验证输入内容
+        function validateInput(input, fieldName, maxLength) {
+            const value = input.value.trim();
+            
+            if (!value) {
+                showAlert(`请输入${fieldName}！`);
+                input.focus();
+                return false;
+            }
+            
+            if (value.length > maxLength) {
+                showAlert(`${fieldName}不能超过${maxLength}个字符！`);
+                input.focus();
+                return false;
+            }
+            
+            return true;
+        }
+
+        // 工具函数：保存到本地存储
+        function saveToLocalStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error('保存数据失败:', error);
+                showAlert('保存失败，请检查浏览器存储空间！');
+                return false;
+            }
+        }
+
+        // 工具函数：从本地存储读取数据
+        function loadFromLocalStorage(key) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : null;
+            } catch (error) {
+                console.error('读取数据失败:', error);
+                return null;
+            }
+        }
+
+        // 生成时间选择器选项（0~24:00，半小时为单位）
+        function generateTimeOptions() {
+            const timeSelector = document.getElementById('timeSelector');
+            if (!timeSelector) return;
+            
+            // 清空现有选项
+            timeSelector.innerHTML = '';
+            
+            // 首先添加"百业派对后"选项并设置为默认选中
+            const afterPartyOption = document.createElement('option');
+            afterPartyOption.value = '百业派对后';
+            afterPartyOption.textContent = '百业派对后';
+            afterPartyOption.selected = true;
+            timeSelector.appendChild(afterPartyOption);
+            
+            // 添加分隔线选项
+            const separatorOption = document.createElement('option');
+            separatorOption.disabled = true;
+            separatorOption.textContent = '──────────';
+            timeSelector.appendChild(separatorOption);
+            
+            let hours = 0;
+            let minutes = 0;
+
+            // 生成00:00到24:00的选项，步长30分钟
+            while (hours <= 24) {
+                const hourStr = hours.toString().padStart(2, '0');
+                const minStr = minutes.toString().padStart(2, '0');
+                const timeStr = `${hourStr}:${minStr}`;
+                
+                const option = document.createElement('option');
+                option.value = timeStr;
+                option.textContent = timeStr;
+                
+                timeSelector.appendChild(option);
+
+                minutes += 30;
+                if (minutes >= 60) {
+                    minutes = 0;
+                    hours += 1;
+                }
+            }
+        }
+
+        // 加载保存的打本信息
+        function loadRaidInfo() {
+            const savedInfo = loadFromLocalStorage(RAID_SETTINGS_KEY);
+            if (savedInfo) {
+                if (savedInfo.day) {
+                    const daySelector = document.getElementById('daySelector');
+                    if (daySelector) daySelector.value = savedInfo.day;
+                }
+                if (savedInfo.time) {
+                    const timeSelector = document.getElementById('timeSelector');
+                    if (timeSelector) timeSelector.value = savedInfo.time;
+                }
+                if (savedInfo.copy) {
+                    const copySelector = document.getElementById('copySelector');
+                    if (copySelector) copySelector.value = savedInfo.copy;
+                }
+                if (savedInfo.remark) {
+                    const remarkInput = document.getElementById('remarkInput');
+                    if (remarkInput) remarkInput.value = savedInfo.remark;
+                }
+            } else {
+                // 默认设置：周一 21:00 双十
+                const daySelector = document.getElementById('daySelector');
+                const timeSelector = document.getElementById('timeSelector');
+                const copySelector = document.getElementById('copySelector');
+                
+                if (daySelector) daySelector.value = '周一';
+                if (timeSelector) timeSelector.value = '21:00';
+                if (copySelector) copySelector.value = '双十';
+            }
+        }
+
+        // 保存打本设置
+        function saveRaidSettings() {
+            const raidSettings = {
+                day: document.getElementById('daySelector')?.value || '周一',
+                time: document.getElementById('timeSelector')?.value || '21:00',
+                copy: document.getElementById('copySelector')?.value || '双十',
+                remark: document.getElementById('remarkInput')?.value || ''
+            };
+            
+            if (!saveToLocalStorage(RAID_SETTINGS_KEY, raidSettings)) return;
+            
+            // 视觉反馈效果
+            const saveBtn = document.getElementById('headerSaveBtn');
+            if (saveBtn) {
+                const originalText = saveBtn.textContent;
+                const originalBackground = saveBtn.style.backgroundColor;
+                
+                saveBtn.textContent = "已保存";
+                saveBtn.style.backgroundColor = "#e8f5e9";
+                
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                    saveBtn.style.backgroundColor = originalBackground;
+                }, CONFIG.saveFeedbackDuration);
+            }
+            
+            showAlert('打本设置已保存！', 'success');
+        }
+
+        // 保存队员功能
         function handleSave(event) {
             const btn = event.target;
             const item = btn.closest('.item');
+            if (!item) return;
+            
             const input = item.querySelector('.input-box');
             const delBtn = item.querySelector('.del-btn');
             const positionId = item.dataset.id;
 
+            if (!input || !delBtn || !positionId) return;
+
             const name = input.value.trim();
-            if (!name) {
-                alert('请输入名字后再保存！');
-                return;
-            }
+            if (!validateInput(input, '队员姓名', CONFIG.maxMemberNameLength)) return;
 
             if (filledPositions[positionId]) {
-                showAlert();
+                showAlert('该位置已经被填写！请在下方重新填写。');
                 input.value = '';
                 return;
             }
@@ -545,52 +735,114 @@
             btn.style.display = 'none';
             delBtn.style.display = 'inline-block';
 
-            localStorage.setItem(`${TEAM_KEY}_${positionId}`, name);
+            saveToLocalStorage(`${TEAM_KEY}_${positionId}`, name);
+            showAlert('队员信息已保存！', 'success');
         }
 
-        // 删除功能（恢复可编辑）
+        // 删除队员功能
         function handleDelete(event) {
             const btn = event.target;
             const item = btn.closest('.item');
+            if (!item) return;
+            
             const fixedText = item.querySelector('.fixed-text');
             const saveBtn = item.querySelector('.save-btn');
             const positionId = item.dataset.id;
+
+            if (!fixedText || !saveBtn || !positionId) return;
 
             delete filledPositions[positionId];
 
             const input = document.createElement('input');
             input.type = 'text';
             input.className = 'input-box';
-            input.placeholder = '请输入队员名字';
+            input.placeholder = '请队员自行填写后保存';
             fixedText.replaceWith(input);
 
             btn.style.display = 'none';
             saveBtn.style.display = 'inline-block';
 
             localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
+            showAlert('队员信息已删除！', 'success');
+        }
+
+        // 清空所有队员填写的内容
+        function clearAllInputs() {
+            if (!confirm('确定要清空所有队员填写的内容吗？此操作不可撤销。')) {
+                return;
+            }
+            
+            const items = document.querySelectorAll('.item');
+            
+            items.forEach(item => {
+                const positionId = item.dataset.id;
+                
+                // 仅处理队员和奶位（有data-id的项且不是队长）
+                if (positionId && (positionId.startsWith('member') || positionId.startsWith('milk'))) {
+                    localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
+                    
+                    delete filledPositions[positionId];
+                    
+                    const inputBox = item.querySelector('.input-box');
+                    if (inputBox) {
+                        inputBox.value = '';
+                    }
+                    
+                    const fixedText = item.querySelector('.fixed-text');
+                    if (fixedText) {
+                        const newInput = document.createElement('input');
+                        newInput.type = 'text';
+                        newInput.className = 'input-box';
+                        newInput.placeholder = '请队员自行填写后保存';
+                        
+                        fixedText.replaceWith(newInput);
+                        
+                        const saveBtn = item.querySelector('.save-btn');
+                        const delBtn = item.querySelector('.del-btn');
+                        if (saveBtn) saveBtn.style.display = 'inline-block';
+                        if (delBtn) delBtn.style.display = 'none';
+                    }
+                }
+            });
+            
+            showAlert('所有队员填写的内容已清空！', 'success');
         }
 
         // 初始化事件监听
         function initEventListeners() {
+            // 绑定保存按钮事件
             document.querySelectorAll('.save-btn').forEach(btn => {
                 btn.addEventListener('click', handleSave);
             });
+            
+            // 绑定删除按钮事件
             document.querySelectorAll('.del-btn').forEach(btn => {
                 btn.addEventListener('click', handleDelete);
             });
 
-            // 绑定保存按钮事件
-            document.getElementById('headerSaveBtn').addEventListener('click', saveRaidSettings);
-
-             // 新增：綁定一鍵清空按鈕事件
-            document.getElementById('clearAllBtn').addEventListener('click', clearAllInputs);
+            // 绑定打本设置保存按钮事件
+            const headerSaveBtn = document.getElementById('headerSaveBtn');
+            if (headerSaveBtn) {
+                headerSaveBtn.addEventListener('click', saveRaidSettings);
+            }
+            
+            // 绑定一键清空按钮事件
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            if (clearAllBtn) {
+                clearAllBtn.addEventListener('click', clearAllInputs);
+            }
         }
 
         // 页面加载时恢复已保存的数据
         function restoreSavedData() {
+            // 恢复打本信息
+            loadRaidInfo();
+            
             // 恢复队员/奶位数据
             document.querySelectorAll('.item').forEach(item => {
                 const positionId = item.dataset.id;
+                if (!positionId) return; // 跳过队长项
+                
                 const savedName = localStorage.getItem(`${TEAM_KEY}_${positionId}`);
                 
                 if (savedName) {
@@ -599,79 +851,384 @@
                     const saveBtn = item.querySelector('.save-btn');
                     const delBtn = item.querySelector('.del-btn');
 
-                    const fixedText = document.createElement('div');
-                    fixedText.className = 'fixed-text';
-                    fixedText.textContent = savedName;
-                    input.replaceWith(fixedText);
+                    if (input && saveBtn && delBtn) {
+                        const fixedText = document.createElement('div');
+                        fixedText.className = 'fixed-text';
+                        fixedText.textContent = savedName;
+                        input.replaceWith(fixedText);
 
-                    saveBtn.style.display = 'none';
-                    delBtn.style.display = 'inline-block';
+                        saveBtn.style.display = 'none';
+                        delBtn.style.display = 'inline-block';
+                    }
                 }
             });
-
-            // 恢复打本信息
-            loadRaidInfo();
         }
 
-        // 清空所有input-box值的功能
-        function clearAllInputs() {
-
-        // 確認是否要清空
-        if (!confirm('确定要清空所有队员吗？此操作不可撤销。')) {
-            return;
-        }
-    
-        // 獲取所有隊員和奶位項目
-        const items = document.querySelectorAll('.item');
-    
-        // 清除每個項目的數據
-        items.forEach(item => {
-            const positionId = item.dataset.id;
-            
-        // 僅處理隊員和奶位（有data-id的項目）
-        if (positionId && (positionId.startsWith('member') || positionId.startsWith('milk'))) {
-            // 清除本地存儲
-            localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
-            
-            // 清除filledPositions對象中的記錄
-            delete filledPositions[positionId];
-            
-            // 找到輸入框並清除
-            const inputBox = item.querySelector('.input-box');
-            if (inputBox) {
-                inputBox.value = '';
+        // 业务逻辑：数据管理和订阅功能
+        class TeamManager {
+            constructor() {
+                this.subscribers = new Set();
+                this.isConnected = false;
+                this.init();
             }
-            
-            // 如果已經保存，需要重置為可編輯狀態
-            const fixedText = item.querySelector('.fixed-text');
-            if (fixedText) {
-                // 創建新的輸入框
-                const newInput = document.createElement('input');
-                newInput.type = 'text';
-                newInput.className = 'input-box';
-                newInput.placeholder = '请队员自行填写后保存';
+
+            // 初始化管理器
+            init() {
+                this.setupConnectionMonitoring();
+                this.setupAutoSave();
+                this.setupDataValidation();
+            }
+
+            // 设置连接监控
+            setupConnectionMonitoring() {
+                // 监控网络连接状态
+                window.addEventListener('online', () => {
+                    this.isConnected = true;
+                    this.updateConnectionStatus(true);
+                    this.notifySubscribers('connection', { status: 'online' });
+                });
+
+                window.addEventListener('offline', () => {
+                    this.isConnected = false;
+                    this.updateConnectionStatus(false);
+                    this.notifySubscribers('connection', { status: 'offline' });
+                });
+            }
+
+            // 设置自动保存
+            setupAutoSave() {
+                // 监听表单变化，自动保存
+                const forms = document.querySelectorAll('input, select, textarea');
+                forms.forEach(form => {
+                    form.addEventListener('change', () => {
+                        this.autoSave();
+                    });
+                });
+
+                // 页面关闭前保存
+                window.addEventListener('beforeunload', () => {
+                    this.saveAllData();
+                });
+            }
+
+            // 设置数据验证
+            setupDataValidation() {
+                // 实时验证输入
+                const inputs = document.querySelectorAll('input[type="text"]');
+                inputs.forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        this.validateInputRealTime(e.target);
+                    });
+                });
+            }
+
+            // 自动保存数据
+            autoSave() {
+                const raidSettings = this.getRaidSettings();
+                const memberData = this.getMemberData();
+
+                if (raidSettings) this.saveRaidSettings(raidSettings);
+                if (memberData) this.saveMemberData(memberData);
+
+                this.notifySubscribers('autosave', { 
+                    timestamp: new Date().toISOString(),
+                    data: { raidSettings, memberData }
+                });
+            }
+
+            // 获取打本设置
+            getRaidSettings() {
+                const daySelector = document.getElementById('daySelector');
+                const timeSelector = document.getElementById('timeSelector');
+                const copySelector = document.getElementById('copySelector');
+                const remarkInput = document.getElementById('remarkInput');
+
+                if (!daySelector || !timeSelector || !copySelector) return null;
+
+                return {
+                    day: daySelector.value,
+                    time: timeSelector.value,
+                    copy: copySelector.value,
+                    remark: remarkInput ? remarkInput.value.trim() : '',
+                    timestamp: new Date().toISOString()
+                };
+            }
+
+            // 获取队员数据
+            getMemberData() {
+                const memberData = {};
                 
-                // 替換fixed-text
-                fixedText.replaceWith(newInput);
+                document.querySelectorAll('.item').forEach(item => {
+                    const positionId = item.dataset.id;
+                    if (!positionId) return;
+
+                    const fixedText = item.querySelector('.fixed-text');
+                    const input = item.querySelector('.input-box');
+                    
+                    if (fixedText) {
+                        memberData[positionId] = {
+                            name: fixedText.textContent.trim(),
+                            status: 'filled',
+                            timestamp: new Date().toISOString()
+                        };
+                    } else if (input && input.value.trim()) {
+                        memberData[positionId] = {
+                            name: input.value.trim(),
+                            status: 'pending',
+                            timestamp: new Date().toISOString()
+                        };
+                    }
+                });
+
+                return Object.keys(memberData).length > 0 ? memberData : null;
+            }
+
+            // 保存所有数据
+            saveAllData() {
+                const raidSettings = this.getRaidSettings();
+                const memberData = this.getMemberData();
+
+                let savedCount = 0;
+                if (raidSettings && this.saveRaidSettings(raidSettings)) savedCount++;
+                if (memberData && this.saveMemberData(memberData)) savedCount++;
+
+                console.log(`自动保存了 ${savedCount} 项数据`);
+                return savedCount;
+            }
+
+            // 保存打本设置
+            saveRaidSettings(raidSettings) {
+                try {
+                    localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify(raidSettings));
+                    this.notifySubscribers('raidSettingsSaved', raidSettings);
+                    return true;
+                } catch (error) {
+                    console.error('保存打本设置失败:', error);
+                    return false;
+                }
+            }
+
+            // 保存队员数据
+            saveMemberData(memberData) {
+                try {
+                    Object.entries(memberData).forEach(([positionId, data]) => {
+                        localStorage.setItem(`${TEAM_KEY}_${positionId}`, JSON.stringify(data));
+                    });
+                    this.notifySubscribers('memberDataSaved', memberData);
+                    return true;
+                } catch (error) {
+                    console.error('保存队员数据失败:', error);
+                    return false;
+                }
+            }
+
+            // 实时验证输入
+            validateInputRealTime(input) {
+                const value = input.value.trim();
+                const maxLength = input.dataset.maxLength || CONFIG.maxMemberNameLength;
                 
-                // 顯示保存按鈕，隱藏刪除按鈕
-                const saveBtn = item.querySelector('.save-btn');
-                const delBtn = item.querySelector('.del-btn');
-                if (saveBtn) saveBtn.style.display = 'inline-block';
-                if (delBtn) delBtn.style.display = 'none';
+                if (value.length > maxLength) {
+                    input.style.borderColor = '#f44336';
+                    this.showInputHint(input, `不能超过${maxLength}个字符`);
+                } else {
+                    input.style.borderColor = '#e0d8c8';
+                    this.hideInputHint(input);
+                }
+            }
+
+            // 显示输入提示
+            showInputHint(input, message) {
+                let hint = input.parentNode.querySelector('.input-hint-real-time');
+                if (!hint) {
+                    hint = document.createElement('div');
+                    hint.className = 'input-hint-real-time';
+                    hint.style.fontSize = '0.8rem';
+                    hint.style.color = '#f44336';
+                    hint.style.marginTop = '4px';
+                    input.parentNode.appendChild(hint);
+                }
+                hint.textContent = message;
+            }
+
+            // 隐藏输入提示
+            hideInputHint(input) {
+                const hint = input.parentNode.querySelector('.input-hint-real-time');
+                if (hint) {
+                    hint.remove();
+                }
+            }
+
+            // 更新连接状态
+            updateConnectionStatus(isConnected) {
+                const statusElement = document.querySelector('.connection-status');
+                if (statusElement) {
+                    statusElement.className = `connection-status ${isConnected ? 'success' : 'error'}`;
+                    statusElement.textContent = isConnected ? '✓ 连接正常' : '✗ 离线模式';
+                }
+            }
+
+            // 订阅事件
+            subscribe(callback) {
+                this.subscribers.add(callback);
+                return () => this.subscribers.delete(callback);
+            }
+
+            // 通知订阅者
+            notifySubscribers(eventType, data) {
+                this.subscribers.forEach(callback => {
+                    try {
+                        callback(eventType, data);
+                    } catch (error) {
+                        console.error('订阅者回调错误:', error);
+                    }
+                });
+            }
+
+            // 获取统计数据
+            getStatistics() {
+                const memberData = this.getMemberData();
+                const totalPositions = document.querySelectorAll('.item[data-id]').length;
+                const filledPositions = Object.values(memberData || {}).filter(data => data.status === 'filled').length;
+                const pendingPositions = Object.values(memberData || {}).filter(data => data.status === 'pending').length;
+                
+                return {
+                    total: totalPositions,
+                    filled: filledPositions,
+                    pending: pendingPositions,
+                    progress: totalPositions > 0 ? Math.round((filledPositions / totalPositions) * 100) : 0
+                };
+            }
+
+            // 导出数据
+            exportData() {
+                const raidSettings = this.getRaidSettings();
+                const memberData = this.getMemberData();
+                const statistics = this.getStatistics();
+
+                const exportData = {
+                    raidSettings,
+                    memberData,
+                    statistics,
+                    exportTime: new Date().toISOString(),
+                    version: '1.0'
+                };
+
+                return JSON.stringify(exportData, null, 2);
+            }
+
+            // 导入数据
+            importData(jsonData) {
+                try {
+                    const data = JSON.parse(jsonData);
+                    
+                    if (data.raidSettings) {
+                        this.applyRaidSettings(data.raidSettings);
+                    }
+                    
+                    if (data.memberData) {
+                        this.applyMemberData(data.memberData);
+                    }
+                    
+                    this.notifySubscribers('dataImported', data);
+                    return true;
+                } catch (error) {
+                    console.error('导入数据失败:', error);
+                    return false;
+                }
+            }
+
+            // 应用打本设置
+            applyRaidSettings(raidSettings) {
+                const daySelector = document.getElementById('daySelector');
+                const timeSelector = document.getElementById('timeSelector');
+                const copySelector = document.getElementById('copySelector');
+                const remarkInput = document.getElementById('remarkInput');
+                
+                if (daySelector && raidSettings.day) daySelector.value = raidSettings.day;
+                if (timeSelector && raidSettings.time) timeSelector.value = raidSettings.time;
+                if (copySelector && raidSettings.copy) copySelector.value = raidSettings.copy;
+                if (remarkInput && raidSettings.remark) remarkInput.value = raidSettings.remark;
+            }
+
+            // 应用队员数据
+            applyMemberData(memberData) {
+                Object.entries(memberData).forEach(([positionId, data]) => {
+                    const item = document.querySelector(`[data-id="${positionId}"]`);
+                    if (item && data.name) {
+                        const input = item.querySelector('.input-box');
+                        const saveBtn = item.querySelector('.save-btn');
+                        const delBtn = item.querySelector('.del-btn');
+                        
+                        if (input && saveBtn && delBtn) {
+                            if (data.status === 'filled') {
+                                const fixedText = document.createElement('div');
+                                fixedText.className = 'fixed-text';
+                                fixedText.textContent = data.name;
+                                input.replaceWith(fixedText);
+                                
+                                saveBtn.style.display = 'none';
+                                delBtn.style.display = 'inline-block';
+                            } else {
+                                input.value = data.name;
+                            }
+                        }
+                    }
+                });
             }
         }
-    });
-    
-    // 顯示提示
-    alert('所有队员已被清空，请重新填写！');
-}
+
+        // 初始化团队管理器
+        let teamManager;
 
         // 页面加载完成后初始化
         window.addEventListener('DOMContentLoaded', () => {
             generateTimeOptions();
             initEventListeners();
             restoreSavedData();
+            
+            // 初始化团队管理器
+            teamManager = new TeamManager();
+            
+            // 订阅管理器事件
+            teamManager.subscribe((eventType, data) => {
+                console.log(`团队管理器事件: ${eventType}`, data);
+                
+                switch (eventType) {
+                    case 'autosave':
+                        console.log('数据已自动保存');
+                        break;
+                    case 'connection':
+                        showAlert(`网络连接${data.status === 'online' ? '恢复' : '中断'}`, 
+                                 data.status === 'online' ? 'success' : 'warning');
+                        break;
+                }
+            });
+            
+            // 更新进度显示函数
+            function updateProgress() {
+                const stats = teamManager.getStatistics();
+                const progressIndicator = document.querySelector('.progress-indicator');
+                if (progressIndicator) {
+                    progressIndicator.textContent = `进度: ${stats.filled}/${stats.total} (${stats.progress}%)`;
+                }
+            }
+            
+            // 初始更新进度
+            updateProgress();
+            
+            // 定期更新进度
+            setInterval(updateProgress, 5000);
+            
+            // 监听数据变化更新进度
+            teamManager.subscribe(() => {
+                updateProgress();
+            });
+        });
+
+        // 错误处理
+        window.addEventListener('error', (event) => {
+            console.error('页面错误:', event.error);
+            showAlert('页面出现错误，请刷新重试！');
         });
     </script>
 </body>

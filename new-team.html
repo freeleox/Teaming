@@ -15,6 +15,7 @@
             font-display: swap;
         }
 
+        /* 重置样式和基础设置 */
         * {
             margin: 0;
             padding: 0;
@@ -26,33 +27,37 @@
             background-color: #f9f7f3;
             color: #5a4b38;
             line-height: 1.6;
+            min-height: 100vh;
         }
 
+        /* 布局容器 */
         .container {
             max-width: 800px;
             margin: 0 auto;
             padding: 0 20px;
+            min-height: 100vh;
         }
 
-        /* 标题区 */
+        /* 页面头部样式 */
         .page-header {
             text-align: center;
-            padding: 50px 0 30px;
+            padding: 40px 0 25px;
             border-bottom: 1px solid #e0d8c8;
-            margin-bottom: 40px;
+            margin-bottom: 30px;
         }
 
         .page-title {
-            font-size: 2.2rem;
+            font-size: 2rem;
             color: #5a4b38;
             font-weight: 400;
-            letter-spacing: 6px;
+            letter-spacing: 4px;
+            margin-bottom: 8px;
         }
 
         .team-name {
-            margin-top: 8px;
             font-size: 1rem;
             color: #8a7d6b;
+            opacity: 0.8;
         }
 
         /* 队伍信息设置区域 */
@@ -60,27 +65,28 @@
             background-color: #fff;
             border-radius: 8px;
             padding: 20px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             border: 1px solid #e0d8c8;
+            box-shadow: 0 2px 8px rgba(154, 136, 104, 0.1);
         }
 
         .section-title {
-            font-size: 1.4rem;
+            font-size: 1.3rem;
             color: #5a4b38;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #9a8868;
         }
 
         .team-input-group {
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
         .input-label {
             display: block;
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #8a7d6b;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 500;
         }
 
@@ -93,32 +99,43 @@
             background: #fefbf7;
             outline: none;
             color: #5a4b38;
-            transition: border-color 0.3s;
+            transition: all 0.3s ease;
         }
 
         .team-input:focus {
             border-color: #9a8868;
+            box-shadow: 0 0 0 2px rgba(154, 136, 104, 0.1);
         }
 
         .input-hint {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             color: #b09c80;
-            margin-top: 5px;
+            margin-top: 4px;
             font-style: italic;
         }
 
-        /* 队长填写区域标题 */
+        /* 队伍信息头部样式 */
+        .team-info-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #9a8868;
+        }
+
+        /* 打本信息头部样式 */
         .raid-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 10px;
-            padding-bottom: 5px;
+            margin-bottom: 12px;
+            padding-bottom: 8px;
             border-bottom: 2px solid #9a8868;
         }
 
-        .raid-title {
-            font-size: 1.2rem;
+        .section-title {
+            font-size: 1.1rem;
             color: #5a4b38;
             font-weight: 500;
         }
@@ -130,104 +147,123 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.95rem;
-            transition: background-color 0.3s;
-            margin-left: 15px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin-left: 12px;
         }
 
         .header-save-btn:hover {
             background-color: #867352;
+            transform: translateY(-1px);
         }
 
         /* 打本信息栏样式 */
         .raid-info {
             display: flex;
-            gap: 15px;
+            gap: 12px;
             margin-bottom: 20px;
             padding: 16px 20px;
             background: #fff;
             border-radius: 8px;
             border: 1px solid #e0d8c8;
             flex-wrap: wrap;
+            box-shadow: 0 2px 8px rgba(154, 136, 104, 0.1);
         }
 
         .info-item {
             flex: 1;
-            min-width: 180px;
+            min-width: 160px;
         }
 
         .info-label {
             display: block;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #8a7d6b;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
+            font-weight: 500;
         }
 
+        /* 表单控件样式 */
         .day-select, .time-select, .copy-select, .remark-input {
             width: 100%;
             padding: 8px 12px;
             border: 1px solid #e0d8c8;
             border-radius: 6px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             background: #fefbf7;
             outline: none;
             color: #5a4b38;
+            transition: all 0.3s ease;
         }
 
         .day-select:focus, .time-select:focus, .copy-select:focus, .remark-input:focus {
             border-color: #9a8868;
+            box-shadow: 0 0 0 2px rgba(154, 136, 104, 0.1);
         }
 
         /* 队员填写区域 */
         .member-fill-section {
-            margin-top: 40px;
+            margin-top: 30px;
         }
 
-        /* 列表项 */
+        /* 列表项样式 */
         .item {
             display: flex;
             align-items: center;
-            margin-bottom: 16px;
-            padding: 14px 18px;
+            margin-bottom: 12px;
+            padding: 12px 16px;
             background: #fff;
-            border-radius: 8px;
+            border-radius: 6px;
             border: 1px solid #e0d8c8;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(154, 136, 104, 0.1);
+        }
+
+        .item:hover {
+            box-shadow: 0 2px 8px rgba(154, 136, 104, 0.15);
+            transform: translateY(-1px);
         }
 
         .prefix {
-            width: 100px;
-            font-size: 1rem;
+            width: 80px;
+            font-size: 0.95rem;
             color: #5a4b38;
             font-weight: 500;
+            flex-shrink: 0;
         }
 
         .fixed-text {
-            font-size: 1rem;
+            font-size: 0.95rem;
             color: #5a4b38;
+            padding: 4px 0;
         }
 
         .input-box {
             flex: 1;
             padding: 8px 12px;
             border: 1px solid #e0d8c8;
-            border-radius: 6px;
-            font-size: 1rem;
+            border-radius: 4px;
+            font-size: 0.95rem;
             background: #fefbf7;
             outline: none;
+            transition: all 0.3s ease;
         }
 
         .input-box:focus {
             border-color: #9a8868;
+            box-shadow: 0 0 0 2px rgba(154, 136, 104, 0.1);
         }
 
-        /* 按钮 */
+        /* 按钮样式 */
         .btn {
             margin-left: 8px;
             padding: 6px 12px;
-            border-radius: 6px;
+            border-radius: 4px;
             border: none;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 60px;
         }
 
         .save-btn {
@@ -235,9 +271,19 @@
             color: #fff;
         }
 
+        .save-btn:hover {
+            background: #867352;
+            transform: translateY(-1px);
+        }
+
         .del-btn {
             background: #c9b89f;
             color: #fff;
+        }
+
+        .del-btn:hover {
+            background: #b8a792;
+            transform: translateY(-1px);
         }
 
         /* 提示框样式 */
@@ -253,138 +299,229 @@
             z-index: 9999;
             display: none;
             animation: fadeInOut 3s ease;
+            box-shadow: 0 4px 12px rgba(214, 65, 65, 0.3);
+            font-size: 0.9rem;
         }
 
         @keyframes fadeInOut {
-            0% { opacity: 0; top: 10px; }
-            10% { opacity: 1; top: 20px; }
-            80% { opacity: 1; top: 20px; }
-            100% { opacity: 0; top: 10px; }
+            0% { opacity: 0; top: 10px; transform: translateX(-50%) scale(0.9); }
+            10% { opacity: 1; top: 20px; transform: translateX(-50%) scale(1); }
+            80% { opacity: 1; top: 20px; transform: translateX(-50%) scale(1); }
+            100% { opacity: 0; top: 10px; transform: translateX(-50%) scale(0.9); }
         }
 
-        /* 手机端适配 */
+        /* 连接状态指示器 */
+        .connection-status {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            z-index: 9999;
+            background: #FF9800;
+            color: white;
+            box-shadow: 0 2px 6px rgba(255, 152, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .connection-status.success {
+            background: #4CAF50;
+            box-shadow: 0 2px 6px rgba(76, 175, 80, 0.3);
+        }
+
+        .connection-status.error {
+            background: #f44336;
+            box-shadow: 0 2px 6px rgba(244, 67, 54, 0.3);
+        }
+
+        /* 进度指示器 */
+        .progress-indicator {
+            position: fixed;
+            bottom: 50px;
+            right: 10px;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            z-index: 9999;
+            background: #9a8868;
+            color: white;
+            box-shadow: 0 2px 6px rgba(154, 136, 104, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        /* 响应式设计 */
         @media (max-width: 768px) {
-            .raid-info {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 12px;
-                padding: 12px 15px;
-                margin-bottom: 15px;
-                display: grid;
+            .container {
+                padding: 0 15px;
             }
             
-            .info-item {
-                min-width: unset;
-                width: 100%;
+            .page-header {
+                padding: 30px 0 20px;
             }
             
-            .info-item:nth-child(1),
-            .info-item:nth-child(2) {
-                grid-column: span 1;
-            }
-            
-            .info-item:nth-child(3),
-            .info-item:nth-child(4) {
-                grid-column: span 2;
-            }
-            
-            .info-label {
-                font-size: 0.85rem;
-                margin-bottom: 4px;
-            }
-            
-            .day-select,
-            .time-select,
-            .copy-select,
-            .remark-input {
-                padding: 7px 10px;
-                font-size: 0.95rem;
-                height: 38px;
-            }
-            
-            .remark-input {
-                height: 38px;
+            .page-title {
+                font-size: 1.6rem;
+                letter-spacing: 2px;
             }
             
             .raid-header {
                 flex-direction: column;
                 align-items: flex-start;
-                gap: 10px;
+                gap: 8px;
             }
             
             .header-save-btn {
                 margin-left: 0;
-                margin-top: 10px;
+                margin-top: 8px;
                 width: auto;
-                min-width: 120px;
+                min-width: 100px;
                 align-self: flex-end;
             }
             
+            .raid-info {
+                flex-direction: column;
+                gap: 10px;
+                padding: 12px 16px;
+            }
+
+            .info-item {
+                min-width: 100%;
+            }
+
             .item {
                 flex-wrap: wrap;
-            }
-            .prefix {
-                width: 80px;
-                margin-bottom: 8px;
-            }
-            .input-box {
-                width: 100%;
-                margin-bottom: 8px;
-            }
-            .btn {
-                margin-left: 0;
-                margin-right: 8px;
-                margin-top: 8px;
-            }
-            
-            .save-btn, .del-btn {
-                margin-left: 8px;
-                margin-right: 8px;
-                margin-top: 8px;
-            }
-            
-            .item {
-                position: relative;
-            }
-            
-            .btn {
-                display: inline-block;
-            }
-
-            .team-info-section {
-                padding: 15px;
-            }
-
-            .section-title {
-                font-size: 1.2rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .raid-info {
-                grid-template-columns: 1fr;
-                gap: 10px;
                 padding: 10px 12px;
             }
             
-            .info-item:nth-child(1),
-            .info-item:nth-child(2),
-            .info-item:nth-child(3),
-            .info-item:nth-child(4) {
-                grid-column: span 1;
+            .prefix {
+                width: 60px;
+                margin-bottom: 6px;
+                font-size: 0.9rem;
+            }
+            
+            .input-box {
+                width: 100%;
+                margin-bottom: 6px;
+            }
+            
+            .btn {
+                margin-left: 0;
+                margin-right: 6px;
+                margin-top: 6px;
+                font-size: 0.8rem;
+                padding: 5px 10px;
+                min-width: 50px;
+            }
+            
+            .team-info-section {
+                padding: 16px;
+            }
+
+            .section-title {
+                font-size: 1.1rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .page-header {
+                padding: 20px 0 15px;
+            }
+            
+            .page-title {
+                font-size: 1.4rem;
+            }
+            
+            .raid-info {
+                gap: 8px;
+                padding: 10px 12px;
             }
             
             .info-label {
                 font-size: 0.8rem;
             }
             
-            .day-select,
-            .time-select,
-            .copy-select,
-            .remark-input {
+            .day-select, .time-select, .copy-select, .remark-input {
                 padding: 6px 8px;
                 font-size: 0.9rem;
                 height: 36px;
             }
+            
+            .item {
+                padding: 8px 10px;
+            }
+            
+            .prefix {
+                width: 50px;
+                font-size: 0.85rem;
+            }
+            
+            .btn {
+                font-size: 0.75rem;
+                padding: 4px 8px;
+                min-width: 45px;
+            }
+        }
+
+        /* 加载动画 */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+            position: relative;
+        }
+
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid #f3f3f3;
+            border-top: 2px solid #9a8868;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 成功状态样式 */
+        .success-state {
+            background-color: #e8f5e9;
+            border-color: #4CAF50;
+        }
+
+        .success-state .prefix,
+        .success-state .fixed-text {
+            color: #2e7d32;
+        }
+
+        /* 错误状态样式 */
+        .error-state {
+            background-color: #ffebee;
+            border-color: #f44336;
+        }
+
+        .error-state .prefix,
+        .error-state .fixed-text {
+            color: #c62828;
+        }
+
+        /* 悬停效果增强 */
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .item:active {
+            transform: translateY(1px);
         }
     </style>
 </head>
@@ -398,7 +535,10 @@
 
         <!-- 队伍信息设置区域 -->
         <div class="team-info-section">
-            <h2 class="section-title">队伍基本信息</h2>
+            <div class="team-info-header">
+                <h2 class="section-title">队伍基本信息</h2>
+                <button class="header-save-btn" id="teamInfoSaveBtn">保存设置</button>
+            </div>
             
             <div class="team-input-group">
                 <label class="input-label">队伍名称</label>
@@ -531,111 +671,1049 @@
         </div>
     </div>
 
-    <script>
-        // 存储已填写的位置信息
-        const filledPositions = {};
-        const alertBox = document.getElementById('alertBox');
-        const TEAM_KEY = 'newteam'; // 新建队伍标识
-        const RAID_SETTINGS_KEY = `${TEAM_KEY}_raid_settings`; // 打本设置存储键
-        const TEAM_INFO_KEY = `${TEAM_KEY}_team_info`; // 队伍信息存储键
+        <script>
+        // 配置常量
+        const CONFIG = {
+            maxTeamNameLength: 20,
+            maxLeaderNameLength: 10,
+            maxMemberNameLength: 15,
+            alertDuration: 3000,
+            saveFeedbackDuration: 3000,
+            autoSaveDelay: 2000,
+            connectionCheckInterval: 5000,
+            progressUpdateInterval: 5000
+        };
 
-        // 生成时间选择器选项（0~24:00，半小时为单位）
-        function generateTimeOptions() {
-            const timeSelector = document.getElementById('timeSelector');
-            
-            // 首先添加"百业派对后"选项并设置为默认选中
-            const afterPartyOption = document.createElement('option');
-            afterPartyOption.value = '百业派对后';
-            afterPartyOption.textContent = '百业派对后';
-            afterPartyOption.selected = true;
-            timeSelector.appendChild(afterPartyOption);
-            
-            // 添加分隔线选项（可选）
-            const separatorOption = document.createElement('option');
-            separatorOption.disabled = true;
-            separatorOption.textContent = '──────────';
-            timeSelector.appendChild(separatorOption);
-            
-            let hours = 0;
-            let minutes = 0;
+        // 存储键常量
+        const STORAGE_KEYS = {
+            team: 'newteam',
+            raidSettings: 'newteam_raid_settings',
+            teamInfo: 'newteam_team_info',
+            memberData: 'newteam_member_data'
+        };
 
-            // 生成00:00到24:00的选项，步长30分钟
-            while (hours <= 24) {
-                const hourStr = hours.toString().padStart(2, '0');
-                const minStr = minutes.toString().padStart(2, '0');
-                const timeStr = `${hourStr}:${minStr}`;
-                
-                const option = document.createElement('option');
-                option.value = timeStr;
-                option.textContent = timeStr;
-                
-                timeSelector.appendChild(option);
+        // 全局状态管理
+        const appState = {
+            filledPositions: {},
+            isConnected: navigator.onLine,
+            autoSaveTimer: null,
+            connectionCheckTimer: null,
+            progressUpdateTimer: null
+        };
 
-                minutes += 30;
-                if (minutes >= 60) {
-                    minutes = 0;
-                    hours += 1;
+        // 工具函数：显示提示信息
+        function showAlert(message, type = 'error') {
+            let alertBox = document.getElementById('alertBox');
+            if (!alertBox) {
+                alertBox = document.createElement('div');
+                alertBox.id = 'alertBox';
+                alertBox.className = 'alert';
+                document.body.appendChild(alertBox);
+            }
+            
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            alertBox.style.background = type === 'success' ? '#4CAF50' : 
+                                      type === 'warning' ? '#FF9800' : '#d64141';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, CONFIG.alertDuration);
+        }
+
+        // 工具函数：验证输入
+        function validateInput(input, fieldName, maxLength) {
+            const value = input.value.trim();
+            
+            if (!value) {
+                showAlert(`请输入${fieldName}！`, 'warning');
+                input.focus();
+                return false;
+            }
+            
+            if (value.length > maxLength) {
+                showAlert(`${fieldName}不能超过${maxLength}个字符！`, 'error');
+                input.focus();
+                return false;
+            }
+            
+            // 检查特殊字符
+            const specialChars = /[<>\/\\]/;
+            if (specialChars.test(value)) {
+                showAlert(`${fieldName}不能包含特殊字符！`, 'error');
+                input.focus();
+                return false;
+            }
+            
+            return true;
+        }
+
+        // 工具函数：保存到本地存储
+        function saveToLocalStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error('保存数据失败:', error);
+                showAlert('保存失败，请检查浏览器存储空间！', 'error');
+                return false;
+            }
+        }
+
+        // 工具函数：从本地存储读取数据
+        function loadFromLocalStorage(key) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : null;
+            } catch (error) {
+                console.error('读取数据失败:', error);
+                return null;
+            }
+        }
+
+        // 工具函数：清除本地存储数据
+        function clearLocalStorage(key) {
+            try {
+                localStorage.removeItem(key);
+                return true;
+            } catch (error) {
+                console.error('清除数据失败:', error);
+                return false;
+            }
+        }
+
+        // 工具函数：生成唯一ID
+        function generateUniqueId() {
+            return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        }
+
+        // 工具函数：防抖函数
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // 工具函数：节流函数
+        function throttle(func, limit) {
+            let inThrottle;
+            return function(...args) {
+                if (!inThrottle) {
+                    func.apply(this, args);
+                    inThrottle = true;
+                    setTimeout(() => inThrottle = false, limit);
                 }
+            };
+        }
+
+        // 业务逻辑：数据管理和订阅功能
+        class TeamManager {
+            constructor() {
+                this.subscribers = new Set();
+                this.isConnected = false;
+                this.init();
+            }
+
+            // 初始化管理器
+            init() {
+                this.setupConnectionMonitoring();
+                this.setupAutoSave();
+                this.setupDataValidation();
+            }
+
+            // 设置连接监控
+            setupConnectionMonitoring() {
+                // 监控网络连接状态
+                window.addEventListener('online', () => {
+                    this.isConnected = true;
+                    this.updateConnectionStatus(true);
+                    this.notifySubscribers('connection', { status: 'online' });
+                });
+
+                window.addEventListener('offline', () => {
+                    this.isConnected = false;
+                    this.updateConnectionStatus(false);
+                    this.notifySubscribers('connection', { status: 'offline' });
+                });
+            }
+
+            // 设置自动保存
+            setupAutoSave() {
+                // 监听表单变化，自动保存
+                const forms = document.querySelectorAll('input, select, textarea');
+                forms.forEach(form => {
+                    form.addEventListener('change', () => {
+                        this.autoSave();
+                    });
+                });
+
+                // 页面关闭前保存
+                window.addEventListener('beforeunload', () => {
+                    this.saveAllData();
+                });
+            }
+
+            // 设置数据验证
+            setupDataValidation() {
+                // 实时验证输入
+                const inputs = document.querySelectorAll('input[type="text"]');
+                inputs.forEach(input => {
+                    input.addEventListener('input', (e) => {
+                        this.validateInputRealTime(e.target);
+                    });
+                });
+            }
+
+            // 自动保存数据
+            autoSave() {
+                const teamInfo = this.getTeamInfo();
+                const raidSettings = this.getRaidSettings();
+                const memberData = this.getMemberData();
+
+                if (teamInfo) this.saveTeamInfo(teamInfo);
+                if (raidSettings) this.saveRaidSettings(raidSettings);
+                if (memberData) this.saveMemberData(memberData);
+
+                this.notifySubscribers('autosave', { 
+                    timestamp: new Date().toISOString(),
+                    data: { teamInfo, raidSettings, memberData }
+                });
+            }
+
+            // 获取队伍信息
+            getTeamInfo() {
+                const teamNameInput = document.getElementById('teamNameInput');
+                const leaderNameInput = document.getElementById('leaderNameInput');
+                
+                if (!teamNameInput || !leaderNameInput) return null;
+
+                return {
+                    teamName: teamNameInput.value.trim(),
+                    leaderName: leaderNameInput.value.trim(),
+                    timestamp: new Date().toISOString()
+                };
+            }
+
+            // 获取打本设置
+            getRaidSettings() {
+                const daySelector = document.getElementById('daySelector');
+                const timeSelector = document.getElementById('timeSelector');
+                const copySelector = document.getElementById('copySelector');
+                const remarkInput = document.getElementById('remarkInput');
+
+                if (!daySelector || !timeSelector || !copySelector) return null;
+
+                return {
+                    day: daySelector.value,
+                    time: timeSelector.value,
+                    copy: copySelector.value,
+                    remark: remarkInput ? remarkInput.value.trim() : '',
+                    timestamp: new Date().toISOString()
+                };
+            }
+
+            // 获取队员数据
+            getMemberData() {
+                const memberData = {};
+                
+                document.querySelectorAll('.item').forEach(item => {
+                    const positionId = item.dataset.id;
+                    if (!positionId) return;
+
+                    const fixedText = item.querySelector('.fixed-text');
+                    const input = item.querySelector('.input-box');
+                    
+                    if (fixedText) {
+                        memberData[positionId] = {
+                            name: fixedText.textContent.trim(),
+                            status: 'filled',
+                            timestamp: new Date().toISOString()
+                        };
+                    } else if (input && input.value.trim()) {
+                        memberData[positionId] = {
+                            name: input.value.trim(),
+                            status: 'pending',
+                            timestamp: new Date().toISOString()
+                        };
+                    }
+                });
+
+                return Object.keys(memberData).length > 0 ? memberData : null;
+            }
+
+            // 保存所有数据
+            saveAllData() {
+                const teamInfo = this.getTeamInfo();
+                const raidSettings = this.getRaidSettings();
+                const memberData = this.getMemberData();
+
+                let savedCount = 0;
+                if (teamInfo && this.saveTeamInfo(teamInfo)) savedCount++;
+                if (raidSettings && this.saveRaidSettings(raidSettings)) savedCount++;
+                if (memberData && this.saveMemberData(memberData)) savedCount++;
+
+                console.log(`自动保存了 ${savedCount} 项数据`);
+                return savedCount;
+            }
+
+            // 保存队伍信息
+            saveTeamInfo(teamInfo) {
+                if (!teamInfo.teamName || !teamInfo.leaderName) return false;
+                
+                try {
+                    localStorage.setItem(TEAM_INFO_KEY, JSON.stringify(teamInfo));
+                    this.notifySubscribers('teamInfoSaved', teamInfo);
+                    return true;
+                } catch (error) {
+                    console.error('保存队伍信息失败:', error);
+                    return false;
+                }
+            }
+
+            // 保存打本设置
+            saveRaidSettings(raidSettings) {
+                try {
+                    localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify(raidSettings));
+                    this.notifySubscribers('raidSettingsSaved', raidSettings);
+                    return true;
+                } catch (error) {
+                    console.error('保存打本设置失败:', error);
+                    return false;
+                }
+            }
+
+            // 保存队员数据
+            saveMemberData(memberData) {
+                try {
+                    Object.entries(memberData).forEach(([positionId, data]) => {
+                        localStorage.setItem(`${TEAM_KEY}_${positionId}`, JSON.stringify(data));
+                    });
+                    this.notifySubscribers('memberDataSaved', memberData);
+                    return true;
+                } catch (error) {
+                    console.error('保存队员数据失败:', error);
+                    return false;
+                }
+            }
+
+            // 实时验证输入
+            validateInputRealTime(input) {
+                const value = input.value.trim();
+                const maxLength = input.dataset.maxLength || CONFIG.maxMemberNameLength;
+                
+                if (value.length > maxLength) {
+                    input.style.borderColor = '#f44336';
+                    this.showInputHint(input, `不能超过${maxLength}个字符`);
+                } else {
+                    input.style.borderColor = '#e0d8c8';
+                    this.hideInputHint(input);
+                }
+            }
+
+            // 显示输入提示
+            showInputHint(input, message) {
+                let hint = input.parentNode.querySelector('.input-hint-real-time');
+                if (!hint) {
+                    hint = document.createElement('div');
+                    hint.className = 'input-hint-real-time';
+                    hint.style.fontSize = '0.8rem';
+                    hint.style.color = '#f44336';
+                    hint.style.marginTop = '4px';
+                    input.parentNode.appendChild(hint);
+                }
+                hint.textContent = message;
+            }
+
+            // 隐藏输入提示
+            hideInputHint(input) {
+                const hint = input.parentNode.querySelector('.input-hint-real-time');
+                if (hint) {
+                    hint.remove();
+                }
+            }
+
+            // 更新连接状态
+            updateConnectionStatus(isConnected) {
+                const statusElement = document.querySelector('.connection-status');
+                if (statusElement) {
+                    statusElement.className = `connection-status ${isConnected ? 'success' : 'error'}`;
+                    statusElement.textContent = isConnected ? '✓ 连接正常' : '✗ 离线模式';
+                }
+            }
+
+            // 订阅事件
+            subscribe(callback) {
+                this.subscribers.add(callback);
+                return () => this.subscribers.delete(callback);
+            }
+
+            // 通知订阅者
+            notifySubscribers(eventType, data) {
+                this.subscribers.forEach(callback => {
+                    try {
+                        callback(eventType, data);
+                    } catch (error) {
+                        console.error('订阅者回调错误:', error);
+                    }
+                });
+            }
+
+            // 获取统计数据
+            getStatistics() {
+                const memberData = this.getMemberData();
+                const totalPositions = document.querySelectorAll('.item[data-id]').length;
+                const filledPositions = Object.values(memberData || {}).filter(data => data.status === 'filled').length;
+                const pendingPositions = Object.values(memberData || {}).filter(data => data.status === 'pending').length;
+                
+                return {
+                    total: totalPositions,
+                    filled: filledPositions,
+                    pending: pendingPositions,
+                    progress: totalPositions > 0 ? Math.round((filledPositions / totalPositions) * 100) : 0
+                };
+            }
+
+            // 导出数据
+            exportData() {
+                const teamInfo = this.getTeamInfo();
+                const raidSettings = this.getRaidSettings();
+                const memberData = this.getMemberData();
+                const statistics = this.getStatistics();
+
+                const exportData = {
+                    teamInfo,
+                    raidSettings,
+                    memberData,
+                    statistics,
+                    exportTime: new Date().toISOString(),
+                    version: '1.0'
+                };
+
+                return JSON.stringify(exportData, null, 2);
+            }
+
+            // 导入数据
+            importData(jsonData) {
+                try {
+                    const data = JSON.parse(jsonData);
+                    
+                    if (data.teamInfo) {
+                        this.applyTeamInfo(data.teamInfo);
+                    }
+                    
+                    if (data.raidSettings) {
+                        this.applyRaidSettings(data.raidSettings);
+                    }
+                    
+                    if (data.memberData) {
+                        this.applyMemberData(data.memberData);
+                    }
+                    
+                    this.notifySubscribers('dataImported', data);
+                    return true;
+                } catch (error) {
+                    console.error('导入数据失败:', error);
+                    return false;
+                }
+            }
+
+            // 应用队伍信息
+            applyTeamInfo(teamInfo) {
+                const teamNameInput = document.getElementById('teamNameInput');
+                const leaderNameInput = document.getElementById('leaderNameInput');
+                
+                if (teamNameInput && teamInfo.teamName) {
+                    teamNameInput.value = teamInfo.teamName;
+                }
+                
+                if (leaderNameInput && teamInfo.leaderName) {
+                    leaderNameInput.value = teamInfo.leaderName;
+                }
+            }
+
+            // 应用打本设置
+            applyRaidSettings(raidSettings) {
+                const daySelector = document.getElementById('daySelector');
+                const timeSelector = document.getElementById('timeSelector');
+                const copySelector = document.getElementById('copySelector');
+                const remarkInput = document.getElementById('remarkInput');
+                
+                if (daySelector && raidSettings.day) daySelector.value = raidSettings.day;
+                if (timeSelector && raidSettings.time) timeSelector.value = raidSettings.time;
+                if (copySelector && raidSettings.copy) copySelector.value = raidSettings.copy;
+                if (remarkInput && raidSettings.remark) remarkInput.value = raidSettings.remark;
+            }
+
+            // 应用队员数据
+            applyMemberData(memberData) {
+                Object.entries(memberData).forEach(([positionId, data]) => {
+                    const item = document.querySelector(`[data-id="${positionId}"]`);
+                    if (item && data.name) {
+                        const input = item.querySelector('.input-box');
+                        const saveBtn = item.querySelector('.save-btn');
+                        const delBtn = item.querySelector('.del-btn');
+                        
+                        if (input && saveBtn && delBtn) {
+                            if (data.status === 'filled') {
+                                const fixedText = document.createElement('div');
+                                fixedText.className = 'fixed-text';
+                                fixedText.textContent = data.name;
+                                input.replaceWith(fixedText);
+                                
+                                saveBtn.style.display = 'none';
+                                delBtn.style.display = 'inline-block';
+                            } else {
+                                input.value = data.name;
+                            }
+                        }
+                    }
+                });
+            }
+        }
+
+        // 初始化团队管理器
+        let teamManager;
+
+        // 工具函数：验证输入（增强版）
+        function validateInput(input, fieldName, maxLength) {
+            const value = input.value.trim();
+            
+            if (!value) {
+                showAlert(`请输入${fieldName}！`);
+                input.focus();
+                return false;
+            }
+            
+            if (value.length > maxLength) {
+                showAlert(`${fieldName}不能超过${maxLength}个字符！`);
+                input.focus();
+                return false;
+            }
+            
+            // 检查特殊字符
+            const specialChars = /[<>\/\\]/;
+            if (specialChars.test(value)) {
+                showAlert(`${fieldName}不能包含特殊字符！`);
+                input.focus();
+                return false;
+            }
+            
+            return true;
+        }
+
+        // 工具函数：显示提示信息（增强版）
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            if (!alertBox) {
+                // 创建提示框如果不存在
+                const newAlertBox = document.createElement('div');
+                newAlertBox.id = 'alertBox';
+                newAlertBox.className = 'alert';
+                newAlertBox.style.display = 'none';
+                document.body.appendChild(newAlertBox);
+            }
+            
+            alertBox.textContent = message;
+            alertBox.style.display = 'block';
+            alertBox.style.background = type === 'success' ? '#4CAF50' : 
+                                      type === 'warning' ? '#FF9800' : '#d64141';
+            
+            setTimeout(() => {
+                alertBox.style.display = 'none';
+            }, CONFIG.alertDuration);
+        }
+
+        // 工具函数：保存到本地存储
+        function saveToLocalStorage(key, data) {
+            try {
+                localStorage.setItem(key, JSON.stringify(data));
+                return true;
+            } catch (error) {
+                console.error('保存数据失败:', error);
+                showAlert('保存失败，请检查浏览器存储空间！');
+                return false;
+            }
+        }
+
+        // 工具函数：从本地存储读取数据
+        function loadFromLocalStorage(key) {
+            try {
+                const data = localStorage.getItem(key);
+                return data ? JSON.parse(data) : null;
+            } catch (error) {
+                console.error('读取数据失败:', error);
+                return null;
+            }
+        }
+
+        // 业务逻辑：时间选项生成器
+        class TimeOptionGenerator {
+            constructor() {
+                this.defaultOptions = ['百业派对后', '19:00', '20:00', '21:00', '22:00'];
+                this.timeIntervals = this.generateTimeIntervals();
+            }
+
+            // 生成时间间隔选项
+            generateTimeIntervals() {
+                const intervals = [];
+                for (let hour = 0; hour <= 24; hour++) {
+                    for (let minute of [0, 30]) {
+                        if (hour === 24 && minute === 30) break;
+                        const timeStr = `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+                        intervals.push(timeStr);
+                    }
+                }
+                return intervals;
+            }
+
+            // 生成时间选择器选项
+            generateTimeOptions() {
+                const timeSelector = document.getElementById('timeSelector');
+                if (!timeSelector) return;
+                
+                timeSelector.innerHTML = '';
+                
+                // 添加默认选项
+                this.defaultOptions.forEach(option => {
+                    this.addOption(timeSelector, option, option, true);
+                });
+                
+                // 添加分隔线
+                this.addSeparator(timeSelector);
+                
+                // 添加时间间隔选项
+                this.timeIntervals.forEach(time => {
+                    this.addOption(timeSelector, time, time, false);
+                });
+            }
+
+            // 添加选项
+            addOption(selector, value, text, isDefault = false) {
+                const option = document.createElement('option');
+                option.value = value;
+                option.textContent = text;
+                option.selected = isDefault;
+                selector.appendChild(option);
+            }
+
+            // 添加分隔线
+            addSeparator(selector) {
+                const separator = document.createElement('option');
+                separator.disabled = true;
+                separator.textContent = '──────────';
+                selector.appendChild(separator);
+            }
+        }
+
+        // 业务逻辑：数据管理器
+        class DataManager {
+            constructor() {
+                this.subscribers = new Set();
+                this.isConnected = navigator.onLine;
+                this.init();
+            }
+
+            init() {
+                this.setupConnectionMonitoring();
+                this.setupAutoSave();
+                this.setupDataValidation();
+            }
+
+            // 设置连接监控
+            setupConnectionMonitoring() {
+                window.addEventListener('online', () => {
+                    this.isConnected = true;
+                    this.updateConnectionStatus(true);
+                    this.notifySubscribers('connection', { status: 'online' });
+                });
+
+                window.addEventListener('offline', () => {
+                    this.isConnected = false;
+                    this.updateConnectionStatus(false);
+                    this.notifySubscribers('connection', { status: 'offline' });
+                });
+            }
+
+            // 设置自动保存
+            setupAutoSave() {
+                const debouncedAutoSave = debounce(() => this.autoSave(), CONFIG.autoSaveDelay);
+                
+                document.querySelectorAll('input, select, textarea').forEach(element => {
+                    element.addEventListener('input', debouncedAutoSave);
+                    element.addEventListener('change', debouncedAutoSave);
+                });
+
+                window.addEventListener('beforeunload', () => this.saveAllData());
+            }
+
+            // 设置数据验证
+            setupDataValidation() {
+                document.querySelectorAll('input[type="text"]').forEach(input => {
+                    input.addEventListener('input', throttle((e) => {
+                        this.validateInputRealTime(e.target);
+                    }, 300));
+                });
+            }
+
+            // 自动保存数据
+            autoSave() {
+                const teamInfo = this.getTeamInfo();
+                const raidSettings = this.getRaidSettings();
+                const memberData = this.getMemberData();
+
+                let savedCount = 0;
+                if (teamInfo && this.saveTeamInfo(teamInfo)) savedCount++;
+                if (raidSettings && this.saveRaidSettings(raidSettings)) savedCount++;
+                if (memberData && this.saveMemberData(memberData)) savedCount++;
+
+                this.notifySubscribers('autosave', {
+                    timestamp: new Date().toISOString(),
+                    savedCount: savedCount
+                });
+            }
+
+            // 获取队伍信息
+            getTeamInfo() {
+                const teamNameInput = document.getElementById('teamNameInput');
+                const leaderNameInput = document.getElementById('leaderNameInput');
+                
+                if (!teamNameInput || !leaderNameInput) return null;
+
+                const teamName = teamNameInput.value.trim();
+                const leaderName = leaderNameInput.value.trim();
+
+                if (!teamName || !leaderName) return null;
+
+                return {
+                    teamName: teamName,
+                    leaderName: leaderName,
+                    timestamp: new Date().toISOString(),
+                    version: '1.0'
+                };
+            }
+
+            // 获取打本设置
+            getRaidSettings() {
+                const daySelector = document.getElementById('daySelector');
+                const timeSelector = document.getElementById('timeSelector');
+                const copySelector = document.getElementById('copySelector');
+                const remarkInput = document.getElementById('remarkInput');
+
+                if (!daySelector || !timeSelector || !copySelector) return null;
+
+                return {
+                    day: daySelector.value,
+                    time: timeSelector.value,
+                    copy: copySelector.value,
+                    remark: remarkInput ? remarkInput.value.trim() : '',
+                    timestamp: new Date().toISOString(),
+                    version: '1.0'
+                };
+            }
+
+            // 获取队员数据
+            getMemberData() {
+                const memberData = {};
+                
+                document.querySelectorAll('.item[data-id]').forEach(item => {
+                    const positionId = item.dataset.id;
+                    if (!positionId) return;
+
+                    const fixedText = item.querySelector('.fixed-text');
+                    const input = item.querySelector('.input-box');
+                    
+                    if (fixedText) {
+                        memberData[positionId] = {
+                            name: fixedText.textContent.trim(),
+                            status: 'filled',
+                            timestamp: new Date().toISOString()
+                        };
+                    } else if (input && input.value.trim()) {
+                        memberData[positionId] = {
+                            name: input.value.trim(),
+                            status: 'pending',
+                            timestamp: new Date().toISOString()
+                        };
+                    }
+                });
+
+                return Object.keys(memberData).length > 0 ? memberData : null;
+            }
+
+            // 保存所有数据
+            saveAllData() {
+                const teamInfo = this.getTeamInfo();
+                const raidSettings = this.getRaidSettings();
+                const memberData = this.getMemberData();
+
+                let savedCount = 0;
+                if (teamInfo && this.saveTeamInfo(teamInfo)) savedCount++;
+                if (raidSettings && this.saveRaidSettings(raidSettings)) savedCount++;
+                if (memberData && this.saveMemberData(memberData)) savedCount++;
+
+                console.log(`自动保存了 ${savedCount} 项数据`);
+                return savedCount;
+            }
+
+            // 保存队伍信息
+            saveTeamInfo(teamInfo) {
+                return saveToLocalStorage(STORAGE_KEYS.teamInfo, teamInfo);
+            }
+
+            // 保存打本设置
+            saveRaidSettings(raidSettings) {
+                return saveToLocalStorage(STORAGE_KEYS.raidSettings, raidSettings);
+            }
+
+            // 保存队员数据
+            saveMemberData(memberData) {
+                try {
+                    const memberDataKey = STORAGE_KEYS.memberData;
+                    const existingData = loadFromLocalStorage(memberDataKey) || {};
+                    const mergedData = { ...existingData, ...memberData };
+                    return saveToLocalStorage(memberDataKey, mergedData);
+                } catch (error) {
+                    console.error('保存队员数据失败:', error);
+                    return false;
+                }
+            }
+
+            // 实时验证输入
+            validateInputRealTime(input) {
+                const value = input.value.trim();
+                const maxLength = input.dataset.maxLength || CONFIG.maxMemberNameLength;
+                
+                if (value.length > maxLength) {
+                    input.style.borderColor = '#f44336';
+                    this.showInputHint(input, `不能超过${maxLength}个字符`);
+                } else {
+                    input.style.borderColor = '#e0d8c8';
+                    this.hideInputHint(input);
+                }
+            }
+
+            // 显示输入提示
+            showInputHint(input, message) {
+                let hint = input.parentNode.querySelector('.input-hint-real-time');
+                if (!hint) {
+                    hint = document.createElement('div');
+                    hint.className = 'input-hint-real-time';
+                    hint.style.cssText = 'font-size: 0.8rem; color: #f44336; margin-top: 4px;';
+                    input.parentNode.appendChild(hint);
+                }
+                hint.textContent = message;
+            }
+
+            // 隐藏输入提示
+            hideInputHint(input) {
+                const hint = input.parentNode.querySelector('.input-hint-real-time');
+                if (hint) hint.remove();
+            }
+
+            // 更新连接状态
+            updateConnectionStatus(isConnected) {
+                const statusElement = document.querySelector('.connection-status');
+                if (statusElement) {
+                    statusElement.className = `connection-status ${isConnected ? 'success' : 'error'}`;
+                    statusElement.textContent = isConnected ? '✓ 连接正常' : '✗ 离线模式';
+                }
+            }
+
+            // 订阅事件
+            subscribe(callback) {
+                this.subscribers.add(callback);
+                return () => this.subscribers.delete(callback);
+            }
+
+            // 通知订阅者
+            notifySubscribers(eventType, data) {
+                this.subscribers.forEach(callback => {
+                    try {
+                        callback(eventType, data);
+                    } catch (error) {
+                        console.error('订阅者回调错误:', error);
+                    }
+                });
+            }
+
+            // 获取统计数据
+            getStatistics() {
+                const memberData = this.getMemberData();
+                const totalPositions = document.querySelectorAll('.item[data-id]').length;
+                const filledPositions = Object.values(memberData || {}).filter(data => data.status === 'filled').length;
+                const pendingPositions = Object.values(memberData || {}).filter(data => data.status === 'pending').length;
+                
+                return {
+                    total: totalPositions,
+                    filled: filledPositions,
+                    pending: pendingPositions,
+                    progress: totalPositions > 0 ? Math.round((filledPositions / totalPositions) * 100) : 0
+                };
+            }
+
+            // 导出数据
+            exportData() {
+                const teamInfo = this.getTeamInfo();
+                const raidSettings = this.getRaidSettings();
+                const memberData = this.getMemberData();
+                const statistics = this.getStatistics();
+
+                const exportData = {
+                    teamInfo,
+                    raidSettings,
+                    memberData,
+                    statistics,
+                    exportTime: new Date().toISOString(),
+                    version: '1.0'
+                };
+
+                return JSON.stringify(exportData, null, 2);
+            }
+
+            // 导入数据
+            importData(jsonData) {
+                try {
+                    const data = JSON.parse(jsonData);
+                    
+                    if (data.teamInfo) this.applyTeamInfo(data.teamInfo);
+                    if (data.raidSettings) this.applyRaidSettings(data.raidSettings);
+                    if (data.memberData) this.applyMemberData(data.memberData);
+                    
+                    this.notifySubscribers('dataImported', data);
+                    return true;
+                } catch (error) {
+                    console.error('导入数据失败:', error);
+                    return false;
+                }
+            }
+
+            // 应用队伍信息
+            applyTeamInfo(teamInfo) {
+                const teamNameInput = document.getElementById('teamNameInput');
+                const leaderNameInput = document.getElementById('leaderNameInput');
+                
+                if (teamNameInput && teamInfo.teamName) teamNameInput.value = teamInfo.teamName;
+                if (leaderNameInput && teamInfo.leaderName) leaderNameInput.value = teamInfo.leaderName;
+            }
+
+            // 应用打本设置
+            applyRaidSettings(raidSettings) {
+                const daySelector = document.getElementById('daySelector');
+                const timeSelector = document.getElementById('timeSelector');
+                const copySelector = document.getElementById('copySelector');
+                const remarkInput = document.getElementById('remarkInput');
+                
+                if (daySelector && raidSettings.day) daySelector.value = raidSettings.day;
+                if (timeSelector && raidSettings.time) timeSelector.value = raidSettings.time;
+                if (copySelector && raidSettings.copy) copySelector.value = raidSettings.copy;
+                if (remarkInput && raidSettings.remark) remarkInput.value = raidSettings.remark;
+            }
+
+            // 应用队员数据
+            applyMemberData(memberData) {
+                Object.entries(memberData).forEach(([positionId, data]) => {
+                    const item = document.querySelector(`[data-id="${positionId}"]`);
+                    if (item && data.name) {
+                        const input = item.querySelector('.input-box');
+                        const saveBtn = item.querySelector('.save-btn');
+                        const delBtn = item.querySelector('.del-btn');
+                        
+                        if (input && saveBtn && delBtn) {
+                            if (data.status === 'filled') {
+                                const fixedText = document.createElement('div');
+                                fixedText.className = 'fixed-text';
+                                fixedText.textContent = data.name;
+                                input.replaceWith(fixedText);
+                                
+                                saveBtn.style.display = 'none';
+                                delBtn.style.display = 'inline-block';
+                            } else {
+                                input.value = data.name;
+                            }
+                        }
+                    }
+                });
             }
         }
 
         // 加载保存的打本信息
         function loadRaidInfo() {
-            const savedInfo = localStorage.getItem(RAID_SETTINGS_KEY);
+            const savedInfo = loadFromLocalStorage(RAID_SETTINGS_KEY);
             if (savedInfo) {
-                const info = JSON.parse(savedInfo);
-                if (info.day) document.getElementById('daySelector').value = info.day;
-                if (info.time) document.getElementById('timeSelector').value = info.time;
-                if (info.copy) document.getElementById('copySelector').value = info.copy;
-                if (info.remark) document.getElementById('remarkInput').value = info.remark;
+                if (savedInfo.day) {
+                    const daySelector = document.getElementById('daySelector');
+                    if (daySelector) daySelector.value = savedInfo.day;
+                }
+                if (savedInfo.time) {
+                    const timeSelector = document.getElementById('timeSelector');
+                    if (timeSelector) timeSelector.value = savedInfo.time;
+                }
+                if (savedInfo.copy) {
+                    const copySelector = document.getElementById('copySelector');
+                    if (copySelector) copySelector.value = savedInfo.copy;
+                }
+                if (savedInfo.remark) {
+                    const remarkInput = document.getElementById('remarkInput');
+                    if (remarkInput) remarkInput.value = savedInfo.remark;
+                }
             } else {
                 // 默认设置：周一 21:00 双十
-                document.getElementById('daySelector').value = '周一';
-                document.getElementById('timeSelector').value = '21:00';
-                document.getElementById('copySelector').value = '双十';
+                const daySelector = document.getElementById('daySelector');
+                const timeSelector = document.getElementById('timeSelector');
+                const copySelector = document.getElementById('copySelector');
+                
+                if (daySelector) daySelector.value = '周一';
+                if (timeSelector) timeSelector.value = '21:00';
+                if (copySelector) copySelector.value = '双十';
             }
         }
 
         // 加载保存的队伍信息
         function loadTeamInfo() {
-            const savedTeamInfo = localStorage.getItem(TEAM_INFO_KEY);
+            const savedTeamInfo = loadFromLocalStorage(TEAM_INFO_KEY);
             if (savedTeamInfo) {
-                const info = JSON.parse(savedTeamInfo);
-                if (info.teamName) {
-                    document.getElementById('teamNameInput').value = info.teamName;
+                if (savedTeamInfo.teamName) {
+                    const teamNameInput = document.getElementById('teamNameInput');
+                    if (teamNameInput) teamNameInput.value = savedTeamInfo.teamName;
+                    
                     // 更新页面标题显示
                     const teamNameDisplay = document.querySelector('.team-name');
                     if (teamNameDisplay) {
-                        teamNameDisplay.textContent = `队伍：${info.teamName}`;
+                        teamNameDisplay.textContent = `队伍：${savedTeamInfo.teamName}`;
                     }
                 }
-                if (info.leaderName) {
-                    document.getElementById('leaderNameInput').value = info.leaderName;
+                if (savedTeamInfo.leaderName) {
+                    const leaderNameInput = document.getElementById('leaderNameInput');
+                    if (leaderNameInput) leaderNameInput.value = savedTeamInfo.leaderName;
                 }
             }
         }
 
         // 保存队伍信息
         function saveTeamInfo() {
-            const teamName = document.getElementById('teamNameInput').value.trim();
-            const leaderName = document.getElementById('leaderNameInput').value.trim();
+            const teamNameInput = document.getElementById('teamNameInput');
+            const leaderNameInput = document.getElementById('leaderNameInput');
             
-            if (!teamName) {
-                alert('请输入队伍名称！');
-                return;
-            }
+            if (!teamNameInput || !leaderNameInput) return;
             
-            if (!leaderName) {
-                alert('请输入队长姓名！');
-                return;
-            }
+            const teamName = teamNameInput.value.trim();
+            const leaderName = leaderNameInput.value.trim();
+            
+            if (!validateInput(teamNameInput, '队伍名称', CONFIG.maxTeamNameLength)) return;
+            if (!validateInput(leaderNameInput, '队长姓名', CONFIG.maxLeaderNameLength)) return;
             
             const teamInfo = {
                 teamName: teamName,
                 leaderName: leaderName
             };
             
-            localStorage.setItem(TEAM_INFO_KEY, JSON.stringify(teamInfo));
+            if (!saveToLocalStorage(TEAM_INFO_KEY, teamInfo)) return;
             
             // 更新页面标题显示
             const teamNameDisplay = document.querySelector('.team-name');
@@ -644,19 +1722,25 @@
             }
             
             // 更新队长输入框的值
-            document.getElementById('leaderInput').value = leaderName;
+            const leaderInput = document.getElementById('leaderInput');
+            if (leaderInput) leaderInput.value = leaderName;
             
-            alert('队伍信息已保存！');
+            showAlert('队伍信息已保存！', 'success');
         }
 
         // 保存打本设置
         function saveRaidSettings() {
             // 先保存队伍信息
-            const teamName = document.getElementById('teamNameInput').value.trim();
-            const leaderName = document.getElementById('leaderNameInput').value.trim();
+            const teamNameInput = document.getElementById('teamNameInput');
+            const leaderNameInput = document.getElementById('leaderNameInput');
+            
+            if (!teamNameInput || !leaderNameInput) return;
+            
+            const teamName = teamNameInput.value.trim();
+            const leaderName = leaderNameInput.value.trim();
             
             if (!teamName || !leaderName) {
-                alert('请先填写队伍名称和队长姓名！');
+                showAlert('请先填写队伍名称和队长姓名！');
                 return;
             }
             
@@ -665,7 +1749,7 @@
                 teamName: teamName,
                 leaderName: leaderName
             };
-            localStorage.setItem(TEAM_INFO_KEY, JSON.stringify(teamInfo));
+            if (!saveToLocalStorage(TEAM_INFO_KEY, teamInfo)) return;
             
             // 更新页面标题显示
             const teamNameDisplay = document.querySelector('.team-name');
@@ -675,53 +1759,49 @@
             
             // 保存打本设置
             const raidSettings = {
-                day: document.getElementById('daySelector').value,
-                time: document.getElementById('timeSelector').value,
-                copy: document.getElementById('copySelector').value,
-                remark: document.getElementById('remarkInput').value
+                day: document.getElementById('daySelector')?.value || '周一',
+                time: document.getElementById('timeSelector')?.value || '21:00',
+                copy: document.getElementById('copySelector')?.value || '双十',
+                remark: document.getElementById('remarkInput')?.value || ''
             };
-            localStorage.setItem(RAID_SETTINGS_KEY, JSON.stringify(raidSettings));
+            
+            if (!saveToLocalStorage(RAID_SETTINGS_KEY, raidSettings)) return;
             
             // 视觉反馈效果
             const saveBtn = document.getElementById('headerSaveBtn');
-            const originalText = saveBtn.textContent;
-            const originalBackground = saveBtn.style.backgroundColor;
+            if (saveBtn) {
+                const originalText = saveBtn.textContent;
+                const originalBackground = saveBtn.style.backgroundColor;
+                
+                saveBtn.textContent = "已保存";
+                saveBtn.style.backgroundColor = "#e8f5e9";
+                
+                setTimeout(() => {
+                    saveBtn.textContent = originalText;
+                    saveBtn.style.backgroundColor = originalBackground;
+                }, CONFIG.saveFeedbackDuration);
+            }
             
-            saveBtn.textContent = "已保存";
-            saveBtn.style.backgroundColor = "#e8f5e9";
-            
-            setTimeout(() => {
-                saveBtn.textContent = originalText;
-                saveBtn.style.backgroundColor = originalBackground;
-            }, 3000);
-            
-            alert('所有设置已保存！');
-        }
-
-        // 显示提示框
-        function showAlert() {
-            alertBox.style.display = 'block';
-            setTimeout(() => {
-                alertBox.style.display = 'none';
-            }, 3000);
+            showAlert('所有设置已保存！', 'success');
         }
 
         // 保存队员功能
         function handleSave(event) {
             const btn = event.target;
             const item = btn.closest('.item');
+            if (!item) return;
+            
             const input = item.querySelector('.input-box');
             const delBtn = item.querySelector('.del-btn');
             const positionId = item.dataset.id;
 
+            if (!input || !delBtn || !positionId) return;
+
             const name = input.value.trim();
-            if (!name) {
-                alert('请输入名字后再保存！');
-                return;
-            }
+            if (!validateInput(input, '队员姓名', CONFIG.maxMemberNameLength)) return;
 
             if (filledPositions[positionId]) {
-                showAlert();
+                showAlert('该位置已经被填写！请在下方重新填写。');
                 input.value = '';
                 return;
             }
@@ -736,16 +1816,21 @@
             btn.style.display = 'none';
             delBtn.style.display = 'inline-block';
 
-            localStorage.setItem(`${TEAM_KEY}_${positionId}`, name);
+            saveToLocalStorage(`${TEAM_KEY}_${positionId}`, name);
+            showAlert('队员信息已保存！', 'success');
         }
 
         // 删除队员功能
         function handleDelete(event) {
             const btn = event.target;
             const item = btn.closest('.item');
+            if (!item) return;
+            
             const fixedText = item.querySelector('.fixed-text');
             const saveBtn = item.querySelector('.save-btn');
             const positionId = item.dataset.id;
+
+            if (!fixedText || !saveBtn || !positionId) return;
 
             delete filledPositions[positionId];
 
@@ -759,6 +1844,7 @@
             saveBtn.style.display = 'inline-block';
 
             localStorage.removeItem(`${TEAM_KEY}_${positionId}`);
+            showAlert('队员信息已删除！', 'success');
         }
 
         // 清空所有队员填写的内容
@@ -800,71 +1886,89 @@
                 }
             });
             
-            alert('所有队员填写的内容已清空！');
+            showAlert('所有队员填写的内容已清空！', 'success');
         }
 
         // 初始化事件监听
         function initEventListeners() {
+            // 绑定保存按钮事件
             document.querySelectorAll('.save-btn').forEach(btn => {
                 btn.addEventListener('click', handleSave);
             });
             
+            // 绑定删除按钮事件
             document.querySelectorAll('.del-btn').forEach(btn => {
                 btn.addEventListener('click', handleDelete);
             });
 
-            // 绑定保存按钮事件
-            document.getElementById('headerSaveBtn').addEventListener('click', saveRaidSettings);
+            // 绑定打本设置保存按钮事件
+            const headerSaveBtn = document.getElementById('headerSaveBtn');
+            if (headerSaveBtn) {
+                headerSaveBtn.addEventListener('click', saveRaidSettings);
+            }
             
             // 绑定一键清空按钮事件
-            document.getElementById('clearAllBtn').addEventListener('click', clearAllInputs);
+            const clearAllBtn = document.getElementById('clearAllBtn');
+            if (clearAllBtn) {
+                clearAllBtn.addEventListener('click', clearAllInputs);
+            }
             
             // 绑定队长保存按钮事件
-            document.getElementById('leaderSaveBtn').addEventListener('click', function() {
-                const leaderInput = document.getElementById('leaderInput');
-                const leaderName = leaderInput.value.trim();
-                
-                if (!leaderName) {
-                    alert('请输入队长姓名！');
-                    return;
-                }
-                
-                // 更新队伍信息中的队长姓名
-                const teamInfoStr = localStorage.getItem(TEAM_INFO_KEY);
-                if (teamInfoStr) {
-                    const teamInfo = JSON.parse(teamInfoStr);
+            const leaderSaveBtn = document.getElementById('leaderSaveBtn');
+            if (leaderSaveBtn) {
+                leaderSaveBtn.addEventListener('click', function() {
+                    const leaderInput = document.getElementById('leaderInput');
+                    if (!leaderInput) return;
+                    
+                    const leaderName = leaderInput.value.trim();
+                    if (!validateInput(leaderInput, '队长姓名', CONFIG.maxLeaderNameLength)) return;
+                    
+                    // 更新队伍信息中的队长姓名
+                    const teamInfo = loadFromLocalStorage(TEAM_INFO_KEY) || {};
                     teamInfo.leaderName = leaderName;
-                    localStorage.setItem(TEAM_INFO_KEY, JSON.stringify(teamInfo));
-                }
-                
-                // 转换为固定文本
-                const fixedText = document.createElement('div');
-                fixedText.className = 'fixed-text';
-                fixedText.textContent = leaderName;
-                leaderInput.replaceWith(fixedText);
-                
-                document.getElementById('leaderSaveBtn').style.display = 'none';
-                document.getElementById('leaderDelBtn').style.display = 'inline-block';
-                
-                // 也更新队伍基本信息中的队长姓名
-                document.getElementById('leaderNameInput').value = leaderName;
-            });
+                    saveToLocalStorage(TEAM_INFO_KEY, teamInfo);
+                    
+                    // 转换为固定文本
+                    const fixedText = document.createElement('div');
+                    fixedText.className = 'fixed-text';
+                    fixedText.textContent = leaderName;
+                    leaderInput.replaceWith(fixedText);
+                    
+                    const leaderDelBtn = document.getElementById('leaderDelBtn');
+                    if (leaderDelBtn) leaderDelBtn.style.display = 'inline-block';
+                    leaderSaveBtn.style.display = 'none';
+                    
+                    // 也更新队伍基本信息中的队长姓名
+                    const leaderNameInput = document.getElementById('leaderNameInput');
+                    if (leaderNameInput) leaderNameInput.value = leaderName;
+                    
+                    showAlert('队长信息已保存！', 'success');
+                });
+            }
             
             // 绑定队长删除按钮事件
-            document.getElementById('leaderDelBtn').addEventListener('click', function() {
-                const leaderItem = document.getElementById('leaderItem');
-                const fixedText = leaderItem.querySelector('.fixed-text');
-                
-                const input = document.createElement('input');
-                input.type = 'text';
-                input.className = 'input-box';
-                input.id = 'leaderInput';
-                input.placeholder = '请队长填写自己的名字';
-                fixedText.replaceWith(input);
-                
-                document.getElementById('leaderSaveBtn').style.display = 'inline-block';
-                document.getElementById('leaderDelBtn').style.display = 'none';
-            });
+            const leaderDelBtn = document.getElementById('leaderDelBtn');
+            if (leaderDelBtn) {
+                leaderDelBtn.addEventListener('click', function() {
+                    const leaderItem = document.getElementById('leaderItem');
+                    if (!leaderItem) return;
+                    
+                    const fixedText = leaderItem.querySelector('.fixed-text');
+                    if (!fixedText) return;
+                    
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'input-box';
+                    input.id = 'leaderInput';
+                    input.placeholder = '请队长填写自己的名字';
+                    fixedText.replaceWith(input);
+                    
+                    leaderSaveBtn.style.display = 'inline-block';
+                    leaderDelBtn.style.display = 'none';
+                    
+                    showAlert('队长信息已删除！', 'success');
+                });
+            }
         }
 
         // 页面加载时恢复已保存的数据
@@ -876,17 +1980,16 @@
             loadRaidInfo();
             
             // 恢复队长信息
-            const savedTeamInfo = localStorage.getItem(TEAM_INFO_KEY);
-            if (savedTeamInfo) {
-                const info = JSON.parse(savedTeamInfo);
-                if (info.leaderName) {
-                    const leaderInput = document.getElementById('leaderInput');
-                    const leaderSaveBtn = document.getElementById('leaderSaveBtn');
-                    const leaderDelBtn = document.getElementById('leaderDelBtn');
-                    
+            const savedTeamInfo = loadFromLocalStorage(TEAM_INFO_KEY);
+            if (savedTeamInfo && savedTeamInfo.leaderName) {
+                const leaderInput = document.getElementById('leaderInput');
+                const leaderSaveBtn = document.getElementById('leaderSaveBtn');
+                const leaderDelBtn = document.getElementById('leaderDelBtn');
+                
+                if (leaderInput && leaderSaveBtn && leaderDelBtn) {
                     const fixedText = document.createElement('div');
                     fixedText.className = 'fixed-text';
-                    fixedText.textContent = info.leaderName;
+                    fixedText.textContent = savedTeamInfo.leaderName;
                     leaderInput.replaceWith(fixedText);
                     
                     leaderSaveBtn.style.display = 'none';
@@ -907,22 +2010,479 @@
                     const saveBtn = item.querySelector('.save-btn');
                     const delBtn = item.querySelector('.del-btn');
 
-                    const fixedText = document.createElement('div');
-                    fixedText.className = 'fixed-text';
-                    fixedText.textContent = savedName;
-                    input.replaceWith(fixedText);
+                    if (input && saveBtn && delBtn) {
+                        const fixedText = document.createElement('div');
+                        fixedText.className = 'fixed-text';
+                        fixedText.textContent = savedName;
+                        input.replaceWith(fixedText);
 
-                    saveBtn.style.display = 'none';
-                    delBtn.style.display = 'inline-block';
+                        saveBtn.style.display = 'none';
+                        delBtn.style.display = 'inline-block';
+                    }
                 }
             });
         }
 
+        // 业务逻辑：页面初始化器
+        class PageInitializer {
+            constructor() {
+                this.dataManager = null;
+                this.timeGenerator = null;
+                this.connectionStatus = null;
+                this.progressIndicator = null;
+            }
+
+            // 初始化页面
+            initialize() {
+                try {
+                    this.generateTimeOptions();
+                    this.initEventListeners();
+                    this.restoreSavedData();
+                    this.initDataManager();
+                    this.createStatusIndicators();
+                    this.setupPeriodicUpdates();
+                    this.setupErrorHandling();
+                    
+                    console.log('页面初始化完成');
+                } catch (error) {
+                    console.error('页面初始化失败:', error);
+                    showAlert('页面初始化失败，请刷新重试！', 'error');
+                }
+            }
+
+            // 生成时间选项
+            generateTimeOptions() {
+                this.timeGenerator = new TimeOptionGenerator();
+                this.timeGenerator.generateTimeOptions();
+            }
+
+            // 初始化事件监听器
+            initEventListeners() {
+                this.setupSaveEventListeners();
+                this.setupDeleteEventListeners();
+                this.setupFormEventListeners();
+                this.setupClearEventListeners();
+            }
+
+            // 设置保存事件监听器
+            setupSaveEventListeners() {
+                document.querySelectorAll('.save-btn').forEach(btn => {
+                    btn.addEventListener('click', this.handleSave.bind(this));
+                });
+
+                const headerSaveBtn = document.getElementById('headerSaveBtn');
+                if (headerSaveBtn) {
+                    headerSaveBtn.addEventListener('click', this.saveRaidSettings.bind(this));
+                }
+
+                const teamInfoSaveBtn = document.getElementById('teamInfoSaveBtn');
+                if (teamInfoSaveBtn) {
+                    teamInfoSaveBtn.addEventListener('click', this.saveTeamInfo.bind(this));
+                }
+            }
+
+            // 设置删除事件监听器
+            setupDeleteEventListeners() {
+                document.querySelectorAll('.del-btn').forEach(btn => {
+                    btn.addEventListener('click', this.handleDelete.bind(this));
+                });
+            }
+
+            // 设置表单事件监听器
+            setupFormEventListeners() {
+                const clearAllBtn = document.getElementById('clearAllBtn');
+                if (clearAllBtn) {
+                    clearAllBtn.addEventListener('click', this.clearAllInputs.bind(this));
+                }
+            }
+
+            // 设置清空事件监听器
+            setupClearEventListeners() {
+                const teamNameInput = document.getElementById('teamNameInput');
+                const leaderNameInput = document.getElementById('leaderNameInput');
+                
+                if (teamNameInput) {
+                    teamNameInput.addEventListener('input', throttle(() => {
+                        this.updateTeamNameDisplay();
+                    }, 500));
+                }
+                
+                if (leaderNameInput) {
+                    leaderNameInput.addEventListener('input', throttle(() => {
+                        this.updateLeaderDisplay();
+                    }, 500));
+                }
+            }
+
+            // 初始化数据管理器
+            initDataManager() {
+                this.dataManager = new DataManager();
+                
+                // 订阅管理器事件
+                this.dataManager.subscribe((eventType, data) => {
+                    console.log(`数据管理器事件: ${eventType}`, data);
+                    
+                    switch (eventType) {
+                        case 'autosave':
+                            console.log('数据已自动保存');
+                            break;
+                        case 'connection':
+                            showAlert(`网络连接${data.status === 'online' ? '恢复' : '中断'}`, 
+                                     data.status === 'online' ? 'success' : 'warning');
+                            break;
+                        case 'dataImported':
+                            showAlert('数据导入成功！', 'success');
+                            break;
+                    }
+                });
+            }
+
+            // 创建状态指示器
+            createStatusIndicators() {
+                this.createConnectionStatusIndicator();
+                this.createProgressIndicator();
+            }
+
+            // 创建连接状态指示器
+            createConnectionStatusIndicator() {
+                this.connectionStatus = document.createElement('div');
+                this.connectionStatus.className = 'connection-status success';
+                this.connectionStatus.textContent = '✓ 连接正常';
+                document.body.appendChild(this.connectionStatus);
+            }
+
+            // 创建进度指示器
+            createProgressIndicator() {
+                this.progressIndicator = document.createElement('div');
+                this.progressIndicator.className = 'progress-indicator';
+                this.progressIndicator.style.cssText = `
+                    position: fixed;
+                    bottom: 40px;
+                    right: 10px;
+                    padding: 5px 10px;
+                    border-radius: 4px;
+                    font-size: 12px;
+                    background: #9a8868;
+                    color: white;
+                    z-index: 9999;
+                    box-shadow: 0 2px 6px rgba(154, 136, 104, 0.3);
+                `;
+                document.body.appendChild(this.progressIndicator);
+            }
+
+            // 设置定期更新
+            setupPeriodicUpdates() {
+                // 初始更新进度
+                this.updateProgress();
+                
+                // 定期更新进度
+                setInterval(() => this.updateProgress(), CONFIG.progressUpdateInterval);
+                
+                // 监听数据变化更新进度
+                this.dataManager.subscribe(() => {
+                    this.updateProgress();
+                });
+            }
+
+            // 设置错误处理
+            setupErrorHandling() {
+                window.addEventListener('error', (event) => {
+                    console.error('页面错误:', event.error);
+                    showAlert('页面出现错误，请刷新重试！', 'error');
+                });
+
+                window.addEventListener('unhandledrejection', (event) => {
+                    console.error('未处理的Promise拒绝:', event.reason);
+                    showAlert('页面出现错误，请刷新重试！', 'error');
+                });
+            }
+
+            // 恢复保存的数据
+            restoreSavedData() {
+                this.restoreTeamInfo();
+                this.restoreRaidInfo();
+                this.restoreMemberData();
+            }
+
+            // 恢复队伍信息
+            restoreTeamInfo() {
+                const savedTeamInfo = loadFromLocalStorage(STORAGE_KEYS.teamInfo);
+                if (savedTeamInfo) {
+                    const teamNameInput = document.getElementById('teamNameInput');
+                    const leaderNameInput = document.getElementById('leaderNameInput');
+                    
+                    if (teamNameInput && savedTeamInfo.teamName) {
+                        teamNameInput.value = savedTeamInfo.teamName;
+                        this.updateTeamNameDisplay();
+                    }
+                    
+                    if (leaderNameInput && savedTeamInfo.leaderName) {
+                        leaderNameInput.value = savedTeamInfo.leaderName;
+                    }
+                }
+            }
+
+            // 恢复打本信息
+            restoreRaidInfo() {
+                const savedInfo = loadFromLocalStorage(STORAGE_KEYS.raidSettings);
+                if (savedInfo) {
+                    const daySelector = document.getElementById('daySelector');
+                    const timeSelector = document.getElementById('timeSelector');
+                    const copySelector = document.getElementById('copySelector');
+                    const remarkInput = document.getElementById('remarkInput');
+                    
+                    if (daySelector && savedInfo.day) daySelector.value = savedInfo.day;
+                    if (timeSelector && savedInfo.time) timeSelector.value = savedInfo.time;
+                    if (copySelector && savedInfo.copy) copySelector.value = savedInfo.copy;
+                    if (remarkInput && savedInfo.remark) remarkInput.value = savedInfo.remark;
+                }
+            }
+
+            // 恢复队员数据
+            restoreMemberData() {
+                const savedMemberData = loadFromLocalStorage(STORAGE_KEYS.memberData);
+                if (savedMemberData) {
+                    this.dataManager.applyMemberData(savedMemberData);
+                }
+            }
+
+            // 更新队伍名称显示
+            updateTeamNameDisplay() {
+                const teamNameInput = document.getElementById('teamNameInput');
+                const teamNameDisplay = document.querySelector('.team-name');
+                
+                if (teamNameInput && teamNameDisplay) {
+                    const teamName = teamNameInput.value.trim();
+                    teamNameDisplay.textContent = teamName ? `队伍：${teamName}` : '请填写队伍信息';
+                }
+            }
+
+            // 更新队长显示
+            updateLeaderDisplay() {
+                const leaderNameInput = document.getElementById('leaderNameInput');
+                const leaderDisplay = document.querySelector('.leader-display');
+                
+                if (leaderNameInput && leaderDisplay) {
+                    const leaderName = leaderNameInput.value.trim();
+                    leaderDisplay.textContent = leaderName ? `队长：${leaderName}` : '请填写队长姓名';
+                }
+            }
+
+            // 更新进度显示
+            updateProgress() {
+                if (!this.dataManager || !this.progressIndicator) return;
+                
+                const stats = this.dataManager.getStatistics();
+                this.progressIndicator.textContent = `进度: ${stats.filled}/${stats.total} (${stats.progress}%)`;
+            }
+
+            // 处理保存事件
+            handleSave(event) {
+                const btn = event.target;
+                const item = btn.closest('.item');
+                if (!item) return;
+                
+                const input = item.querySelector('.input-box');
+                const delBtn = item.querySelector('.del-btn');
+                const positionId = item.dataset.id;
+
+                if (!input || !delBtn || !positionId) return;
+
+                const name = input.value.trim();
+                if (!validateInput(input, '队员姓名', CONFIG.maxMemberNameLength)) return;
+
+                if (appState.filledPositions[positionId]) {
+                    showAlert('该位置已经被填写！请在下方重新填写。', 'warning');
+                    input.value = '';
+                    return;
+                }
+
+                appState.filledPositions[positionId] = name;
+
+                const fixedText = document.createElement('div');
+                fixedText.className = 'fixed-text';
+                fixedText.textContent = name;
+                input.replaceWith(fixedText);
+
+                btn.style.display = 'none';
+                delBtn.style.display = 'inline-block';
+
+                this.dataManager.saveMemberData({ [positionId]: { name, status: 'filled' } });
+                showAlert('队员信息已保存！', 'success');
+            }
+
+            // 处理删除事件
+            handleDelete(event) {
+                const btn = event.target;
+                const item = btn.closest('.item');
+                if (!item) return;
+                
+                const fixedText = item.querySelector('.fixed-text');
+                const saveBtn = item.querySelector('.save-btn');
+                const positionId = item.dataset.id;
+
+                if (!fixedText || !saveBtn || !positionId) return;
+
+                delete appState.filledPositions[positionId];
+
+                const input = document.createElement('input');
+                input.type = 'text';
+                input.className = 'input-box';
+                input.placeholder = '请队员自行填写后保存';
+                fixedText.replaceWith(input);
+
+                btn.style.display = 'none';
+                saveBtn.style.display = 'inline-block';
+
+                this.dataManager.saveMemberData({ [positionId]: { name: '', status: 'empty' } });
+                showAlert('队员信息已删除！', 'success');
+            }
+
+            // 保存队伍基本信息
+            saveTeamInfo() {
+                const teamNameInput = document.getElementById('teamNameInput');
+                const leaderNameInput = document.getElementById('leaderNameInput');
+                
+                if (!teamNameInput || !leaderNameInput) return;
+                
+                const teamName = teamNameInput.value.trim();
+                const leaderName = leaderNameInput.value.trim();
+                
+                if (!teamName) {
+                    showAlert('请填写队伍名称！', 'warning');
+                    teamNameInput.focus();
+                    return;
+                }
+                
+                if (!leaderName) {
+                    showAlert('请填写队长姓名！', 'warning');
+                    leaderNameInput.focus();
+                    return;
+                }
+                
+                if (teamName.length > CONFIG.maxTeamNameLength) {
+                    showAlert(`队伍名称不能超过${CONFIG.maxTeamNameLength}个字符！`, 'error');
+                    teamNameInput.focus();
+                    return;
+                }
+                
+                if (leaderName.length > CONFIG.maxLeaderNameLength) {
+                    showAlert(`队长姓名不能超过${CONFIG.maxLeaderNameLength}个字符！`, 'error');
+                    leaderNameInput.focus();
+                    return;
+                }
+                
+                const teamInfo = { 
+                    teamName, 
+                    leaderName,
+                    timestamp: new Date().toISOString(),
+                    version: '1.0'
+                };
+                
+                if (!this.dataManager.saveTeamInfo(teamInfo)) return;
+                
+                this.updateTeamNameDisplay();
+                this.updateLeaderDisplay();
+                
+                this.showTeamInfoSaveFeedback();
+                showAlert('队伍基本信息已保存！', 'success');
+            }
+
+            // 保存打本设置
+            saveRaidSettings() {
+                const teamNameInput = document.getElementById('teamNameInput');
+                const leaderNameInput = document.getElementById('leaderNameInput');
+                
+                if (!teamNameInput || !leaderNameInput) return;
+                
+                const teamName = teamNameInput.value.trim();
+                const leaderName = leaderNameInput.value.trim();
+                
+                if (!teamName || !leaderName) {
+                    showAlert('请先填写队伍名称和队长姓名！', 'warning');
+                    return;
+                }
+                
+                const teamInfo = { teamName, leaderName };
+                if (!this.dataManager.saveTeamInfo(teamInfo)) return;
+                
+                this.updateTeamNameDisplay();
+                
+                const raidSettings = this.dataManager.getRaidSettings();
+                if (!this.dataManager.saveRaidSettings(raidSettings)) return;
+                
+                this.showSaveFeedback();
+                showAlert('所有设置已保存！', 'success');
+            }
+
+            // 显示队伍信息保存反馈
+            showTeamInfoSaveFeedback() {
+                const saveBtn = document.getElementById('teamInfoSaveBtn');
+                if (saveBtn) {
+                    const originalText = saveBtn.textContent;
+                    const originalBackground = saveBtn.style.backgroundColor;
+                    
+                    saveBtn.textContent = "已保存";
+                    saveBtn.style.backgroundColor = "#e8f5e9";
+                    
+                    setTimeout(() => {
+                        saveBtn.textContent = originalText;
+                        saveBtn.style.backgroundColor = originalBackground;
+                    }, CONFIG.saveFeedbackDuration);
+                }
+            }
+
+            // 显示保存反馈
+            showSaveFeedback() {
+                const saveBtn = document.getElementById('headerSaveBtn');
+                if (saveBtn) {
+                    const originalText = saveBtn.textContent;
+                    const originalBackground = saveBtn.style.backgroundColor;
+                    
+                    saveBtn.textContent = "已保存";
+                    saveBtn.style.backgroundColor = "#e8f5e9";
+                    
+                    setTimeout(() => {
+                        saveBtn.textContent = originalText;
+                        saveBtn.style.backgroundColor = originalBackground;
+                    }, CONFIG.saveFeedbackDuration);
+                }
+            }
+
+            // 清空所有输入
+            clearAllInputs() {
+                if (!confirm('确定要清空所有队员填写的内容吗？此操作不可撤销。')) return;
+                
+                document.querySelectorAll('.item[data-id]').forEach(item => {
+                    const positionId = item.dataset.id;
+                    if (positionId && (positionId.startsWith('member') || positionId.startsWith('milk'))) {
+                        delete appState.filledPositions[positionId];
+                        
+                        const fixedText = item.querySelector('.fixed-text');
+                        if (fixedText) {
+                            const newInput = document.createElement('input');
+                            newInput.type = 'text';
+                            newInput.className = 'input-box';
+                            newInput.placeholder = '请队员自行填写后保存';
+                            fixedText.replaceWith(newInput);
+                            
+                            const saveBtn = item.querySelector('.save-btn');
+                            const delBtn = item.querySelector('.del-btn');
+                            if (saveBtn) saveBtn.style.display = 'inline-block';
+                            if (delBtn) delBtn.style.display = 'none';
+                        }
+                    }
+                });
+                
+                this.dataManager.saveMemberData({});
+                showAlert('所有队员填写的内容已清空！', 'success');
+            }
+        }
+
         // 页面加载完成后初始化
         window.addEventListener('DOMContentLoaded', () => {
-            generateTimeOptions();
-            initEventListeners();
-            restoreSavedData();
+            const initializer = new PageInitializer();
+            initializer.initialize();
         });
     </script>
 </body>

@@ -7,12 +7,12 @@
     <style>
         /* 阿里妈妈东方大楷字体声明 */
         @font-face {
-        font-family: 'AlimamaDongFangDaKai';
-        src: url('fonts/AlimamaDongFangDaKai-Regular.otf') format('opentype'),
-            url('fonts/AlimamaDongFangDaKai-Regular.ttf') format('truetype');
-        font-weight: normal;
-        font-style: normal;
-        font-display: swap;
+            font-family: 'AlimamaDongFangDaKai';
+            src: url('fonts/AlimamaDongFangDaKai-Regular.otf') format('opentype'),
+                 url('fonts/AlimamaDongFangDaKai-Regular.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
         }
 
         /* 全局样式重置 */
@@ -25,8 +25,8 @@
 
         /* 国风主色调：浅米色背景 + 原木色系文字 */
         body {
-            background-color: #f9f7f3; /* 浅米色背景 */
-            color: #5a4b38; /* 原木色主文字 */
+            background-color: #f9f7f3;
+            color: #5a4b38;
             line-height: 1.6;
         }
 
@@ -46,7 +46,7 @@
 
         .title-a {
             font-size: 3rem;
-            color: #5a4b38; /* 深原木色 */
+            color: #5a4b38;
             font-weight: 400;
             letter-spacing: 8px;
             margin-bottom: 10px;
@@ -54,7 +54,7 @@
 
         .title-b {
             font-size: 1.5rem;
-            color: #8a7d6b; /* 浅原木色 */
+            color: #8a7d6b;
             letter-spacing: 2px;
             font-weight: 300;
         }
@@ -65,16 +65,14 @@
             border-radius: 8px;
             padding: 40px 20px;
             margin-bottom: 40px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03); /* 轻量阴影 */
-            transition: box-shadow 0.3s ease; /* hover阴影过渡 */
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+            transition: box-shadow 0.3s ease;
         }
 
-        /* 组队区hover阴影效果 */
         .team-section:hover {
-            box-shadow: 0 4px 16px rgba(128, 107, 83, 0.1); /* 原木色阴影 */
+            box-shadow: 0 4px 16px rgba(128, 107, 83, 0.1);
         }
 
-            /* 替换现有的 .team-title 样式 */
         .team-title {
             font-size: 1.8rem;
             color: #5a4b38;
@@ -86,7 +84,6 @@
             letter-spacing: 2px;
         }
 
-        /* 添加装饰性下划线 */
         .team-title::after {
             content: '';
             position: absolute;
@@ -95,13 +92,7 @@
             transform: translateX(-50%);
             width: 80px;
             height: 3px;
-            background: linear-gradient(90deg, 
-                transparent, 
-                #c9b89f, 
-                #9a8868, 
-                #c9b89f, 
-                transparent
-            );
+            background: linear-gradient(90deg, transparent, #c9b89f, #9a8868, #c9b89f, transparent);
             border-radius: 2px;
         }
 
@@ -118,7 +109,7 @@
             width: 100%;
             max-width: 280px;
             height: 180px;
-            background-color: #f8f5ef; /* 浅木色背景 */
+            background-color: #f8f5ef;
             border-radius: 6px;
             padding: 20px;
             display: flex;
@@ -127,49 +118,48 @@
             justify-content: center;
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid #e0d8c8; /* 浅木色边框 */
+            border: 1px solid #e0d8c8;
         }
 
-        /* 区块hover效果 */
         .team-block:hover {
-            background-color: #f0ebe0; /* 加深木色背景 */
-            border-color: #c9b89f; /* 原木色边框 */
+            background-color: #f0ebe0;
+            border-color: #c9b89f;
             transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(128, 107, 83, 0.15); /* 原木色阴影 */
+            box-shadow: 0 5px 15px rgba(128, 107, 83, 0.15);
         }
 
-        /* 纯文字图标样式 - 核心：仅文字，无图片/图标库 */
+        /* 纯文字图标样式 */
         .block-icon {
-            font-size: 3.5rem;  /* 放大文字，突出图标感 */
-            color: #8a7d6b;     /* 浅原木色 */
+            font-size: 3.5rem;
+            color: #8a7d6b;
             margin-bottom: 10px;
-            font-weight: 400;   /* 修改为正常粗细 */
-            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;     /* 修改为阿里妈妈 */
+            font-weight: 400;
+            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;
         }
 
         /* 区块标题和文本 */
         .block-title {
             font-size: 1.2rem;
-            color: #5a4b38; /* 深原木色标题 */
+            color: #5a4b38;
             margin-bottom: 8px;
             font-weight: 400;
         }
 
         .block-text {
             font-size: 0.9rem;
-            color: #8a7d6b; /* 浅原木色文本 */
+            color: #8a7d6b;
             text-align: center;
         }
 
         /* 新建队伍按钮特殊样式 */
         .create-team {
-            background-color: #9a8868; /* 原木色按钮 */
+            background-color: #9a8868;
             color: white;
             border: none;
         }
 
         .create-team:hover {
-            background-color: #867352; /* 加深原木色 */
+            background-color: #867352;
             color: white;
         }
 
@@ -179,10 +169,10 @@
         }
 
         .create-team .block-icon {
-            color: white; /* 新建队伍的文字图标为白色 */
+            color: white;
         }
 
-        /* 下模块 - 图片展示区（已修改为横向卡片） */
+        /* 下模块 - 图片展示区 */
         .image-section {
             background-color: #fff;
             display: flex;
@@ -192,7 +182,6 @@
             justify-content: center;
         }
 
-        /* 修改：为卡片添加鼠标指针样式，表示可点击 */
         .image-card {
             background-color: #fff;
             border-radius: 8px;
@@ -203,7 +192,7 @@
             max-width: 500px;
             min-width: 300px;
             flex: 1;
-            cursor: pointer; /* 新增：鼠标指针样式 */
+            cursor: pointer;
         }
 
         .image-card:hover {
@@ -215,7 +204,7 @@
         .card-image-container {
             width: 100%;
             height: 300px;
-            background-color: #f8f5ef; /* 浅木色背景 */
+            background-color: #f8f5ef;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -230,7 +219,7 @@
         }
 
         .image-text-overlay {
-            position: absolute; /* 修正此行：將 center 改為 absolute */
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -243,7 +232,7 @@
             font-size: 2.5rem;
             font-weight: 400;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;     /* 修改为阿里妈妈 */
+            font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;
         }
 
         /* 卡片内容区域 */
@@ -253,7 +242,7 @@
 
         .card-title {
             font-size: 1.2rem;
-            color: #5a4b38; /* 深原木色标题 */
+            color: #5a4b38;
             margin-bottom: 15px;
             display: flex;
             align-items: center;
@@ -266,60 +255,49 @@
             gap: 10px;
         }
 
-        /* 修改：移除输入框和按钮相关样式 */
         .caption-input {
             flex: 1;
-            padding: 8px 0; /* 调整内边距 */
-            border: none; /* 移除边框 */
+            padding: 8px 0;
+            border: none;
             border-radius: 4px;
-            font-size: 1.2rem; /* 增大字体，与中模块标题一致 */
-            color: #5a4b38; /* 原木色文字 */
-            font-weight: 400; /* 与中模块字体粗细一致 */
+            font-size: 1.2rem;
+            color: #5a4b38;
+            font-weight: 400;
             outline: none;
-            background-color: transparent; /* 透明背景 */
+            background-color: transparent;
             transition: all 0.3s ease;
-            font-family: 'AlimamaDongFangDaKai', "PingFang SC", "Microsoft YaHei", "SimSun", sans-serif; /* 统一字体 */
+            font-family: 'AlimamaDongFangDaKai', "PingFang SC", "Microsoft YaHei", "SimSun", sans-serif;
         }
 
-        /* 修改：移除编辑和保存按钮样式 */
+        /* 隐藏编辑和保存按钮 */
         .save-btn, .edit-btn {
-            display: none; /* 隐藏按钮 */
+            display: none;
         }
 
         /* 响应式适配 */
         @media (max-width: 768px) {
-                /* 移动端进一步缩减间距 */
             .header-section {
-                padding: 25px 0; /* 移动端更小间距 */
+                padding: 25px 0;
                 margin-bottom: 15px;
             }
             
             .team-section {
-                padding: 15px 10px; /* 移动端缩减内边距 */
+                padding: 15px 10px;
                 margin-bottom: 20px;
             }
             
             .team-title {
                 margin-bottom: 15px;
                 padding-bottom: 8px;
-             }
+            }
+            
             .title-a {
                 font-size: 2rem;
                 letter-spacing: 4px;
-                font-family: 'AlimamaDongFangDaKai', sans-serif;
             }
 
             .title-b {
                 font-size: 1.2rem;
-                font-family: 'AlimamaDongFangDaKai', sans-serif;
-            }
-
-            .team-section {
-                padding: 20px 10px;
-            }
-
-            .team-title {
-                font-size: 1.5rem;
             }
 
             .team-grid {
@@ -332,7 +310,7 @@
             }
 
             .block-icon {
-                font-size: 2.8rem; /* 手机端调整文字图标大小 */
+                font-size: 2.8rem;
             }
 
             .image-section {
@@ -348,7 +326,6 @@
                 height: 250px;
             }
             
-            /* 修改：移动端标题适配 */
             .caption-container {
                 flex-direction: column;
                 align-items: stretch;
@@ -356,8 +333,8 @@
             
             .caption-input {
                 width: 100%;
-                font-size: 1rem; /* 手机端调整字体 */
-                padding: 10px 0; /* 调整内边距 */
+                font-size: 1rem;
+                padding: 10px 0;
             }
         }
 
@@ -399,45 +376,45 @@
             <h2 class="team-title">双十激情组队</h2>
             <div class="team-grid">
                 <!-- 萧门：跳转到xiaomen.html -->
-                <div class="team-block" onclick="window.location.href='xiaomen.html'">
+                <div class="team-block" onclick="navigateTo('xiaomen.html')">
                     <div class="block-icon">萧</div>
                     <div class="block-title">萧门</div>
                     <div class="block-text">社长高战带队，指挥带劲</div>
                 </div>
 
                 <!-- 千瑶：跳转到qianyao.html -->
-                <div class="team-block" onclick="window.location.href='qianyao.html'">
+                <div class="team-block" onclick="navigateTo('qianyao.html')">
                     <div class="block-icon">千</div>
                     <div class="block-title">千瑶</div>
                     <div class="block-text">静音车厢队，社恐福音</div>
                 </div>
 
                 <!-- 比格：跳转到bige.html -->
-                <div class="team-block" onclick="window.location.href='bige.html'">
+                <div class="team-block" onclick="navigateTo('bige.html')">
                     <div class="block-icon">比</div>
                     <div class="block-title">比门</div>
                     <div class="block-text">高战妻妻，有话痨纯比</div>
                 </div>
 
                 <!-- 留子：跳转到liuzi.html -->
-                <div class="team-block" onclick="window.location.href='liuzi.html'">
+                <div class="team-block" onclick="navigateTo('liuzi.html')">
                     <div class="block-icon">留</div>
                     <div class="block-title">留门</div>
                     <div class="block-text">想你的风还是吹到了英国</div>
                 </div>
 
                 <!-- 新建队伍：跳转到new-team.html + 加号放大 -->
-                <div class="team-block create-team" onclick="window.location.href='new-team.html'">
+                <div class="team-block create-team" onclick="navigateTo('new-team.html')">
                     <div class="block-icon">+</div>
                     <div class="block-title">我要新建队伍</div>
                 </div>
             </div>
         </section>
 
-        <!-- 下模块：图片展示区 - 已修改为横向卡片 -->
+        <!-- 下模块：图片展示区 - 横向卡片布局 -->
         <section class="image-section">
-            <!-- 卡片1：当期公告更新 - 添加ID用于JavaScript定位 -->
-            <div class="image-card" id="announcementCard">
+            <!-- 卡片1：当期公告更新 -->
+            <div class="image-card" id="announcement-card">
                 <div class="card-image-container">
                     <div class="image-text-overlay">当期公告更新</div>
                 </div>
@@ -446,13 +423,13 @@
                         <span>公告栏</span>
                     </div>
                     <div class="caption-container">
-                        <input type="text" id="captionInput1" class="caption-input" value="2月27日2.5版本「侠情满此宵」更新公告" disabled readonly>
+                        <input type="text" id="caption-input-1" class="caption-input" value="2月27日2.5版本「侠情满此宵」更新公告" disabled readonly>
                     </div>
                 </div>
             </div>
 
-            <!-- 卡片2：毕业计算工具 - 添加ID用于JavaScript定位 -->
-            <div class="image-card" id="calculatorCard">
+            <!-- 卡片2：毕业计算工具 -->
+            <div class="image-card" id="calculator-card">
                 <div class="card-image-container">
                     <div class="image-text-overlay">毕业计算工具</div>
                 </div>
@@ -461,7 +438,7 @@
                         <span>计算器</span>
                     </div>
                     <div class="caption-container">
-                        <input type="text" id="captionInput2" class="caption-input" value="装备毕业进度计算器" disabled readonly>
+                        <input type="text" id="caption-input-2" class="caption-input" value="装备毕业进度计算器" disabled readonly>
                     </div>
                 </div>
             </div>
@@ -469,17 +446,69 @@
     </div>
 
     <script>
+        // 页面导航函数
+        function navigateTo(url) {
+            window.location.href = url;
+        }
+
         // 卡片点击跳转功能
         document.addEventListener('DOMContentLoaded', function() {
             // 卡片1：当期公告更新 - 点击后在新窗口中打开公告链接
-            document.getElementById('announcementCard').addEventListener('click', function() {
-                window.open('https://www.yysls.cn/news/update/20260227/40412_1288482.html', '_blank');
-            });
+            const announcementCard = document.getElementById('announcement-card');
+            if (announcementCard) {
+                announcementCard.addEventListener('click', function() {
+                    window.open('https://www.yysls.cn/news/update/20260227/40412_1288482.html', '_blank');
+                });
+            }
             
             // 卡片2：毕业计算工具 - 点击后在新窗口中打开计算器链接
-            document.getElementById('calculatorCard').addEventListener('click', function() {
-                window.open('http://spongem.com/yysls/', '_blank');
+            const calculatorCard = document.getElementById('calculator-card');
+            if (calculatorCard) {
+                calculatorCard.addEventListener('click', function() {
+                    window.open('http://spongem.com/yysls/', '_blank');
+                });
+            }
+
+            // 添加键盘导航支持
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'Enter' && event.target.classList.contains('team-block')) {
+                    event.target.click();
+                }
             });
+
+            // 添加触摸设备优化
+            if ('ontouchstart' in window) {
+                document.querySelectorAll('.team-block, .image-card').forEach(element => {
+                    element.style.cursor = 'pointer';
+                });
+            }
+        });
+
+        // 错误处理函数
+        function handleError(error, context) {
+            console.error(`页面错误 (${context}):`, error);
+            // 可以在这里添加用户友好的错误提示
+        }
+
+        // 页面加载完成后的初始化
+        window.addEventListener('load', function() {
+            try {
+                // 检查关键元素是否存在
+                const requiredElements = [
+                    'announcement-card',
+                    'calculator-card'
+                ];
+
+                requiredElements.forEach(elementId => {
+                    if (!document.getElementById(elementId)) {
+                        console.warn(`缺少必要元素: ${elementId}`);
+                    }
+                });
+
+                console.log('页面初始化完成');
+            } catch (error) {
+                handleError(error, '页面初始化');
+            }
         });
     </script>
 </body>
