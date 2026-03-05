@@ -607,6 +607,9 @@
             <button onclick="deepAnalyzeXiaomen()" style="padding: 5px 10px; background: #fd7e14; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
                 深度分析萧门数据
             </button>
+            <button onclick="testXiaomenProgress()" style="padding: 5px 10px; background: #20c997; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                测试萧门进度
+            </button>
             <div style="margin-top: 10px; font-size: 12px; color: #666;">
                 点击测试不同功能模块
             </div>
@@ -750,7 +753,25 @@
                 });
                 
                 console.log(`${teamName}队伍有效队员数量:`, validMembers.length);
-                return validMembers.length;
+                
+                // 为所有队伍都加上队长的固定计数
+                let finalCount = validMembers.length;
+                
+                // 各队伍的队长固定计数
+                const teamCaptains = {
+                    'xiaomen': '萧司余',
+                    'qianyao': '千瑶',
+                    'bige': '比格',
+                    'liuzi': '留子'
+                };
+                
+                if (teamCaptains[teamName]) {
+                    console.log(`${teamName}队伍检测到，为队长${teamCaptains[teamName]}添加固定计数 +1`);
+                    finalCount = validMembers.length + 1;
+                    console.log(`${teamName}队伍最终队员数量: ${validMembers.length} (数据库记录) + 1 (固定队长) = ${finalCount}`);
+                }
+                
+                return finalCount;
             } catch (error) {
                 console.error(`获取${teamName}队伍队员数量异常:`, error);
                 return 0;
@@ -1092,6 +1113,56 @@
                 
             } catch (error) {
                 console.error('深度分析异常:', error);
+            }
+        };
+        
+        // 调试函数：测试萧门进度计算
+        window.testXiaomenProgress = async function() {
+            console.log('=== 测试萧门进度计算 ===');
+            
+            try {
+                // 先查询数据库中的实际记录数量
+                const { data: members, error } = await supabase
+                    .from('team_members')
+                    .select('*')
+                    .eq('team_key', 'xiaomen');
+                
+                if (error) {
+                    console.error('查询萧门数据失败:', error);
+                    return;
+                }
+                
+                console.log(`数据库查询结果: ${members.length} 条记录`);
+                
+                // 统计有效记录数量
+                const validMembers = members.filter(member => {
+                    const hasValidName = member.member_name && member.member_name.trim() !== '';
+                    const hasValidPosition = member.position_id && member.position_id.trim() !== '';
+                    const hasValidTeamKey = member.team_key && member.team_key.trim() !== '';
+                    return hasValidName || hasValidPosition || hasValidTeamKey;
+                });
+                
+                console.log(`有效队员数量: ${validMembers.length} 人`);
+                
+                // 直接调用getTeamMemberCount函数测试萧门进度
+                const xiaomenCount = await getTeamMemberCount('xiaomen');
+                console.log(`萧门队伍最终队员数量: ${xiaomenCount}/10`);
+                console.log(`计算过程: ${validMembers.length} (数据库有效记录) + 1 (固定队长萧司余) = ${xiaomenCount}`);
+                
+                // 显示当前进度条状态
+                const progressBar = document.getElementById('xiaomen-progress-bar');
+                const progressText = document.getElementById('xiaomen-progress-text');
+                
+                if (progressBar && progressText) {
+                    console.log('当前进度条显示:');
+                    console.log('  进度条宽度:', progressBar.style.width);
+                    console.log('  进度文本:', progressText.textContent);
+                }
+                
+                console.log('=== 萧门进度测试结束 ===');
+                
+            } catch (error) {
+                console.error('测试萧门进度异常:', error);
             }
         };
         

@@ -390,6 +390,8 @@
                         await testSupabaseConnection();
                         await loadCloudDataInBackground();
                         setupRealtimeSubscription();
+                        // 初始化进度显示
+                        initializeProgress();
                     })(),
                     timeoutPromise
                 ]);
@@ -875,6 +877,9 @@
 
             btn.style.display = 'none';
             delBtn.style.display = 'inline-block';
+
+            // 更新进度条显示
+            updateProgressDisplay('add');
         }
 
         // 删除队员信息
@@ -915,6 +920,9 @@
 
             btn.style.display = 'none';
             saveBtn.style.display = 'inline-block';
+
+            // 更新进度条显示
+            updateProgressDisplay('remove');
         }
 
         // 一键清空所有输入
@@ -986,13 +994,17 @@
                 clearBtn.textContent = originalText;
                 clearBtn.disabled = false;
                 
-                showAlert(`已成功清空！\n- 云端数据已删除\n- ${clearedCount}个队员位置已重置\n- 所有用户将看到清空后的状态`, 'success');
+                showAlert(`已成功清空！\\n- 云端数据已删除\\n- ${clearedCount}个队员位置已重置\\n- 所有用户将看到清空后的状态`, 'success');
+                
+                // 更新进度条显示（清空所有队员）
+                for (let i = 0; i < clearedCount; i++) {
+                    updateProgressDisplay('remove');
+                }
                 
                 const shouldRefresh = confirm('清空完成！是否刷新页面以确保完全同步？');
                 if (shouldRefresh) {
                     location.reload();
-                }
-                
+                }                
             } catch (err) {
                 console.error('清空过程中发生异常:', err);
                 showAlert('清空过程中发生错误: ' + err.message, 'error');
@@ -1068,6 +1080,55 @@
                 return false;
             }
             return true;
+        }
+
+        // 进度管理功能
+        let currentProgress = 1; // 从1开始，因为队长比格已经固定计入
+        const maxProgress = 10;
+
+        // 更新进度显示
+        function updateProgressDisplay(action) {
+            if (action === 'add' && currentProgress < maxProgress) {
+                currentProgress++;
+            } else if (action === 'remove' && currentProgress > 1) { // 最低为1，保留队长
+                currentProgress--;
+            }
+            
+            // 更新主页面进度显示
+            try {
+                // 方法1：通过localStorage同步（最可靠的方法）
+                const progressData = JSON.parse(localStorage.getItem('teamProgress') || '{}');
+                if (action === 'add') {
+                    progressData.bige = Math.min((progressData.bige || 0) + 1, maxProgress);
+                } else if (action === 'remove') {
+                    progressData.bige = Math.max((progressData.bige || 0) - 1, 0);
+                }
+                localStorage.setItem('teamProgress', JSON.stringify(progressData));
+                
+                // 方法2：通过postMessage发送消息给主页面
+                if (window.opener) {
+                    window.opener.postMessage({
+                        type: 'progressUpdate',
+                        team: 'bige',
+                        action: action
+                    }, '*');
+                }
+                
+                console.log(`比门进度更新: ${currentProgress}/${maxProgress} (操作: ${action})`);
+            } catch (error) {
+                console.warn('进度更新失败:', error);
+            }
+        }
+
+        // 页面加载时初始化进度
+        function initializeProgress() {
+            try {
+                const progressData = JSON.parse(localStorage.getItem('teamProgress') || '{}');
+                currentProgress = progressData.bige || 0;
+                console.log(`比门当前进度: ${currentProgress}/${maxProgress}`);
+            } catch (error) {
+                console.warn('加载进度数据失败:', error);
+            }
         }
 
         // 错误处理函数
