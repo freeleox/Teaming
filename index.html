@@ -580,7 +580,7 @@
             <!-- 卡片1：当期公告更新 -->
             <div class="image-card" id="announcement-card">
                 <div class="card-image-container">
-                    <div class="image-text-overlay">公告</div>
+                    <div class="image-text-overlay">燕云最新公告</div>
                 </div>
                 <div class="card-content">
                     <div class="caption-container">
@@ -592,11 +592,11 @@
             <!-- 卡片2：毕业计算工具 -->
             <div class="image-card" id="calculator-card">
                 <div class="card-image-container">
-                    <div class="image-text-overlay">计算</div>
+                    <div class="image-text-overlay">燕云毕业查询</div>
                 </div>
                 <div class="card-content">
                     <div class="caption-container">
-                        <input type="text" id="caption-input-2" class="caption-input" value="装备毕业进度计算器" disabled readonly>
+                        <input type="text" id="caption-input-2" class="caption-input" value="毕业进度计算器" disabled readonly>
                     </div>
                 </div>
             </div>        </section>
@@ -611,6 +611,9 @@
             </button>
             <button onclick="testDatabaseQuery()" style="padding: 5px 10px; background: #ffc107; color: black; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
                 测试数据库查询
+            </button>
+            <button onclick="monitorConnection()" style="padding: 5px 10px; background: #17a2b8; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                连接状态监控
             </button>
 
             <div style="margin-top: 10px; font-size: 12px; color: #666;">
@@ -668,25 +671,125 @@
         const SUPABASE_URL = 'https://jtxbzkfnpbrjmlqinogj.supabase.co';
         const SUPABASE_ANON_KEY = 'sb_publishable_0K0RV2KcU7DkuSxF9t73dA_a8pIZnB3';
         
+        // 连接配置参数
+        const CONNECTION_CONFIG = {
+            auth: {
+                autoRefreshToken: true,
+                persistSession: true,
+                detectSessionInUrl: true
+            },
+            realtime: {
+                params: {
+                    eventsPerSecond: 10
+                }
+            },
+            global: {
+                headers: {
+                    'x-application-name': 'teaming-app'
+                }
+            }
+        };
+        
+        // 连接状态管理
+        let connectionState = {
+            isConnected: false,
+            lastConnectionTime: null,
+            retryCount: 0,
+            maxRetries: 3,
+            baseTimeout: 3000,
+            currentTimeout: 3000
+        };
+        
         // 初始化Supabase客户端
         let supabase;
-        if (window.supabase && window.supabase.createClient) {
-            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-            console.log('Supabase客户端初始化成功');
-        } else {
-            console.error('Supabase客户端未加载，请检查script标签是否正确引入');
-            // 使用模拟客户端，但添加警告
+        
+        function initializeSupabaseClient() {
+            if (window.supabase && window.supabase.createClient) {
+                try {
+                    supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, CONNECTION_CONFIG);
+                    
+                    // 添加连接状态监听
+                    supabase.realtime.onOpen(() => {
+                        console.log('Supabase连接已建立');
+                        connectionState.isConnected = true;
+                        connectionState.lastConnectionTime = new Date();
+                        connectionState.retryCount = 0;
+                        connectionState.currentTimeout = connectionState.baseTimeout;
+                    });
+                    
+                    supabase.realtime.onClose(() => {
+                        console.warn('Supabase连接已断开');
+                        connectionState.isConnected = false;
+                        handleConnectionLoss();
+                    });
+                    
+                    supabase.realtime.onError((error) => {
+                        console.error('Supabase连接错误:', error);
+                        connectionState.isConnected = false;
+                    });
+                    
+                    console.log('Supabase客户端初始化成功，等待连接建立...');
+                    return true;
+                } catch (error) {
+                    console.error('Supabase客户端初始化失败:', error);
+                    return false;
+                }
+            } else {
+                console.error('Supabase客户端未加载，请检查script标签是否正确引入');
+                return false;
+            }
+        }
+        
+        // 处理连接丢失
+        function handleConnectionLoss() {
+            if (connectionState.retryCount < connectionState.maxRetries) {
+                connectionState.retryCount++;
+                connectionState.currentTimeout = connectionState.baseTimeout * Math.pow(2, connectionState.retryCount);
+                
+                console.log(`连接断开，第${connectionState.retryCount}次重试，等待${connectionState.currentTimeout}ms后重连...`);
+                
+                setTimeout(() => {
+                    console.log('开始重连Supabase...');
+                    initializeSupabaseClient();
+                }, connectionState.currentTimeout);
+            } else {
+                console.error('超过最大重试次数，连接失败');
+                // 使用模拟客户端作为降级方案
+                useFallbackClient();
+            }
+        }
+        
+        // 降级方案：使用模拟客户端
+        function useFallbackClient() {
+            console.warn('使用模拟Supabase客户端，数据库操作不会生效');
             supabase = {
                 from: () => ({ 
                     select: () => ({ 
                         eq: () => {
-                            console.warn('使用模拟Supabase客户端，数据库操作不会生效');
-                            return Promise.resolve({ data: [], error: null });
+                            return Promise.resolve({ data: [], error: { message: '连接失败，使用模拟数据' } });
                         } 
                     }) 
                 })
             };
         }
+        
+        // 初始化客户端
+        const initSuccess = initializeSupabaseClient();
+        if (!initSuccess) {
+            useFallbackClient();
+        }
+        
+        // 网络状态检测
+        window.addEventListener('online', () => {
+            console.log('网络连接恢复，尝试重新连接Supabase...');
+            if (!connectionState.isConnected) {
+                initializeSupabaseClient();
+            }
+        });
+        
+        window.addEventListener('offline', () => {
+            console.warn('网络连接断开');
+        });
 
         // 进度管理功能
         const teamProgress = {
@@ -698,86 +801,115 @@
             'new-team': { current: 0, max: 10 }
         };
 
-        // 从数据库获取队员数量
+        // 从数据库获取队员数量（带超时和重试机制）
         async function getTeamMemberCount(teamName) {
-            try {
-                console.log(`开始查询${teamName}队伍的队员数量...`);
-                console.log('Supabase客户端状态:', supabase ? '已初始化' : '未初始化');
-                
-                // 使用Supabase客户端查询对应队伍的队员数量
-                const { data: members, error } = await supabase
-                    .from('team_members')
-                    .select('*')
-                    .eq('team_key', teamName);
-                
-                if (error) {
-                    console.error(`获取${teamName}队伍队员数量失败:`, error);
-                    return 0;
-                }
-                
-                console.log(`查询到${teamName}队伍数据:`, members);
-                console.log(`查询条件: team_key = '${teamName}'`);
-                
-                // 统计有实际填写内容的队员数量
-                const validMembers = members.filter(member => {
-                    // 智能过滤条件：检查记录是否有实际内容
-                    const hasValidName = member.member_name && 
-                                      member.member_name !== null && 
-                                      member.member_name !== undefined && 
-                                      member.member_name.toString().trim() !== '';
+            const queryConfig = {
+                maxRetries: 2,
+                timeout: 8000,
+                baseDelay: 1000
+            };
+            
+            for (let attempt = 1; attempt <= queryConfig.maxRetries + 1; attempt++) {
+                try {
+                    console.log(`开始查询${teamName}队伍的队员数量... (第${attempt}次尝试)`);
+                    console.log('Supabase连接状态:', connectionState.isConnected ? '已连接' : '未连接');
                     
-                    const hasValidPosition = member.position_id && 
-                                           member.position_id !== null && 
-                                           member.position_id !== undefined && 
-                                           member.position_id.toString().trim() !== '';
+                    // 创建超时Promise
+                    const timeoutPromise = new Promise((_, reject) => {
+                        setTimeout(() => reject(new Error(`查询超时 (${queryConfig.timeout}ms)`)), queryConfig.timeout);
+                    });
                     
-                    const hasValidTeamKey = member.team_key && 
-                                          member.team_key !== null && 
-                                          member.team_key !== undefined && 
-                                          member.team_key.toString().trim() !== '';
-                    
-                    const isValid = hasValidName || hasValidPosition || hasValidTeamKey;
-                    
-                    if (isValid) {
-                        console.log(`有效队员:`, member);
-                    } else {
-                        console.log(`无效队员（所有字段都为空）:`, member);
-                        console.log('  详细检查:', {
-                            member_name: member.member_name,
-                            position_id: member.position_id,
-                            team_key: member.team_key,
-                            hasValidName,
-                            hasValidPosition,
-                            hasValidTeamKey
+                    // 创建查询Promise
+                    const queryPromise = (async () => {
+                        // 检查连接状态
+                        if (!connectionState.isConnected) {
+                            throw new Error('Supabase连接未建立');
+                        }
+                        
+                        // 使用Supabase客户端查询对应队伍的队员数量
+                        const { data: members, error } = await supabase
+                            .from('team_members')
+                            .select('*')
+                            .eq('team_key', teamName);
+                        
+                        if (error) {
+                            throw new Error(`数据库查询错误: ${error.message}`);
+                        }
+                        
+                        console.log(`查询到${teamName}队伍数据:`, members);
+                        console.log(`查询条件: team_key = '${teamName}'`);
+                        
+                        // 统计有实际填写内容的队员数量
+                        const validMembers = members.filter(member => {
+                            // 智能过滤条件：检查记录是否有实际内容
+                            const hasValidName = member.member_name && 
+                                              member.member_name !== null && 
+                                              member.member_name !== undefined && 
+                                              member.member_name.toString().trim() !== '';
+                            
+                            const hasValidPosition = member.position_id && 
+                                                   member.position_id !== null && 
+                                                   member.position_id !== undefined && 
+                                                   member.position_id.toString().trim() !== '';
+                            
+                            const hasValidTeamKey = member.team_key && 
+                                                  member.team_key !== null && 
+                                                  member.team_key !== undefined && 
+                                                  member.team_key.toString().trim() !== '';
+                            
+                            const isValid = hasValidName || hasValidPosition || hasValidTeamKey;
+                            
+                            if (isValid) {
+                                console.log(`有效队员:`, member);
+                            } else {
+                                console.log(`无效队员（所有字段都为空）:`, member);
+                            }
+                            
+                            return isValid;
                         });
+                        
+                        console.log(`${teamName}队伍有效队员数量:`, validMembers.length);
+                        
+                        // 为所有队伍都加上队长的固定计数
+                        let finalCount = validMembers.length;
+                        
+                        // 各队伍的队长固定计数
+                        const teamCaptains = {
+                            'xiaomen': '萧司余',
+                            'qianyao': '千瑶',
+                            'bige': '比格',
+                            'liuzi': '留子'
+                        };
+                        
+                        if (teamCaptains[teamName]) {
+                            console.log(`${teamName}队伍检测到，为队长${teamCaptains[teamName]}添加固定计数 +1`);
+                            finalCount = validMembers.length + 1;
+                            console.log(`${teamName}队伍最终队员数量: ${validMembers.length} (数据库记录) + 1 (固定队长) = ${finalCount}`);
+                        }
+                        
+                        return finalCount;
+                    })();
+                    
+                    // 使用Promise.race实现超时控制
+                    const result = await Promise.race([queryPromise, timeoutPromise]);
+                    
+                    console.log(`${teamName}队伍查询成功，队员数量: ${result}`);
+                    return result;
+                    
+                } catch (error) {
+                    console.error(`第${attempt}次查询${teamName}队伍失败:`, error.message);
+                    
+                    // 如果是最后一次尝试，返回默认值
+                    if (attempt === queryConfig.maxRetries + 1) {
+                        console.warn(`查询${teamName}队伍失败，使用默认值0`);
+                        return 0;
                     }
                     
-                    return isValid;
-                });
-                
-                console.log(`${teamName}队伍有效队员数量:`, validMembers.length);
-                
-                // 为所有队伍都加上队长的固定计数
-                let finalCount = validMembers.length;
-                
-                // 各队伍的队长固定计数
-                const teamCaptains = {
-                    'xiaomen': '萧司余',
-                    'qianyao': '千瑶',
-                    'bige': '比格',
-                    'liuzi': '留子'
-                };
-                
-                if (teamCaptains[teamName]) {
-                    console.log(`${teamName}队伍检测到，为队长${teamCaptains[teamName]}添加固定计数 +1`);
-                    finalCount = validMembers.length + 1;
-                    console.log(`${teamName}队伍最终队员数量: ${validMembers.length} (数据库记录) + 1 (固定队长) = ${finalCount}`);
+                    // 等待一段时间后重试
+                    const delay = queryConfig.baseDelay * Math.pow(2, attempt - 1);
+                    console.log(`等待${delay}ms后重试...`);
+                    await new Promise(resolve => setTimeout(resolve, delay));
                 }
-                
-                return finalCount;
-            } catch (error) {
-                console.error(`获取${teamName}队伍队员数量异常:`, error);
-                return 0;
             }
         }
 
@@ -913,48 +1045,184 @@
             }
         };
         
-        // 调试函数：测试Supabase连接
+        // 调试函数：测试Supabase连接性能
         window.testSupabaseConnection = async function() {
-            console.log('=== 开始测试Supabase连接 ===');
+            console.log('=== 开始详细测试Supabase连接性能 ===');
             console.log('Supabase URL:', SUPABASE_URL);
-            console.log('Supabase客户端状态:', supabase ? '已初始化' : '未初始化');
+            console.log('当前连接状态:', connectionState);
+            console.log('网络状态:', navigator.onLine ? '在线' : '离线');
             
             if (supabase && supabase.from) {
                 console.log('Supabase客户端功能正常');
+                
+                // 测试连接延迟
+                const startTime = performance.now();
                 try {
                     // 尝试一个简单的查询来测试连接
-                    const { data, error } = await supabase
+                    const { data, error, count } = await supabase
                         .from('team_members')
-                        .select('count')
+                        .select('*', { count: 'exact', head: true })
                         .limit(1);
+                    
+                    const endTime = performance.now();
+                    const latency = endTime - startTime;
+                    
+                    console.log(`连接延迟: ${latency.toFixed(2)}ms`);
                     
                     if (error) {
                         console.error('Supabase连接测试失败:', error);
+                        console.log('错误详情:', {
+                            message: error.message,
+                            details: error.details,
+                            hint: error.hint
+                        });
                     } else {
                         console.log('Supabase连接测试成功');
-                        console.log('查询结果:', data);
+                        console.log('查询结果:', { data, count });
+                        console.log('连接状态: 正常');
                     }
+                    
+                    // 测试连接稳定性（多次查询）
+                    console.log('\n=== 开始连接稳定性测试 ===');
+                    const stabilityResults = [];
+                    for (let i = 1; i <= 3; i++) {
+                        const testStart = performance.now();
+                        try {
+                            const { error: testError } = await supabase
+                                .from('team_members')
+                                .select('id')
+                                .limit(1);
+                            
+                            const testEnd = performance.now();
+                            const testLatency = testEnd - testStart;
+                            
+                            stabilityResults.push({
+                                attempt: i,
+                                latency: testLatency,
+                                success: !testError,
+                                error: testError
+                            });
+                            
+                            console.log(`第${i}次测试: ${testLatency.toFixed(2)}ms - ${testError ? '失败' : '成功'}`);
+                            
+                        } catch (testError) {
+                            stabilityResults.push({
+                                attempt: i,
+                                latency: null,
+                                success: false,
+                                error: testError
+                            });
+                            console.log(`第${i}次测试: 异常 - ${testError.message}`);
+                        }
+                    }
+                    
+                    // 分析稳定性结果
+                    const successfulTests = stabilityResults.filter(r => r.success);
+                    const averageLatency = successfulTests.length > 0 ? 
+                        successfulTests.reduce((sum, r) => sum + r.latency, 0) / successfulTests.length : 0;
+                    
+                    console.log('\n稳定性测试结果:');
+                    console.log(`成功率: ${successfulTests.length}/3 (${(successfulTests.length/3*100).toFixed(1)}%)`);
+                    console.log(`平均延迟: ${averageLatency.toFixed(2)}ms`);
+                    
                 } catch (error) {
                     console.error('Supabase连接测试异常:', error);
                 }
             } else {
                 console.error('Supabase客户端未正确初始化');
             }
-            console.log('=== Supabase连接测试结束 ===');
+            
+            console.log('=== Supabase连接性能测试结束 ===');
         };
         
-        // 调试函数：测试数据库查询
+        // 调试函数：测试数据库查询性能
         window.testDatabaseQuery = async function() {
-            console.log('=== 开始测试数据库查询 ===');
+            console.log('=== 开始测试数据库查询性能 ===');
+            console.log('当前连接状态:', connectionState);
             
             const teams = ['xiaomen', 'qianyao', 'bige', 'liuzi'];
+            const queryResults = [];
+            
             for (const team of teams) {
-                console.log(`\n测试查询${team}队伍数据...`);
-                const count = await getTeamMemberCount(team);
-                console.log(`${team}队伍实际队员数量:`, count);
+                console.log(`\n=== 测试查询${team}队伍数据 ===`);
+                const startTime = performance.now();
+                
+                try {
+                    const count = await getTeamMemberCount(team);
+                    const endTime = performance.now();
+                    const queryTime = endTime - startTime;
+                    
+                    queryResults.push({
+                        team,
+                        count,
+                        queryTime,
+                        success: true
+                    });
+                    
+                    console.log(`${team}队伍查询结果: ${count}名队员`);
+                    console.log(`查询耗时: ${queryTime.toFixed(2)}ms`);
+                    
+                } catch (error) {
+                    const endTime = performance.now();
+                    const queryTime = endTime - startTime;
+                    
+                    queryResults.push({
+                        team,
+                        count: 0,
+                        queryTime,
+                        success: false,
+                        error: error.message
+                    });
+                    
+                    console.error(`${team}队伍查询失败:`, error.message);
+                    console.log(`查询耗时: ${queryTime.toFixed(2)}ms`);
+                }
             }
             
-            console.log('=== 数据库查询测试结束 ===');
+            // 性能分析
+            console.log('\n=== 查询性能分析 ===');
+            const successfulQueries = queryResults.filter(r => r.success);
+            const totalTime = queryResults.reduce((sum, r) => sum + r.queryTime, 0);
+            const avgTime = queryResults.length > 0 ? totalTime / queryResults.length : 0;
+            
+            console.log(`总查询次数: ${queryResults.length}`);
+            console.log(`成功查询: ${successfulQueries.length}`);
+            console.log(`失败查询: ${queryResults.length - successfulQueries.length}`);
+            console.log(`总耗时: ${totalTime.toFixed(2)}ms`);
+            console.log(`平均查询时间: ${avgTime.toFixed(2)}ms`);
+            
+            if (successfulQueries.length > 0) {
+                const minTime = Math.min(...successfulQueries.map(r => r.queryTime));
+                const maxTime = Math.max(...successfulQueries.map(r => r.queryTime));
+                console.log(`最快查询: ${minTime.toFixed(2)}ms`);
+                console.log(`最慢查询: ${maxTime.toFixed(2)}ms`);
+            }
+            
+            console.log('=== 数据库查询性能测试结束 ===');
+        };
+        
+        // 新增：连接监控函数
+        window.monitorConnection = function() {
+            console.log('=== 开始连接状态监控 ===');
+            console.log('当前连接状态:', connectionState);
+            console.log('Supabase实时连接状态:', supabase.realtime ? '已初始化' : '未初始化');
+            
+            if (supabase.realtime) {
+                console.log('实时连接状态:', supabase.realtime.isConnected() ? '已连接' : '未连接');
+                console.log('订阅数量:', supabase.realtime.channels.length);
+            }
+            
+            // 测试网络连接
+            fetch('https://jtxbzkfnpbrjmlqinogj.supabase.co/auth/v1/health', {
+                method: 'GET',
+                mode: 'no-cors'
+            }).then(() => {
+                console.log('网络连接测试: 成功');
+            }).catch(() => {
+                console.log('网络连接测试: 失败');
+            });
+            
+            console.log('=== 连接状态监控结束 ===');
         };
         
         
