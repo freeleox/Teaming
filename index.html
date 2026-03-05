@@ -615,6 +615,12 @@
             <button onclick="monitorConnection()" style="padding: 5px 10px; background: #17a2b8; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
                 连接状态监控
             </button>
+            <button onclick="testProgressBars()" style="padding: 5px 10px; background: #6f42c1; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                测试进度条
+            </button>
+            <button onclick="simulateProgress()" style="padding: 5px 10px; background: #20c997; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                模拟进度数据
+            </button>
 
             <div style="margin-top: 10px; font-size: 12px; color: #666;">
                 测试模块
@@ -708,27 +714,12 @@
                 try {
                     supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY, CONNECTION_CONFIG);
                     
-                    // 添加连接状态监听
-                    supabase.realtime.onOpen(() => {
-                        console.log('Supabase连接已建立');
-                        connectionState.isConnected = true;
-                        connectionState.lastConnectionTime = new Date();
-                        connectionState.retryCount = 0;
-                        connectionState.currentTimeout = connectionState.baseTimeout;
-                    });
+                    // 简化连接状态管理：假设连接成功，通过实际查询来验证
+                    connectionState.isConnected = true;
+                    connectionState.lastConnectionTime = new Date();
+                    connectionState.retryCount = 0;
                     
-                    supabase.realtime.onClose(() => {
-                        console.warn('Supabase连接已断开');
-                        connectionState.isConnected = false;
-                        handleConnectionLoss();
-                    });
-                    
-                    supabase.realtime.onError((error) => {
-                        console.error('Supabase连接错误:', error);
-                        connectionState.isConnected = false;
-                    });
-                    
-                    console.log('Supabase客户端初始化成功，等待连接建立...');
+                    console.log('Supabase客户端初始化成功');
                     return true;
                 } catch (error) {
                     console.error('Supabase客户端初始化失败:', error);
@@ -742,21 +733,11 @@
         
         // 处理连接丢失
         function handleConnectionLoss() {
-            if (connectionState.retryCount < connectionState.maxRetries) {
-                connectionState.retryCount++;
-                connectionState.currentTimeout = connectionState.baseTimeout * Math.pow(2, connectionState.retryCount);
-                
-                console.log(`连接断开，第${connectionState.retryCount}次重试，等待${connectionState.currentTimeout}ms后重连...`);
-                
-                setTimeout(() => {
-                    console.log('开始重连Supabase...');
-                    initializeSupabaseClient();
-                }, connectionState.currentTimeout);
-            } else {
-                console.error('超过最大重试次数，连接失败');
-                // 使用模拟客户端作为降级方案
-                useFallbackClient();
-            }
+            console.warn('Supabase连接丢失，尝试重新初始化...');
+            connectionState.isConnected = false;
+            
+            // 使用降级方案
+            useFallbackClient();
         }
         
         // 降级方案：使用模拟客户端
@@ -801,127 +782,79 @@
             'new-team': { current: 0, max: 10 }
         };
 
-        // 从数据库获取队员数量（带超时和重试机制）
+        // 从数据库获取队员数量（简化版本）
         async function getTeamMemberCount(teamName) {
-            const queryConfig = {
-                maxRetries: 2,
-                timeout: 8000,
-                baseDelay: 1000
-            };
-            
-            for (let attempt = 1; attempt <= queryConfig.maxRetries + 1; attempt++) {
-                try {
-                    console.log(`开始查询${teamName}队伍的队员数量... (第${attempt}次尝试)`);
-                    console.log('Supabase连接状态:', connectionState.isConnected ? '已连接' : '未连接');
-                    
-                    // 创建超时Promise
-                    const timeoutPromise = new Promise((_, reject) => {
-                        setTimeout(() => reject(new Error(`查询超时 (${queryConfig.timeout}ms)`)), queryConfig.timeout);
-                    });
-                    
-                    // 创建查询Promise
-                    const queryPromise = (async () => {
-                        // 检查连接状态
-                        if (!connectionState.isConnected) {
-                            throw new Error('Supabase连接未建立');
-                        }
-                        
-                        // 使用Supabase客户端查询对应队伍的队员数量
-                        const { data: members, error } = await supabase
-                            .from('team_members')
-                            .select('*')
-                            .eq('team_key', teamName);
-                        
-                        if (error) {
-                            throw new Error(`数据库查询错误: ${error.message}`);
-                        }
-                        
-                        console.log(`查询到${teamName}队伍数据:`, members);
-                        console.log(`查询条件: team_key = '${teamName}'`);
-                        
-                        // 统计有实际填写内容的队员数量
-                        const validMembers = members.filter(member => {
-                            // 智能过滤条件：检查记录是否有实际内容
-                            const hasValidName = member.member_name && 
-                                              member.member_name !== null && 
-                                              member.member_name !== undefined && 
-                                              member.member_name.toString().trim() !== '';
-                            
-                            const hasValidPosition = member.position_id && 
-                                                   member.position_id !== null && 
-                                                   member.position_id !== undefined && 
-                                                   member.position_id.toString().trim() !== '';
-                            
-                            const hasValidTeamKey = member.team_key && 
-                                                  member.team_key !== null && 
-                                                  member.team_key !== undefined && 
-                                                  member.team_key.toString().trim() !== '';
-                            
-                            const isValid = hasValidName || hasValidPosition || hasValidTeamKey;
-                            
-                            if (isValid) {
-                                console.log(`有效队员:`, member);
-                            } else {
-                                console.log(`无效队员（所有字段都为空）:`, member);
-                            }
-                            
-                            return isValid;
-                        });
-                        
-                        console.log(`${teamName}队伍有效队员数量:`, validMembers.length);
-                        
-                        // 为所有队伍都加上队长的固定计数
-                        let finalCount = validMembers.length;
-                        
-                        // 各队伍的队长固定计数
-                        const teamCaptains = {
-                            'xiaomen': '萧司余',
-                            'qianyao': '千瑶',
-                            'bige': '比格',
-                            'liuzi': '留子'
-                        };
-                        
-                        if (teamCaptains[teamName]) {
-                            console.log(`${teamName}队伍检测到，为队长${teamCaptains[teamName]}添加固定计数 +1`);
-                            finalCount = validMembers.length + 1;
-                            console.log(`${teamName}队伍最终队员数量: ${validMembers.length} (数据库记录) + 1 (固定队长) = ${finalCount}`);
-                        }
-                        
-                        return finalCount;
-                    })();
-                    
-                    // 使用Promise.race实现超时控制
-                    const result = await Promise.race([queryPromise, timeoutPromise]);
-                    
-                    console.log(`${teamName}队伍查询成功，队员数量: ${result}`);
-                    return result;
-                    
-                } catch (error) {
-                    console.error(`第${attempt}次查询${teamName}队伍失败:`, error.message);
-                    
-                    // 如果是最后一次尝试，返回默认值
-                    if (attempt === queryConfig.maxRetries + 1) {
-                        console.warn(`查询${teamName}队伍失败，使用默认值0`);
-                        return 0;
-                    }
-                    
-                    // 等待一段时间后重试
-                    const delay = queryConfig.baseDelay * Math.pow(2, attempt - 1);
-                    console.log(`等待${delay}ms后重试...`);
-                    await new Promise(resolve => setTimeout(resolve, delay));
+            try {
+                console.log(`开始查询${teamName}队伍的队员数量...`);
+                
+                // 使用Supabase客户端查询对应队伍的队员数量
+                const { data: members, error } = await supabase
+                    .from('team_members')
+                    .select('*')
+                    .eq('team_key', teamName);
+                
+                if (error) {
+                    console.error(`数据库查询错误: ${error.message}`);
+                    return 0;
                 }
+                
+                console.log(`查询到${teamName}队伍数据:`, members);
+                
+                // 统计有实际填写内容的队员数量
+                const validMembers = members.filter(member => {
+                    // 智能过滤条件：检查记录是否有实际内容
+                    const hasValidName = member.member_name && 
+                                      member.member_name.trim() !== '';
+                    
+                    const hasValidPosition = member.position_id && 
+                                           member.position_id.trim() !== '';
+                    
+                    const hasValidTeamKey = member.team_key && 
+                                          member.team_key.trim() !== '';
+                    
+                    return hasValidName || hasValidPosition || hasValidTeamKey;
+                });
+                
+                console.log(`${teamName}队伍有效队员数量:`, validMembers.length);
+                
+                // 为所有队伍都加上队长的固定计数
+                let finalCount = validMembers.length;
+                
+                // 各队伍的队长固定计数
+                const teamCaptains = {
+                    'xiaomen': '萧司余',
+                    'qianyao': '千瑶',
+                    'bige': '比格',
+                    'liuzi': '留子'
+                };
+                
+                if (teamCaptains[teamName]) {
+                    console.log(`${teamName}队伍检测到，为队长${teamCaptains[teamName]}添加固定计数 +1`);
+                    finalCount = validMembers.length + 1;
+                }
+                
+                console.log(`${teamName}队伍查询成功，队员数量: ${finalCount}`);
+                return finalCount;
+                
+            } catch (error) {
+                console.error(`查询${teamName}队伍失败:`, error.message);
+                return 0;
             }
         }
 
         // 从本地存储加载进度数据
         async function loadProgressFromStorage() {
             try {
+                console.log('开始加载进度数据...');
+                
+                // 首先从本地存储加载缓存数据
                 const savedProgress = localStorage.getItem('teamProgress');
                 if (savedProgress) {
                     const parsedProgress = JSON.parse(savedProgress);
                     Object.keys(teamProgress).forEach(team => {
                         if (parsedProgress[team]) {
                             teamProgress[team].current = parsedProgress[team].current || 0;
+                            console.log(`从缓存加载${team}队伍进度: ${teamProgress[team].current}`);
                         }
                     });
                 }
@@ -929,13 +862,31 @@
                 // 从数据库获取实际队员数量并更新进度
                 const teams = ['xiaomen', 'qianyao', 'bige', 'liuzi'];
                 for (const team of teams) {
-                    const actualCount = await getTeamMemberCount(team);
-                    teamProgress[team].current = actualCount;
-                    updateProgressDisplay(team);
+                    try {
+                        console.log(`开始查询${team}队伍数据库数据...`);
+                        const actualCount = await getTeamMemberCount(team);
+                        console.log(`${team}队伍数据库查询结果: ${actualCount}名队员`);
+                        
+                        teamProgress[team].current = actualCount;
+                        updateProgressDisplay(team);
+                        
+                        console.log(`${team}队伍进度已更新: ${teamProgress[team].current}/${teamProgress[team].max}`);
+                    } catch (teamError) {
+                        console.error(`查询${team}队伍数据失败:`, teamError.message);
+                        // 单个队伍查询失败不影响其他队伍
+                    }
                 }
                 
+                // 保存更新后的进度数据
+                saveProgressToStorage();
+                console.log('进度数据加载完成');
+                
             } catch (error) {
-                console.warn('加载进度数据失败，使用默认值:', error);
+                console.error('加载进度数据失败:', error);
+                // 即使失败也要确保进度条有默认显示
+                Object.keys(teamProgress).forEach(team => {
+                    updateProgressDisplay(team);
+                });
             }
         }
 
@@ -1043,6 +994,52 @@
             } catch (error) {
                 console.error('手动刷新失败:', error);
             }
+        };
+        
+        // 测试函数：验证进度条功能
+        window.testProgressBars = function() {
+            console.log('=== 开始测试进度条功能 ===');
+            
+            const teams = ['xiaomen', 'qianyao', 'bige', 'liuzi', 'new-team'];
+            
+            teams.forEach(team => {
+                console.log(`\n测试${team}队伍进度条:`);
+                
+                // 检查元素是否存在
+                const progressBar = document.getElementById(`${team}-progress-bar`);
+                const progressText = document.getElementById(`${team}-progress-text`);
+                
+                console.log(`进度条元素: ${progressBar ? '存在' : '不存在'}`);
+                console.log(`进度文本元素: ${progressText ? '存在' : '不存在'}`);
+                
+                if (progressBar && progressText) {
+                    console.log(`当前进度条宽度: ${progressBar.style.width}`);
+                    console.log(`当前进度文本: ${progressText.textContent}`);
+                    console.log(`队伍数据: ${teamProgress[team].current}/${teamProgress[team].max}`);
+                }
+            });
+            
+            console.log('=== 进度条功能测试结束 ===');
+        };
+        
+        // 新增：简单测试函数，模拟一些进度数据
+        window.simulateProgress = function() {
+            console.log('=== 开始模拟进度数据 ===');
+            
+            // 模拟一些进度数据
+            teamProgress.xiaomen.current = 3;
+            teamProgress.qianyao.current = 5;
+            teamProgress.bige.current = 2;
+            teamProgress.liuzi.current = 4;
+            teamProgress['new-team'].current = 1;
+            
+            // 更新所有进度显示
+            Object.keys(teamProgress).forEach(team => {
+                updateProgressDisplay(team);
+            });
+            
+            console.log('进度数据已模拟，请查看页面上的进度条是否更新');
+            console.log('=== 模拟进度数据结束 ===');
         };
         
         // 调试函数：测试Supabase连接性能
@@ -1205,11 +1202,11 @@
         window.monitorConnection = function() {
             console.log('=== 开始连接状态监控 ===');
             console.log('当前连接状态:', connectionState);
-            console.log('Supabase实时连接状态:', supabase.realtime ? '已初始化' : '未初始化');
+            console.log('Supabase实时连接状态:', supabase && supabase.realtime ? '已初始化' : '未初始化');
             
-            if (supabase.realtime) {
-                console.log('实时连接状态:', supabase.realtime.isConnected() ? '已连接' : '未连接');
-                console.log('订阅数量:', supabase.realtime.channels.length);
+            if (supabase && supabase.realtime) {
+                console.log('实时连接状态:', supabase.realtime.isConnected ? supabase.realtime.isConnected() : '未知');
+                console.log('订阅数量:', supabase.realtime.channels ? supabase.realtime.channels.length : '不可用');
             }
             
             // 测试网络连接
