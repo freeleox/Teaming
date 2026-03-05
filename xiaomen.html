@@ -289,23 +289,6 @@
         }
     </style>
     <script src="https://unpkg.com/@supabase/supabase-js@2.39.7/dist/umd/supabase.js"></script>
-<script>
-  // 替换为您的实际Supabase项目URL和Anon Key
-  const SUPABASE_URL = 'https://jtxbzkfnpbrjmlqinogj.supabase.co'; // 替换为您的Project URL
-  const SUPABASE_ANON_KEY = 'sb_publishable_0K0RV2KcU7DkuSxF9t73dA_a8pIZnB3'; // 替换为您的Anon Key
-  
-  // 创建Supabase客户端
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-  
-  // 测试连接
-  supabase.from('team_members').select('*').limit(1)
-    .then(response => {
-      console.log('Supabase连接成功:', response);
-    })
-    .catch(error => {
-      console.error('Supabase连接失败:', error);
-    });
-</script>  
 </head>
 
 <body>
@@ -448,24 +431,41 @@
         function initializeApp() {
             console.log('初始化萧门报名页面...');
             
+            // 检查是否已经初始化过
+            if (window.appInitialized) {
+                console.log('页面已初始化，跳过重复初始化');
+                return;
+            }
+            
             try {
                 // 1. 先显示快速加载状态
                 showConnectionStatus('🔄 快速加载中...', '#FF9800');
                 
-                // 2. 立即加载本地数据，确保页面快速可用
+                // 2. 初始化进度数据
+                try {
+                    const progressData = JSON.parse(localStorage.getItem('teamProgress') || '{}');
+                    currentProgress = progressData.xiaomen || 0;
+                    console.log(`萧门当前进度: ${currentProgress}/${maxProgress}`);
+                } catch (error) {
+                    console.warn('加载进度数据失败:', error);
+                }
+                
+                // 3. 立即加载本地数据，确保页面快速可用
                 loadLocalDataFirst();
                 
-                // 3. 生成时间选择器选项
+                // 4. 生成时间选择器选项
                 generateTimeOptions();
                 
-                // 4. 初始化事件监听器
+                // 5. 初始化事件监听器
                 initializeEventListeners();
                 
-                // 5. 异步初始化Supabase和云端数据（不阻塞页面）
+                // 6. 异步初始化Supabase和云端数据（不阻塞页面）
                 setTimeout(() => {
                     initializeSupabaseAndCloudData();
                 }, 100);
                 
+                // 标记页面已初始化
+                window.appInitialized = true;
                 console.log('页面初始化完成');
             } catch (error) {
                 console.error('初始化失败:', error);
@@ -476,8 +476,13 @@
         // 异步初始化Supabase和云端数据
         async function initializeSupabaseAndCloudData() {
             try {
-                // 1. 初始化Supabase客户端
-                await initializeSupabase();
+                // 1. 检查是否已经初始化过Supabase客户端
+                if (supabaseClient) {
+                    console.log('Supabase客户端已存在，跳过重复初始化');
+                } else {
+                    // 初始化Supabase客户端
+                    await initializeSupabase();
+                }
                 
                 // 2. 显示连接状态
                 showConnectionStatus('🔄 正在连接云端...', '#FF9800');
@@ -524,11 +529,15 @@
                         throw new Error('Supabase配置不完整，请检查URL和密钥');
                     }
                     
-                    // 创建客户端
-                    supabaseClient = window.supabase.createClient(
-                        CONFIG.SUPABASE_URL, 
-                        CONFIG.SUPABASE_ANON_KEY
-                    );
+                    // 使用全局Supabase客户端，避免创建多个实例
+                    if (window.supabase && window.supabase.createClient) {
+                        supabaseClient = window.supabase.createClient(
+                            CONFIG.SUPABASE_URL, 
+                            CONFIG.SUPABASE_ANON_KEY
+                        );
+                    } else {
+                        throw new Error('Supabase SDK未加载，请检查script标签');
+                    }
                     
                     // 设置连接超时（5秒）
                     const timeout = setTimeout(() => {
@@ -794,8 +803,7 @@
             }, 5000);
         }
 
-        // 页面加载完成后初始化
-        document.addEventListener('DOMContentLoaded', initializeApp);
+        // 页面加载完成后初始化（已移至下方统一处理）
 
         // 保存队员信息
         async function handleSave(event) {
@@ -1219,6 +1227,12 @@
         document.addEventListener('DOMContentLoaded', function() {
             console.log('DOM内容已加载完成，开始初始化页面...');
             
+            // 检查是否已经初始化过
+            if (window.appInitialized) {
+                console.log('页面已初始化，跳过重复初始化');
+                return;
+            }
+            
             // 立即显示页面可用状态
             showConnectionStatus('🔄 页面加载中...', '#FF9800');
             
@@ -1299,17 +1313,7 @@
             }
         }
 
-        // 页面加载时初始化进度
-        document.addEventListener('DOMContentLoaded', function() {
-            // 从localStorage加载当前进度
-            try {
-                const progressData = JSON.parse(localStorage.getItem('teamProgress') || '{}');
-                currentProgress = progressData.xiaomen || 0;
-                console.log(`萧门当前进度: ${currentProgress}/${maxProgress}`);
-            } catch (error) {
-                console.warn('加载进度数据失败:', error);
-            }
-        });
+        // 页面加载时初始化进度（已合并到主初始化函数中）
     </script>
 </body>
 </html>
