@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>梳风弄弦音 - 全女百业</title>
+    <script src="https://unpkg.com/@supabase/supabase-js@2.39.7/dist/umd/supabase.js"></script>
     <style>
         /* 阿里妈妈东方大楷字体声明 */
         @font-face {
@@ -108,7 +109,7 @@
         .team-block {
             width: 100%;
             max-width: 280px;
-            height: 180px;
+            min-height: 180px;
             background-color: #f8f5ef;
             border-radius: 6px;
             padding: 20px;
@@ -130,25 +131,30 @@
 
         /* 纯文字图标样式 */
         .block-icon {
-            font-size: 3.5rem;
+            font-size: 3rem;
             color: #8a7d6b;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 400;
             font-family: 'AlimamaDongFangDaKai', "SimHei", "Microsoft YaHei", sans-serif;
+            line-height: 1;
         }
 
         /* 区块标题和文本 */
         .block-title {
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             color: #5a4b38;
-            margin-bottom: 8px;
+            margin-bottom: 6px;
             font-weight: 400;
+            line-height: 1.3;
+            text-align: center;
         }
 
         .block-text {
-            font-size: 0.9rem;
+            font-size: 0.85rem;
             color: #8a7d6b;
             text-align: center;
+            line-height: 1.4;
+            margin-bottom: 8px;
         }
 
         /* 新建队伍按钮特殊样式 */
@@ -170,6 +176,78 @@
 
         .create-team .block-icon {
             color: white;
+        }
+
+        /* 进度模块样式 */
+        .progress-module {
+            width: 100%;
+            margin-top: 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding-top: 8px;
+            border-top: 1px solid rgba(90, 75, 56, 0.1);
+        }
+
+        .progress-label {
+            font-size: 0.75rem;
+            color: #8a7d6b;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+            margin-bottom: 2px;
+        }
+
+        .progress-bar-container {
+            width: 80%;
+            height: 6px;
+            background-color: #e0d8c8;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #9a8868, #c9b89f);
+            border-radius: 3px;
+            transition: width 0.3s ease;
+            width: 0%;
+        }
+
+        .progress-text {
+            font-size: 0.65rem;
+            color: #8a7d6b;
+            font-weight: 400;
+            margin-top: 1px;
+        }
+
+        /* 新建队伍的特殊进度样式 */
+        .create-team .progress-label,
+        .create-team .progress-text {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .create-team .progress-bar-container {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .create-team .progress-bar {
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.8));
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .progress-module {
+                margin-top: 8px;
+            }
+            
+            .progress-label {
+                font-size: 0.75rem;
+            }
+            
+            .progress-text {
+                font-size: 0.65rem;
+            }
         }
 
         /* 下模块 - 图片展示区 */
@@ -305,7 +383,7 @@
             }
 
             .team-block {
-                height: 160px;
+                min-height: 160px;
                 padding: 15px;
             }
 
@@ -341,6 +419,36 @@
         @media (max-width: 480px) {
             .title-a {
                 font-size: 1.8rem;
+            }
+            
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+            
+            .team-block {
+                min-height: 140px;
+                padding: 12px;
+            }
+            
+            .block-icon {
+                font-size: 2.5rem;
+                margin-bottom: 6px;
+            }
+            
+            .block-title {
+                font-size: 1rem;
+                margin-bottom: 4px;
+            }
+            
+            .block-text {
+                font-size: 0.8rem;
+                margin-bottom: 6px;
+            }
+            
+            .progress-module {
+                margin-top: 8px;
+                padding-top: 6px;
             }
             
             .card-image-container {
@@ -380,6 +488,13 @@
                     <div class="block-icon">萧</div>
                     <div class="block-title">萧门</div>
                     <div class="block-text">社长高战带队，指挥带劲</div>
+                    <div class="progress-module">
+                        <div class="progress-label">组队进度</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="xiaomen-progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text" id="xiaomen-progress-text">0/10</div>
+                    </div>
                 </div>
 
                 <!-- 千瑶：跳转到qianyao.html -->
@@ -387,6 +502,13 @@
                     <div class="block-icon">千</div>
                     <div class="block-title">千瑶</div>
                     <div class="block-text">静音车厢队，社恐福音</div>
+                    <div class="progress-module">
+                        <div class="progress-label">组队进度</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="qianyao-progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text" id="qianyao-progress-text">0/10</div>
+                    </div>
                 </div>
 
                 <!-- 比格：跳转到bige.html -->
@@ -394,6 +516,13 @@
                     <div class="block-icon">比</div>
                     <div class="block-title">比门</div>
                     <div class="block-text">高战妻妻，有话痨纯比</div>
+                    <div class="progress-module">
+                        <div class="progress-label">组队进度</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="bige-progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text" id="bige-progress-text">0/10</div>
+                    </div>
                 </div>
 
                 <!-- 留子：跳转到liuzi.html -->
@@ -401,12 +530,26 @@
                     <div class="block-icon">留</div>
                     <div class="block-title">留门</div>
                     <div class="block-text">想你的风还是吹到了英国</div>
+                    <div class="progress-module">
+                        <div class="progress-label">组队进度</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="liuzi-progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text" id="liuzi-progress-text">0/10</div>
+                    </div>
                 </div>
 
                 <!-- 新建队伍：跳转到new-team.html + 加号放大 -->
                 <div class="team-block create-team" onclick="navigateTo('new-team.html')">
                     <div class="block-icon">+</div>
                     <div class="block-title">我要新建队伍</div>
+                    <div class="progress-module">
+                        <div class="progress-label">组队进度</div>
+                        <div class="progress-bar-container">
+                            <div class="progress-bar" id="new-team-progress-bar" style="width: 0%"></div>
+                        </div>
+                        <div class="progress-text" id="new-team-progress-text">0/10</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -443,6 +586,31 @@
                 </div>
             </div>
         </section>
+        
+        <!-- 调试区域（仅在开发时显示） -->
+        <div style="margin-top: 20px; text-align: center; padding: 10px; background: #f0f0f0; border-radius: 5px;">
+            <button onclick="refreshAllProgress()" style="padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                手动刷新进度
+            </button>
+            <button onclick="testSupabaseConnection()" style="padding: 5px 10px; background: #28a745; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                测试Supabase连接
+            </button>
+            <button onclick="testDatabaseQuery()" style="padding: 5px 10px; background: #ffc107; color: black; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                测试数据库查询
+            </button>
+            <button onclick="debugXiaomenData()" style="padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                查看萧门详细数据
+            </button>
+            <button onclick="simpleCountXiaomen()" style="padding: 5px 10px; background: #6f42c1; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                简单统计萧门记录
+            </button>
+            <button onclick="deepAnalyzeXiaomen()" style="padding: 5px 10px; background: #fd7e14; color: white; border: none; border-radius: 3px; cursor: pointer; margin: 5px;">
+                深度分析萧门数据
+            </button>
+            <div style="margin-top: 10px; font-size: 12px; color: #666;">
+                点击测试不同功能模块
+            </div>
+        </div>
     </div>
 
     <script>
@@ -490,9 +658,202 @@
             // 可以在这里添加用户友好的错误提示
         }
 
-        // 页面加载完成后的初始化
-        window.addEventListener('load', function() {
+        // Supabase客户端配置
+        const SUPABASE_URL = 'https://jtxbzkfnpbrjmlqinogj.supabase.co';
+        const SUPABASE_ANON_KEY = 'sb_publishable_0K0RV2KcU7DkuSxF9t73dA_a8pIZnB3';
+        
+        // 初始化Supabase客户端
+        let supabase;
+        if (window.supabase && window.supabase.createClient) {
+            supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            console.log('Supabase客户端初始化成功');
+        } else {
+            console.error('Supabase客户端未加载，请检查script标签是否正确引入');
+            // 使用模拟客户端，但添加警告
+            supabase = {
+                from: () => ({ 
+                    select: () => ({ 
+                        eq: () => {
+                            console.warn('使用模拟Supabase客户端，数据库操作不会生效');
+                            return Promise.resolve({ data: [], error: null });
+                        } 
+                    }) 
+                })
+            };
+        }
+
+        // 进度管理功能
+        const teamProgress = {
+            // 队伍进度数据
+            xiaomen: { current: 0, max: 10 },
+            qianyao: { current: 0, max: 10 },
+            bige: { current: 0, max: 10 },
+            liuzi: { current: 0, max: 10 },
+            'new-team': { current: 0, max: 10 }
+        };
+
+        // 从数据库获取队员数量
+        async function getTeamMemberCount(teamName) {
             try {
+                console.log(`开始查询${teamName}队伍的队员数量...`);
+                console.log('Supabase客户端状态:', supabase ? '已初始化' : '未初始化');
+                
+                // 使用Supabase客户端查询对应队伍的队员数量
+                const { data: members, error } = await supabase
+                    .from('team_members')
+                    .select('*')
+                    .eq('team_key', teamName);
+                
+                if (error) {
+                    console.error(`获取${teamName}队伍队员数量失败:`, error);
+                    return 0;
+                }
+                
+                console.log(`查询到${teamName}队伍数据:`, members);
+                console.log(`查询条件: team_key = '${teamName}'`);
+                
+                // 统计有实际填写内容的队员数量
+                const validMembers = members.filter(member => {
+                    // 智能过滤条件：检查记录是否有实际内容
+                    const hasValidName = member.member_name && 
+                                      member.member_name !== null && 
+                                      member.member_name !== undefined && 
+                                      member.member_name.toString().trim() !== '';
+                    
+                    const hasValidPosition = member.position_id && 
+                                           member.position_id !== null && 
+                                           member.position_id !== undefined && 
+                                           member.position_id.toString().trim() !== '';
+                    
+                    const hasValidTeamKey = member.team_key && 
+                                          member.team_key !== null && 
+                                          member.team_key !== undefined && 
+                                          member.team_key.toString().trim() !== '';
+                    
+                    const isValid = hasValidName || hasValidPosition || hasValidTeamKey;
+                    
+                    if (isValid) {
+                        console.log(`有效队员:`, member);
+                    } else {
+                        console.log(`无效队员（所有字段都为空）:`, member);
+                        console.log('  详细检查:', {
+                            member_name: member.member_name,
+                            position_id: member.position_id,
+                            team_key: member.team_key,
+                            hasValidName,
+                            hasValidPosition,
+                            hasValidTeamKey
+                        });
+                    }
+                    
+                    return isValid;
+                });
+                
+                console.log(`${teamName}队伍有效队员数量:`, validMembers.length);
+                return validMembers.length;
+            } catch (error) {
+                console.error(`获取${teamName}队伍队员数量异常:`, error);
+                return 0;
+            }
+        }
+
+        // 从本地存储加载进度数据
+        async function loadProgressFromStorage() {
+            try {
+                const savedProgress = localStorage.getItem('teamProgress');
+                if (savedProgress) {
+                    const parsedProgress = JSON.parse(savedProgress);
+                    Object.keys(teamProgress).forEach(team => {
+                        if (parsedProgress[team]) {
+                            teamProgress[team].current = parsedProgress[team].current || 0;
+                        }
+                    });
+                }
+                
+                // 从数据库获取实际队员数量并更新进度
+                const teams = ['xiaomen', 'qianyao', 'bige', 'liuzi'];
+                for (const team of teams) {
+                    const actualCount = await getTeamMemberCount(team);
+                    teamProgress[team].current = actualCount;
+                    updateProgressDisplay(team);
+                }
+                
+            } catch (error) {
+                console.warn('加载进度数据失败，使用默认值:', error);
+            }
+        }
+
+        // 保存进度数据到本地存储
+        function saveProgressToStorage() {
+            try {
+                localStorage.setItem('teamProgress', JSON.stringify(teamProgress));
+            } catch (error) {
+                console.error('保存进度数据失败:', error);
+            }
+        }
+
+        // 更新进度显示
+        function updateProgressDisplay(team) {
+            const progressBar = document.getElementById(`${team}-progress-bar`);
+            const progressText = document.getElementById(`${team}-progress-text`);
+            
+            if (progressBar && progressText) {
+                const progress = teamProgress[team];
+                const percentage = (progress.current / progress.max) * 100;
+                
+                progressBar.style.width = `${percentage}%`;
+                progressText.textContent = `${progress.current}/${progress.max}`;
+                
+                // 根据进度值添加不同的颜色效果
+                if (progress.current >= progress.max) {
+                    progressBar.style.background = 'linear-gradient(90deg, #4CAF50, #66BB6A)';
+                } else if (progress.current >= progress.max * 0.7) {
+                    progressBar.style.background = 'linear-gradient(90deg, #FF9800, #FFB74D)';
+                } else {
+                    progressBar.style.background = 'linear-gradient(90deg, #9a8868, #c9b89f)';
+                }
+            }
+        }
+
+        // 更新队伍进度
+        function updateTeamProgress(team, action) {
+            if (!teamProgress[team]) return;
+            
+            const progress = teamProgress[team];
+            
+            if (action === 'add' && progress.current < progress.max) {
+                progress.current++;
+            } else if (action === 'remove' && progress.current > 0) {
+                progress.current--;
+            }
+            
+            updateProgressDisplay(team);
+            saveProgressToStorage();
+            
+            console.log(`队伍 ${team} 进度更新: ${progress.current}/${progress.max}`);
+        }
+
+        // 监听来自其他页面的进度更新消息
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.type === 'progressUpdate') {
+                const { team, action } = event.data;
+                if (team && action) {
+                    updateTeamProgress(team, action);
+                }
+            }
+        });
+
+        // 页面加载完成后的初始化
+        window.addEventListener('load', async function() {
+            try {
+                // 加载进度数据（异步）
+                await loadProgressFromStorage();
+                
+                // 更新所有队伍的进度显示
+                Object.keys(teamProgress).forEach(team => {
+                    updateProgressDisplay(team);
+                });
+                
                 // 检查关键元素是否存在
                 const requiredElements = [
                     'announcement-card',
@@ -505,11 +866,247 @@
                     }
                 });
 
-                console.log('页面初始化完成');
+                console.log('页面初始化完成，进度模块已加载');
             } catch (error) {
                 handleError(error, '页面初始化');
             }
         });
+
+        // 提供全局函数供其他页面调用
+        window.updateTeamProgress = updateTeamProgress;
+        
+        // 调试函数：手动刷新所有队伍进度
+        window.refreshAllProgress = async function() {
+            console.log('手动刷新所有队伍进度...');
+            try {
+                await loadProgressFromStorage();
+                Object.keys(teamProgress).forEach(team => {
+                    updateProgressDisplay(team);
+                });
+                console.log('手动刷新完成');
+            } catch (error) {
+                console.error('手动刷新失败:', error);
+            }
+        };
+        
+        // 调试函数：测试Supabase连接
+        window.testSupabaseConnection = async function() {
+            console.log('=== 开始测试Supabase连接 ===');
+            console.log('Supabase URL:', SUPABASE_URL);
+            console.log('Supabase客户端状态:', supabase ? '已初始化' : '未初始化');
+            
+            if (supabase && supabase.from) {
+                console.log('Supabase客户端功能正常');
+                try {
+                    // 尝试一个简单的查询来测试连接
+                    const { data, error } = await supabase
+                        .from('team_members')
+                        .select('count')
+                        .limit(1);
+                    
+                    if (error) {
+                        console.error('Supabase连接测试失败:', error);
+                    } else {
+                        console.log('Supabase连接测试成功');
+                        console.log('查询结果:', data);
+                    }
+                } catch (error) {
+                    console.error('Supabase连接测试异常:', error);
+                }
+            } else {
+                console.error('Supabase客户端未正确初始化');
+            }
+            console.log('=== Supabase连接测试结束 ===');
+        };
+        
+        // 调试函数：测试数据库查询
+        window.testDatabaseQuery = async function() {
+            console.log('=== 开始测试数据库查询 ===');
+            
+            const teams = ['xiaomen', 'qianyao', 'bige', 'liuzi'];
+            for (const team of teams) {
+                console.log(`\n测试查询${team}队伍数据...`);
+                const count = await getTeamMemberCount(team);
+                console.log(`${team}队伍实际队员数量:`, count);
+            }
+            
+            console.log('=== 数据库查询测试结束 ===');
+        };
+        
+        // 调试函数：详细查看萧门队员数据
+        window.debugXiaomenData = async function() {
+            console.log('=== 详细查看萧门队员数据 ===');
+            
+            try {
+                const { data: members, error } = await supabase
+                    .from('team_members')
+                    .select('*')
+                    .eq('team_key', 'xiaomen');
+                
+                if (error) {
+                    console.error('查询萧门数据失败:', error);
+                    return;
+                }
+                
+                console.log(`查询到萧门队员总数:`, members.length);
+                console.log('所有萧门队员数据:', members);
+                
+                // 详细分析每个队员的字段
+                members.forEach((member, index) => {
+                    console.log(`\n队员 ${index + 1}:`);
+                    console.log('  member_name:', member.member_name, `(${typeof member.member_name})`);
+                    console.log('  position_id:', member.position_id, `(${typeof member.position_id})`);
+                    console.log('  team_key:', member.team_key, `(${typeof member.team_key})`);
+                    console.log('  其他字段:', Object.keys(member).filter(key => !['member_name', 'position_id', 'team_key'].includes(key)));
+                    
+                    // 检查过滤条件
+                    const hasName = member.member_name && member.member_name.trim() !== '';
+                    const hasPosition = member.position_id && member.position_id.trim() !== '';
+                    const hasTeamKey = member.team_key && member.team_key.trim() !== '';
+                    
+                    console.log('  过滤结果:', {
+                        '有名字': hasName,
+                        '有位置': hasPosition,
+                        '有队伍': hasTeamKey,
+                        '是否有效': hasName || hasPosition || hasTeamKey
+                    });
+                });
+                
+            } catch (error) {
+                console.error('详细查看萧门数据异常:', error);
+            }
+            
+            console.log('=== 萧门数据查看结束 ===');
+        };
+        
+        // 调试函数：简单统计所有萧门记录
+        window.simpleCountXiaomen = async function() {
+            console.log('=== 简单统计萧门记录 ===');
+            
+            try {
+                const { data: members, error } = await supabase
+                    .from('team_members')
+                    .select('*')
+                    .eq('team_key', 'xiaomen');
+                
+                if (error) {
+                    console.error('查询萧门数据失败:', error);
+                    return;
+                }
+                
+                console.log(`查询到萧门记录总数:`, members.length);
+                console.log('不进行任何过滤，直接返回所有记录数量');
+                
+                // 简单显示每个记录的基本信息
+                members.forEach((member, index) => {
+                    console.log(`记录 ${index + 1}:`, {
+                        id: member.id,
+                        member_name: member.member_name,
+                        position_id: member.position_id,
+                        team_key: member.team_key
+                    });
+                });
+                
+                console.log('=== 简单统计结束 ===');
+                return members.length;
+                
+            } catch (error) {
+                console.error('简单统计萧门数据异常:', error);
+                return 0;
+            }
+        };
+        
+        // 调试函数：深度分析萧门数据问题
+        window.deepAnalyzeXiaomen = async function() {
+            console.log('=== 深度分析萧门数据问题 ===');
+            
+            try {
+                const { data: members, error } = await supabase
+                    .from('team_members')
+                    .select('*')
+                    .eq('team_key', 'xiaomen');
+                
+                if (error) {
+                    console.error('查询萧门数据失败:', error);
+                    return;
+                }
+                
+                console.log(`数据库查询结果:`, members.length, '条记录');
+                
+                // 分析可能的问题
+                const problems = {
+                    duplicatePositions: [],
+                    emptyNames: [],
+                    nullValues: [],
+                    validRecords: []
+                };
+                
+                // 检查重复位置
+                const positionCounts = {};
+                members.forEach(member => {
+                    const pos = member.position_id;
+                    if (pos) {
+                        positionCounts[pos] = (positionCounts[pos] || 0) + 1;
+                    }
+                });
+                
+                // 详细分析每条记录
+                members.forEach((member, index) => {
+                    console.log(`\n=== 记录 ${index + 1} 分析 ===`);
+                    console.log('完整记录:', member);
+                    
+                    // 检查字段值
+                    const name = member.member_name;
+                    const position = member.position_id;
+                    const teamKey = member.team_key;
+                    
+                    console.log('字段检查:');
+                    console.log('  member_name:', name, `(类型: ${typeof name}, 长度: ${name ? name.length : 0})`);
+                    console.log('  position_id:', position, `(类型: ${typeof position})`);
+                    console.log('  team_key:', teamKey, `(类型: ${typeof teamKey})`);
+                    
+                    // 检查问题
+                    if (!name || name.trim() === '') {
+                        problems.emptyNames.push(member);
+                        console.log('  ❌ 问题: 队员姓名为空');
+                    } else if (positionCounts[position] > 1) {
+                        problems.duplicatePositions.push(member);
+                        console.log('  ❌ 问题: 位置重复 (出现次数:', positionCounts[position], ')');
+                    } else if (name === null || position === null || teamKey === null) {
+                        problems.nullValues.push(member);
+                        console.log('  ❌ 问题: 存在null值');
+                    } else {
+                        problems.validRecords.push(member);
+                        console.log('  ✅ 有效记录');
+                    }
+                });
+                
+                // 总结问题
+                console.log('\n=== 问题总结 ===');
+                console.log('有效记录数量:', problems.validRecords.length);
+                console.log('空姓名记录:', problems.emptyNames.length);
+                console.log('重复位置记录:', problems.duplicatePositions.length);
+                console.log('存在null值记录:', problems.nullValues.length);
+                
+                console.log('=== 深度分析结束 ===');
+                
+            } catch (error) {
+                console.error('深度分析异常:', error);
+            }
+        };
+        
+        // 定期刷新进度数据（每30秒）
+        setInterval(async () => {
+            try {
+                await loadProgressFromStorage();
+                Object.keys(teamProgress).forEach(team => {
+                    updateProgressDisplay(team);
+                });
+                console.log('进度数据已自动刷新');
+            } catch (error) {
+                console.warn('自动刷新进度数据失败:', error);
+            }
+        }, 30000);
     </script>
 </body>
 </html>

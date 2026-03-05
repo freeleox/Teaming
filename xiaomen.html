@@ -852,6 +852,9 @@
 
             btn.style.display = 'none';
             delBtn.style.display = 'inline-block';
+
+            // 更新进度显示
+                updateProgressDisplay('add');
         }
 
         // 删除队员信息
@@ -892,6 +895,9 @@
 
             btn.style.display = 'none';
             saveBtn.style.display = 'inline-block';
+
+            // 更新进度显示
+                updateProgressDisplay('remove');
         }
 
         // 保存打本设置
@@ -1253,6 +1259,56 @@
         window.addEventListener('beforeunload', function() {
             console.log('页面即将关闭，保存本地数据...');
             // 可以在这里添加最后的保存逻辑
+        });
+
+        // 进度管理功能
+        let currentProgress = 0;
+        const maxProgress = 10;
+
+        // 更新进度显示
+        function updateProgressDisplay(action) {
+            if (action === 'add' && currentProgress < maxProgress) {
+                currentProgress++;
+            } else if (action === 'remove' && currentProgress > 0) {
+                currentProgress--;
+            }
+            
+            // 更新主页面进度显示
+            try {
+                // 方法1：通过localStorage同步（最可靠的方法）
+                const progressData = JSON.parse(localStorage.getItem('teamProgress') || '{}');
+                if (action === 'add') {
+                    progressData.xiaomen = Math.min((progressData.xiaomen || 0) + 1, maxProgress);
+                } else if (action === 'remove') {
+                    progressData.xiaomen = Math.max((progressData.xiaomen || 0) - 1, 0);
+                }
+                localStorage.setItem('teamProgress', JSON.stringify(progressData));
+                
+                // 方法2：通过postMessage发送消息给主页面
+                if (window.opener) {
+                    window.opener.postMessage({
+                        type: 'progressUpdate',
+                        team: 'xiaomen',
+                        action: action
+                    }, '*');
+                }
+                
+                console.log(`萧门进度更新: ${currentProgress}/${maxProgress} (操作: ${action})`);
+            } catch (error) {
+                console.warn('进度更新失败:', error);
+            }
+        }
+
+        // 页面加载时初始化进度
+        document.addEventListener('DOMContentLoaded', function() {
+            // 从localStorage加载当前进度
+            try {
+                const progressData = JSON.parse(localStorage.getItem('teamProgress') || '{}');
+                currentProgress = progressData.xiaomen || 0;
+                console.log(`萧门当前进度: ${currentProgress}/${maxProgress}`);
+            } catch (error) {
+                console.warn('加载进度数据失败:', error);
+            }
         });
     </script>
 </body>
